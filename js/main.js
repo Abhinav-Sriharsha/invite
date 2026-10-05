@@ -22,7 +22,8 @@
     return y;
   };
 
-  /* 1 → 2: walk through an arch that opens from the gopuram doorway */
+  /* Doors → 1 → 2: royal doors open onto the invocation, then an arch
+     opens from the gopuram doorway */
   function chapterA() {
     const ch = $('.chapter--a');
     const portal = $('.portal', ch);
@@ -43,15 +44,33 @@
       arch.style.opacity = p < 0.7 ? 1 : Math.max(0, 1 - (p - 0.7) / 0.3);
     };
 
+    const gate = $('.gate', ch);
+    const plate1 = $('.scene--1 .plate', ch);
+    const doorsEnd = 160; // the gate sequence uses the first 160 units of the track
+
     gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: { trigger: ch, start: 'top top', end: 'bottom bottom', scrub: 0.5 },
     })
-      .to($$('.s1-copy, .scroll-cue', ch), { opacity: 0, y: -28, duration: 30 }, 8)
-      .to($('.scene--1 .plate', ch), { scale: 1.12, duration: 120 }, 20)
-      .to(state, { p: 1, duration: 120, onUpdate: drawPortal }, 20)
+      // Royal doors swing open, light floods in, and we step through the doorway
+      .to($('.gate__cue', gate), { opacity: 0, y: 12, duration: 10 }, 0)
+      .to($('.gate__leaf--l', gate), { rotationY: 104, duration: 90, ease: 'sine.inOut' }, 10)
+      .to($('.gate__leaf--r', gate), { rotationY: -104, duration: 90, ease: 'sine.inOut' }, 10)
+      .to($$('.gate__shade', gate), { opacity: 0.55, duration: 90 }, 10)
+      .to($('.gate__seam', gate), { opacity: 0, duration: 20 }, 10)
+      .fromTo($('.gate__glow', gate), { opacity: 0 }, { opacity: 1, duration: 30 }, 10)
+      .to($('.gate__glow', gate), { opacity: 0, duration: 45 }, 60)
+      .fromTo(plate1, { scale: 1.12 }, { scale: 1, duration: 120 }, 10)
+      .to($$('.gate__frame, .gate__doors', gate), { scale: 1.7, duration: 45, ease: 'power1.in' }, 80)
+      .to(gate, { autoAlpha: 0, duration: 35 }, 90)
+      .fromTo($$('.s1-copy > *', ch), { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 22, stagger: 6, ease: 'power1.out' }, 105)
+      // Through the gopuram doorway to the save-the-date terrace
+      .to($$('.s1-copy, .scroll-cue', ch), { opacity: 0, y: -28, duration: 30 }, doorsEnd + 8)
+      .to(plate1, { scale: 1.12, duration: 120 }, doorsEnd + 20)
+      .to(state, { p: 1, duration: 120, onUpdate: drawPortal }, doorsEnd + 20)
       .fromTo($$('.s2-copy > *', ch), { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 24, stagger: 6, ease: 'power1.out' }, 138)
+        { opacity: 1, y: 0, duration: 24, stagger: 6, ease: 'power1.out' }, doorsEnd + 138)
       .set({}, {}, trackLength(ch));
 
     drawPortal();
