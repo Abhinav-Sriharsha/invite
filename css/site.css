@@ -278,8 +278,6 @@ img { display: block; max-width: 100%; }
 }
 
 /* --- 5. Sumuhurtham --- */
-.door { position: absolute; inset: 0; }
-.door--r { display: none; }
 .s5-copy { top: 75.5%; }
 .muhurtham {
   font-weight: 500;
@@ -295,6 +293,11 @@ img { display: block; max-width: 100%; }
 }
 .when span { display: block; font-size: 1.15em; }
 .s5-copy .btn { margin-top: 1.6cqh; }
+/* short phones: lift the muhurtham block so the button clears the lotuses */
+@container (max-height: 640px) {
+  .s5-copy { top: 71%; }
+  .s5-copy .btn { margin-top: 8px; }
+}
 
 /* Portal parts are motion-only */
 .portal, .portal__inner { position: absolute; inset: 0; }
@@ -437,7 +440,10 @@ img { display: block; max-width: 100%; }
 .lotus-strip img { width: 100%; height: auto; }
 
 /* Overlays only exist for motion */
-.overlay { display: none; }
+/* Transition layers only exist for motion; scene 3's iris wrappers are plain boxes */
+.carry, .petals, .fringe, .tera, .paper { display: none; }
+.iris, .iris__clip, .iris__inner { position: absolute; inset: 0; }
+.iris__rim { display: none; }
 
 /* Desktop: the 9:16 scenes sit centred over the ivory courtyard */
 @media (min-aspect-ratio: 10/16) {
@@ -503,41 +509,47 @@ img { display: block; max-width: 100%; }
 .motion .s2-copy > * { opacity: 0; }
 .motion .scene--1 .plate { transform-origin: 50% 74%; }
 
-/* Chapter C: scenes 4 and 5 wait invisibly above scene 3 */
+/* Scenes 3–5 wait hidden on the same stage until their transition */
+.motion .scene--3,
 .motion .scene--4,
-.motion .scene--5 { opacity: 0; background: none; }
-.motion .scene--3 { background: none; }
-.motion .names > span { opacity: 0; }
-.motion .panel { transform: translateY(100%); }
-.motion .scene--4 .plate { transform: none; }
+.motion .scene--5 { visibility: hidden; background: none; }
+.motion .names > span,
 .motion .s5-copy > * { opacity: 0; }
-.motion .door--r { display: block; }
-.motion .door--l { clip-path: inset(0 50% 0 0); }
-.motion .door--r { clip-path: inset(0 0 0 50%); }
+.motion .s3-lead { visibility: hidden; }
+.motion .scene--4 .plate { transform: none; }
+.motion .scene--4 { box-shadow: 0 10px 22px rgba(60, 30, 10, .28); }
 .motion .stage { pointer-events: none; }
 .motion .stage a { pointer-events: auto; }
 
-/* The information sections slide in beneath the opening doors */
+/* The information sections wait beneath the stage as the painting fades to paper */
 .motion .info { z-index: 0; margin-top: -100vh; margin-top: -100lvh; }
 
-/* Bridge overlay: a stage-sized fixed frame for the carried line and petals */
-.motion .overlay {
+/* Lotus window (save the date → names). JS sets the petal-shaped clip path. */
+.motion .iris { transform-origin: 58% 30%; opacity: 0; }
+.motion .iris__inner { transform-origin: 58% 30%; }
+.motion .iris__inner .plate { inset: -2%; width: auto; height: auto; }
+.motion .iris__rim {
   display: block;
-  position: fixed;
-  top: 0;
-  left: 50%;
-  z-index: 3;
-  width: min(100vw, 56.25lvh);
-  height: 100vh;
-  height: 100lvh;
-  transform: translateX(-50%);
-  container-type: size;
-  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  transform: scale(1.045);
+  transform-origin: 58% 30%;
 }
-.carry {
+/* the clip path reaches far past the box, so the gold has to as well */
+.motion .iris__rim::before {
+  content: "";
+  position: absolute;
+  inset: -400%;
+  background: radial-gradient(circle at 50% 50%, #EBD192, #C9A24E 30%, #9C7632 60%);
+}
+
+/* Line carried from save the date onto the names */
+.motion .carry {
+  display: block;
   position: absolute;
   left: 50%;
   top: 0;
+  z-index: 4;
   width: max-content;
   max-width: 92%;
   margin: 0;
@@ -548,10 +560,11 @@ img { display: block; max-width: 100%; }
   translate: -50% -.45em;
   visibility: hidden;
 }
-.carrying .carry { visibility: visible; }
-.carrying .s2-line,
-.carrying .s3-lead { visibility: hidden; }
+@container (max-width: 360px) {
+  .motion .carry { max-width: 17em; }
+}
 
+.motion .petals { display: block; position: absolute; inset: 0; z-index: 4; }
 .petals svg {
   position: absolute;
   left: 0;
@@ -560,6 +573,60 @@ img { display: block; max-width: 100%; }
   min-width: 14px;
   height: auto;
   opacity: 0;
+}
+
+/* Jasmine curtain edge (names → invitation) */
+.motion .fringe {
+  display: block;
+  position: absolute;
+  left: -2%;
+  top: 0;
+  z-index: 3;
+  width: 104%;
+  height: auto;
+  overflow: visible;
+  visibility: hidden;
+}
+
+/* Turmeric silk cloth with a red and gold border (invitation → muhurtham) */
+.motion .tera {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: -2% 0 0;
+  z-index: 3;
+  visibility: hidden;
+  background:
+    linear-gradient(#C9A24E 0 3px, #8E1626 3px 8%, #C9A24E 8% calc(8% + 2px), #8E1626 calc(8% + 2px) calc(8% + 6px), #C9A24E calc(8% + 6px) calc(8% + 8px), transparent calc(8% + 8px)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .16) 0 2.5%, rgba(150, 100, 20, .08) 2.5% 6%, rgba(255, 255, 255, 0) 6% 9%),
+    linear-gradient(#F6E4AE, #F1D68E 50%, #EACA78);
+  box-shadow: inset 7px 0 0 #8E1626, inset 9px 0 0 #C9A24E, inset -7px 0 0 #8E1626, inset -9px 0 0 #C9A24E, 0 -12px 30px rgba(60, 30, 10, .3);
+}
+.tera__motif {
+  display: grid;
+  place-items: center;
+  width: 42cqw;
+  aspect-ratio: 1;
+  border: 2px solid #8E1626;
+  border-radius: 50%;
+  outline: 1px solid #8E1626;
+  outline-offset: 6px;
+  color: #8E1626;
+}
+.tera__motif svg { width: 62%; height: auto; fill: currentColor; }
+.tera__motif .lotus-base { stroke: currentColor; }
+
+/* Painting fades into the courtyard's ivory paper (muhurtham → celebrations) */
+.motion .paper {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 150%;
+  z-index: 3;
+  background: linear-gradient(rgba(250, 245, 235, 0), #FAF5EB 25%);
+  visibility: hidden;
 }
 
 /* Reveal targets start hidden only in motion mode */

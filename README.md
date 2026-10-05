@@ -10,17 +10,18 @@ build step: open `index.html` through any static server (for example
 |---|-------|-----|----------------|
 | 0 | Royal doors: teak leaves with brass rosettes and studs, set in a sandstone doorway hung with jasmine | CSS/SVG | The doors swing inward in 3D, light floods in, and you step through the doorway (scrubbed, about 1.6 screens). In static mode the doors are skipped. |
 | 1 | Invocation: Ganesha mark, "Anumanchi's Wedding Invitation" | `r1` temple | An arch window opens from the gopuram doorway and grows until you pass through it (scrubbed, about 1.2 screens) |
-| 2 | Save the date | `r2` lotus offering | Petals fall while the camera tilts down. "For the wedding celebrations of" stays in place and lands above the names (scrubbed, 1 screen) |
-| 3 | Abhiram *and* Trilokya | `r3` kolam | Tilt up from the feet to the couple (scrubbed, 1 screen, fixed stage) |
-| 4 | Invitation, full names, parents | `r4` garland exchange | The invitation panel rises over the floor, then dissolves to the next scene (scrubbed) |
-| 5 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `r5` jeelakarra-bellam | The picture parts like doors onto the courtyard (scrubbed, 1 screen) |
+| 2 | Save the date | `r2` lotus offering | A lotus-shaped window with a gold rim blooms from where the two offered lotuses meet. Petals fall onto the kolam floor, and "For the wedding celebrations of" stays in place and lands above the names (scrubbed, about 1.1 screens) |
+| 3 | Abhiram *and* Trilokya | `r3` kolam | A curtain of jasmine strands descends and draws the garland exchange down over the scene (scrubbed, 1 screen) |
+| 4 | Invitation, full names, parents | `r4` garland exchange | The invitation panel rises over the floor. Then a turmeric silk cloth with a red and gold border rises between us and is lowered at the muhurtham (scrubbed, about 1.3 screens) |
+| 5 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `r5` jeelakarra-bellam | The painting fades into ivory paper and the celebrations appear (scrubbed, 1 screen) |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
 ## Structure
 
 - `index.html`: all content, in reading order. Scenes are plain sections.
-- `css/site.css`: static layout by default. `html.motion` turns each chapter
-  into a tall scroll track with a fixed (`position: sticky`) stage.
+- `css/site.css`: static layout by default. `html.motion` turns the story into
+  one tall scroll track with a fixed (`position: sticky`) stage, where all five
+  scenes and the transition layers sit.
 - `js/main.js`: GSAP and ScrollTrigger timelines. It only runs when the visitor
   allows motion. If GSAP fails to load, it removes `html.motion` and the page
   stays static.
