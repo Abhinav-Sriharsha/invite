@@ -44,54 +44,6 @@
         <circle class="iv-accent" cx="10" cy="-38" r="2" />
       </g>
 
-      <!-- Marigold: two flower tones; ruffled petals come from dashed strokes -->
-      <symbol id="mg-a" viewBox="-10 -10 20 20">
-        <circle r="7.6" class="mg-petal" />
-        <circle r="7.6" class="mg-ruffle" />
-        <circle r="4.2" class="mg-ruffle mg-ruffle--inner" />
-      </symbol>
-      <symbol id="mg-b" viewBox="-10 -10 20 20">
-        <circle r="7.6" class="mg-petal mg-petal--deep" />
-        <circle r="7.6" class="mg-ruffle mg-ruffle--deep" />
-        <circle r="4.2" class="mg-ruffle mg-ruffle--inner mg-ruffle--deep" />
-      </symbol>
-      <g id="mg-leaf">
-        <path class="mg-leaf" d="M0 0C3.5-3.6 11-4.2 17 0C11 4.2 3.5 3.6 0 0Z" />
-        <path class="mg-vein" d="M2 0H14" />
-      </g>
-
-      <!-- Marigold: one corner garland (top-left; mirrored for top-right). viewBox 0 0 200 200 -->
-      <symbol id="mg-garland" viewBox="-4 -4 208 196" overflow="visible">
-        <path class="mg-string" d="M6 6Q96 120 196 4M6 6V158M99.5 62.5V124M196 4V52" />
-        <!-- swag -->
-        <use href="#mg-b" x="10.4" y="12.4" width="12.5" height="12.5"/><use href="#mg-a" x="19.8" y="22.1" width="15" height="15"/><use href="#mg-a" x="31.8" y="32.8" width="12.5" height="12.5"/><use href="#mg-b" x="41.4" y="39.4" width="15" height="15"/><use href="#mg-a" x="53.6" y="46.9" width="12.5" height="12.5"/><use href="#mg-a" x="63.3" y="50.3" width="15" height="15"/><use href="#mg-b" x="75.6" y="54.6" width="12.5" height="12.5"/><use href="#mg-a" x="85.4" y="54.9" width="15" height="15"/><use href="#mg-a" x="97.8" y="56" width="12.5" height="12.5"/><use href="#mg-b" x="107.8" y="53" width="15" height="15"/><use href="#mg-a" x="120.4" y="51" width="12.5" height="12.5"/><use href="#mg-a" x="130.5" y="44.8" width="15" height="15"/><use href="#mg-b" x="143.2" y="39.6" width="12.5" height="12.5"/><use href="#mg-a" x="153.5" y="30.3" width="15" height="15"/><use href="#mg-a" x="166.4" y="21.9" width="12.5" height="12.5"/><use href="#mg-b" x="176.8" y="9.4" width="15" height="15"/>
-        <!-- drops -->
-        <use href="#mg-a" x="-0.5" y="12.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="25.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="38.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="51.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="64.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="77.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="90.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="103.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="116.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="129.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="142.5" width="13" height="13"/>
-        <use href="#mg-a" x="93" y="69" width="13" height="13"/><use href="#mg-b" x="93" y="82" width="13" height="13"/><use href="#mg-a" x="93" y="95" width="13" height="13"/><use href="#mg-b" x="93" y="108" width="13" height="13"/>
-        <use href="#mg-a" x="189.5" y="10.5" width="13" height="13"/><use href="#mg-b" x="189.5" y="23.5" width="13" height="13"/><use href="#mg-a" x="189.5" y="36.5" width="13" height="13"/>
-        <!-- foliage: corner knot, swag leaves, tassels -->
-        <use href="#mg-leaf" transform="translate(6 6) rotate(10)" />
-        <use href="#mg-leaf" transform="translate(6 6) rotate(55)" />
-        <use href="#mg-leaf" transform="translate(196 4) rotate(170)" />
-        <use href="#mg-leaf" transform="translate(196 4) rotate(125)" />
-        <use href="#mg-leaf" transform="translate(48 50) rotate(115)" />
-        <use href="#mg-leaf" transform="translate(150 47) rotate(65)" />
-        <use href="#mg-leaf" transform="translate(6 156) rotate(65)" />
-        <use href="#mg-leaf" transform="translate(6 156) rotate(115)" />
-        <use href="#mg-leaf" transform="translate(99.5 121) rotate(65)" />
-        <use href="#mg-leaf" transform="translate(99.5 121) rotate(115)" />
-        <use href="#mg-leaf" transform="translate(196 50) rotate(70)" />
-        <use href="#mg-leaf" transform="translate(196 50) rotate(110)" />
-      </symbol>
-
-      <!-- Marigold: toran strip (string, alternating leaf + bloom), tiled horizontally -->
-      <pattern id="mg-toran" width="36" height="34" patternUnits="userSpaceOnUse" x="-18">
-        <path class="mg-string" d="M0 5H36" />
-        <use href="#mg-leaf" transform="translate(18 5) rotate(90) scale(1.35)" />
-        <use href="#mg-a" x="-6" y="-1" width="12" height="12" />
-        <use href="#mg-a" x="30" y="-1" width="12" height="12" />
-      </pattern>
-
       <!-- Jaali: corner fleuron for the fixed frame (top-left; mirrored for others) -->
       <g id="jl-corner">
         <path d="M0 34V0H34" class="jl-line" />
@@ -148,9 +100,6 @@
           </div>
         </div>
 
-        <!-- Marigold celebration: garlands from the top corners -->
-        <svg class="deco deco--marigold mg-garland mg-garland--l" viewBox="-4 -4 208 196" data-anim="sway"><use href="#mg-garland" /></svg>
-        <svg class="deco deco--marigold mg-garland mg-garland--r" viewBox="-4 -4 208 196" data-anim="sway"><use href="#mg-garland" /></svg>
 
       </div>
 
@@ -187,11 +136,6 @@
           <path class="iv-line" d="M0 33H240" />
           <path class="iv-line iv-line--fine" d="M12 33V20A18 18 0 0 1 30 4A18 18 0 0 1 48 20V33M72 33V20A18 18 0 0 1 90 4A18 18 0 0 1 108 20V33M132 33V20A18 18 0 0 1 150 4A18 18 0 0 1 168 20V33M192 33V20A18 18 0 0 1 210 4A18 18 0 0 1 228 20V33" />
           <circle class="iv-accent" cx="60" cy="18" r="1.8" /><circle class="iv-accent" cx="120" cy="18" r="2.4" /><circle class="iv-accent" cx="180" cy="18" r="1.8" />
-        </svg>
-
-        <!-- Marigold: toran of leaves and blooms across the top of the section -->
-        <svg class="deco deco--marigold mg-toran" data-anim="sway">
-          <rect width="100%" height="34" fill="url(#mg-toran)" />
         </svg>
       </div>
 
@@ -232,10 +176,7 @@
     <button type="button" class="picker__opt" data-bg="ivory" aria-pressed="true" title="Ivory courtyard (recommended)">
       <span class="picker__swatch" aria-hidden="true"></span>Ivory<span class="picker__rec" aria-label="recommended">★</span>
     </button>
-    <button type="button" class="picker__opt" data-bg="marigold" aria-pressed="false" title="Marigold celebration">
-      <span class="picker__swatch" aria-hidden="true"></span>Marigold
-    </button>
-    <button type="button" class="picker__opt" data-bg="jaali" aria-pressed="false" title="Midnight jaali">
+    <button type="button" class="picker__opt" data-bg="jaali" aria-pressed="false" title="Midnight jaali (backup)">
       <span class="picker__swatch" aria-hidden="true"></span>Jaali
     </button>
   </nav>

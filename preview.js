@@ -1,5 +1,5 @@
 (() => {
-  const THEME_COLORS = { ivory: '#FAF5EB', marigold: '#FFF8EC', jaali: '#0F1B33' };
+  const THEME_COLORS = { ivory: '#FAF5EB', jaali: '#0F1B33' };
   const body = document.body;
   const meta = document.querySelector('meta[name="theme-color"]');
   const buttons = document.querySelectorAll('.picker__opt');
