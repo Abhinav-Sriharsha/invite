@@ -1,0 +1,567 @@
+/* ==========================================================================
+   Wedding invitation: background preview
+   Three directions share one layout. Each one is a set of colour tokens
+   plus `.deco--<name>` elements that only show under body[data-bg="<name>"].
+   ========================================================================== */
+
+/* ---------- Tokens ---------- */
+
+:root {
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+    "URW Palladio L", P052, Georgia, serif;
+  --gutter: 16px;
+  --measure: 30rem;
+}
+
+/* 1. Ivory courtyard */
+body[data-bg="ivory"] {
+  --bg: #FAF5EB;
+  --bg-image: radial-gradient(120% 80% at 50% 38%, #FCF9F2 0%, #FAF5EB 55%, #F3EAD8 100%);
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cg fill='%23B08A4F'%3E%3Ccircle cx='14' cy='11.4' r='.9'/%3E%3Ccircle cx='16.6' cy='14' r='.9'/%3E%3Ccircle cx='14' cy='16.6' r='.9'/%3E%3Ccircle cx='11.4' cy='14' r='.9'/%3E%3Ccircle cx='0' cy='0' r='.7'/%3E%3Ccircle cx='28' cy='0' r='.7'/%3E%3Ccircle cx='0' cy='28' r='.7'/%3E%3Ccircle cx='28' cy='28' r='.7'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-opacity: .32;
+  --ink: #3A2A22;
+  --ink-soft: #6A5446;
+  --accent: #7A2335;      /* burgundy */
+  --gold: #B08A4F;        /* antique gold */
+  --gold-fine: rgba(176, 138, 79, .62);
+  --rule: rgba(176, 138, 79, .45);
+  --picker-bg: rgba(255, 252, 245, .94);
+  --picker-ink: #3A2A22;
+  --picker-active: #EFE3CC;
+  --picker-border: rgba(176, 138, 79, .45);
+}
+
+/* 2. Marigold celebration */
+body[data-bg="marigold"] {
+  --bg: #FFF8EC;
+  --bg-image:
+    radial-gradient(90% 38% at 50% 0%, rgba(231, 168, 71, .16), transparent 70%),
+    linear-gradient(#FFF8EC, #FDF3E1);
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg fill='%23D9822B'%3E%3Cellipse cx='11' cy='11' rx='1.1' ry='2.2' transform='rotate(35 11 11)'/%3E%3Cellipse cx='33' cy='33' rx='1.1' ry='2.2' transform='rotate(-25 33 33)'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-opacity: .16;
+  --ink: #45291A;
+  --ink-soft: #6E4E36;
+  --accent: #B5611C;      /* muted saffron, darkened for text contrast */
+  --leaf: #6E8B4E;
+  --leaf-vein: #4C6636;
+  --saffron: #E7A847;
+  --saffron-ruffle: #C98431;
+  --saffron-deep: #D9822B;
+  --saffron-deep-ruffle: #B4631F;
+  --string: #9C7A4A;
+  --rule: rgba(110, 139, 78, .4);
+  --picker-bg: rgba(255, 251, 243, .94);
+  --picker-ink: #45291A;
+  --picker-active: #F7E2BE;
+  --picker-border: rgba(201, 132, 49, .4);
+}
+
+/* 3. Midnight jaali */
+body[data-bg="jaali"] {
+  --bg: #0F1B33;
+  --bg-image: radial-gradient(110% 75% at 50% 42%, #14223F 0%, #0F1B33 55%, #0A1326 100%);
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='%23C8A96B' stroke-width='.8'%3E%3Cpath d='M12 0H28L40 12V28L28 40H12L0 28V12Z'/%3E%3Cpath d='M14 14H26V26H14ZM20 11.5L28.5 20L20 28.5L11.5 20Z'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-opacity: .1;
+  --ink: #F3EAD7;
+  --ink-soft: #C3C8D6;
+  --accent: #D2B47A;      /* gold */
+  --gold: #C8A96B;
+  --rule: rgba(200, 169, 107, .35);
+  --picker-bg: rgba(10, 19, 38, .92);
+  --picker-ink: #F3EAD7;
+  --picker-active: #22324F;
+  --picker-border: rgba(200, 169, 107, .4);
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, p, ol { margin: 0; }
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---------- Backdrop (fixed, continues behind every section) ---------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-image);
+  pointer-events: none;
+}
+
+.backdrop__pattern {
+  position: absolute;
+  inset: 0;
+  background-image: var(--pattern);
+  opacity: var(--pattern-opacity);
+}
+
+/* Jaali stays out of the reading area: pattern fades out toward the centre. */
+body[data-bg="jaali"] .backdrop__pattern {
+  -webkit-mask-image: radial-gradient(75% 62% at 50% 50%, transparent 42%, #000 100%);
+  mask-image: radial-gradient(75% 62% at 50% 50%, transparent 42%, #000 100%);
+}
+
+/* Only the active direction's decorations render. */
+body:not([data-bg="ivory"]) .deco--ivory,
+body:not([data-bg="marigold"]) .deco--marigold,
+body:not([data-bg="jaali"]) .deco--jaali { display: none; }
+
+/* ---------- Sections ---------- */
+
+.screen {
+  position: relative;
+  isolation: isolate;
+}
+
+.screen__deco {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.screen__content {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: calc(var(--gutter) + 20px);
+  text-align: center;
+}
+
+.screen--hero {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: clamp(150px, 27svh, 260px) clamp(72px, 12svh, 120px);
+}
+
+/* The jaali crest sits in the content flow, so less top space is needed. */
+body[data-bg="jaali"] .screen--hero {
+  padding-top: clamp(84px, 16svh, 200px);
+}
+
+.screen--details {
+  padding-block: 88px 120px;
+}
+
+/* ---------- Typography ---------- */
+
+.eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block: 18px 20px;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2.6rem, 12.5vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: .01em;
+}
+
+.names__amp {
+  margin-block: 2px;
+  color: var(--accent);
+  font-size: .62em;
+  line-height: 1;
+}
+
+.invite-line {
+  max-width: 22rem;
+  margin-inline: auto;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 4.2vw, 1.12rem);
+  line-height: 1.55;
+}
+
+.hero__date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 22px;
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hero__place {
+  color: var(--ink-soft);
+  font-size: .95em;
+  letter-spacing: .1em;
+  text-transform: none;
+  font-style: italic;
+}
+
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 36px;
+  color: var(--ink-soft);
+  font-size: .66rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+.scroll-cue path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.section-title {
+  margin-top: 10px;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.9rem, 8.5vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.events {
+  list-style: none;
+  margin-top: 28px;
+  padding: 0;
+}
+
+.event {
+  position: relative;
+  padding-block: 22px;
+}
+
+/* Hairline with a small diamond between events */
+.event + .event { border-top: 1px solid var(--rule); }
+.event + .event::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.event__name {
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.event__meta {
+  margin-top: 6px;
+  font-size: .76rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.event__place {
+  margin-top: 2px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.closing {
+  margin-top: 26px;
+  color: var(--ink-soft);
+  font-size: .95rem;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Direction 1: Ivory courtyard
+   ========================================================================== */
+
+.iv-line,
+#iv-flower circle,
+#iv-leaf {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.iv-line--fine { stroke: var(--gold-fine); }
+#iv-flower circle.iv-accent,
+.iv-accent {
+  fill: var(--accent);
+  stroke: none;
+}
+
+/* Arch frame: fixed-ratio crown (SVG) + stretchable sides (CSS borders) */
+.iv-arch {
+  position: absolute;
+  top: max(18px, 3svh);
+  bottom: max(18px, 3svh);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 2 * var(--gutter), 420px);
+  transform: translateX(-50%);
+}
+
+.iv-arch__crown {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.iv-arch__body {
+  position: relative;
+  flex: 1;
+  margin-inline: -.5px;
+  border: 1px solid var(--gold);
+  border-top: 0;
+}
+
+/* Inner line continues the cusped arch down to the base (x = 14/300 of width). */
+.iv-arch__body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 5px;
+  left: calc(4.6667% - 1px);
+  right: calc(4.6667% - 1px);
+  border: 1px solid var(--gold-fine);
+  border-top: 0;
+}
+
+.iv-arch__sprig {
+  position: absolute;
+  bottom: 9px;
+  width: 30px;
+  height: 60px;
+  overflow: visible;
+}
+.iv-arch__sprig--l { left: 9%; }
+.iv-arch__sprig--r { right: 9%; transform: scaleX(-1); }
+
+.iv-arcade {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  width: min(240px, 70%);
+  height: auto;
+  overflow: visible;
+  transform: translateX(-50%);
+}
+
+/* ==========================================================================
+   Direction 2: Marigold celebration
+   ========================================================================== */
+
+.mg-petal { fill: var(--saffron); }
+.mg-petal--deep { fill: var(--saffron-deep); }
+
+.mg-ruffle {
+  fill: none;
+  stroke: var(--saffron-ruffle);
+  stroke-width: 3.4;
+  stroke-dasharray: 1.3 1.1;
+}
+.mg-ruffle--inner {
+  stroke-width: 2.6;
+  stroke-dasharray: 1 .9;
+}
+.mg-ruffle--deep { stroke: var(--saffron-deep-ruffle); }
+
+.mg-leaf { fill: var(--leaf); }
+.mg-vein {
+  fill: none;
+  stroke: var(--leaf-vein);
+  stroke-width: .7;
+}
+
+.mg-string {
+  fill: none;
+  stroke: var(--string);
+  stroke-width: .8;
+}
+
+.mg-garland {
+  position: absolute;
+  top: 0;
+  width: clamp(128px, 40vw, 300px);
+  height: auto;
+  aspect-ratio: 208 / 196;
+  overflow: visible;
+}
+.mg-garland--l { left: 2px; }
+.mg-garland--r { right: 2px; transform: scaleX(-1); }
+
+.mg-toran {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 34px;
+}
+
+/* ==========================================================================
+   Direction 3: Midnight jaali
+   ========================================================================== */
+
+.jl-line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.jl-line--thin { stroke-opacity: .55; }
+.jl-fill { fill: var(--gold); fill-opacity: .55; }
+.jl-dot { fill: var(--gold); }
+
+/* Viewport frame: sits in the fixed backdrop, so it frames every screen. */
+.jl-frame {
+  position: absolute;
+  inset: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(200, 169, 107, .5);
+}
+.jl-frame::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(200, 169, 107, .2);
+}
+
+.jl-frame__corner {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  overflow: visible;
+}
+.jl-frame__corner--tl { top: -3.2px; left: -3.2px; }
+.jl-frame__corner--tr { top: -3.2px; right: -3.2px; transform: scaleX(-1); }
+.jl-frame__corner--bl { bottom: -3.2px; left: -3.2px; transform: scaleY(-1); }
+.jl-frame__corner--br { bottom: -3.2px; right: -3.2px; transform: scale(-1); }
+
+.jl-crest {
+  width: 150px;
+  height: auto;
+  margin: 0 auto 22px;
+  overflow: visible;
+}
+
+/* ---------- Preview picker (not part of the final design) ---------- */
+
+.picker {
+  position: fixed;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 10;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--picker-border);
+  border-radius: 999px;
+  background: var(--picker-bg);
+  box-shadow: 0 4px 18px rgba(20, 14, 8, .14);
+  transform: translateX(-50%);
+}
+
+.picker__opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--picker-ink);
+  font: inherit;
+  font-size: .82rem;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.picker__opt[aria-pressed="true"] { background: var(--picker-active); }
+.picker__opt:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.picker__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #B08A4F;
+}
+.picker__opt[data-bg="ivory"] .picker__swatch { background: #FAF5EB; box-shadow: inset 0 0 0 2.5px #FAF5EB, inset 0 0 0 6px #7A2335; }
+.picker__opt[data-bg="marigold"] .picker__swatch { background: #E7A847; border-color: #6E8B4E; }
+.picker__opt[data-bg="jaali"] .picker__swatch { background: #0F1B33; border-color: #C8A96B; }
+
+.picker__rec {
+  margin-left: -2px;
+  color: var(--accent);
+  font-size: .7rem;
+}
+
+@media (max-width: 360px) {
+  .eyebrow { letter-spacing: .16em; }
+  .event__meta { letter-spacing: .1em; }
+  .picker__opt { padding: 0 9px; gap: 5px; }
+}
+
+/* ---------- Larger screens ---------- */
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; }
+  .screen--details { padding-block: 112px 140px; }
+  .jl-frame { inset: 18px; }
+}
+
+/* ---------- Motion ----------
+   The page is static for now. Sections get .is-inview from preview.js and
+   decorations carry data-anim="draw|sway|fade" so entrance effects can be
+   added later inside a (prefers-reduced-motion: no-preference) query.
+   This guard keeps anything added later still for people who opt out. */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

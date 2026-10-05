@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Background Preview</title>
+  <meta name="description" content="Background directions for a mobile-first Indian wedding invitation.">
+  <meta name="theme-color" content="#FAF5EB">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-bg="ivory">
+
+  <!--
+    Shared SVG sprite. Colours come from CSS custom properties so each
+    background direction can recolour the same shapes.
+  -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Ivory: five-petal flower and leaf used in the spandrels / base sprigs -->
+      <g id="iv-flower">
+        <circle r="3.2" cy="-5" /><circle r="3.2" cx="4.8" cy="-1.5" /><circle r="3.2" cx="3" cy="4" />
+        <circle r="3.2" cx="-3" cy="4" /><circle r="3.2" cx="-4.8" cy="-1.5" />
+        <circle class="iv-accent" r="1.6" />
+      </g>
+      <path id="iv-leaf" d="M0 0C2.5-3 8-3.5 12 0C8 3.5 2.5 3 0 0Z" />
+
+      <!-- Ivory: spandrel ornament (top-left; mirrored for top-right) -->
+      <g id="iv-spandrel">
+        <path class="iv-line" d="M12 52C26 44 30 30 44 26S66 30 80 22" />
+        <use href="#iv-flower" transform="translate(30 30) scale(1.5)" />
+        <use href="#iv-leaf" transform="translate(44 26) rotate(-30)" />
+        <use href="#iv-leaf" transform="translate(58 27) rotate(25)" />
+        <use href="#iv-leaf" transform="translate(20 46) rotate(150)" />
+        <circle class="iv-accent" cx="80" cy="22" r="1.8" />
+      </g>
+
+      <!-- Ivory: small flowering sprig for the base of the arch -->
+      <g id="iv-sprig">
+        <path class="iv-line" d="M0 0C0-14 2-26 0-40M0-12C-6-16-10-22-10-28M0-22C6-25 10-30 10-36" />
+        <use href="#iv-leaf" transform="translate(0 -6) rotate(-140)" />
+        <use href="#iv-leaf" transform="translate(0 -9) rotate(-40)" />
+        <use href="#iv-flower" transform="translate(0 -44) scale(.9)" />
+        <circle class="iv-accent" cx="-10" cy="-30" r="2" />
+        <circle class="iv-accent" cx="10" cy="-38" r="2" />
+      </g>
+
+      <!-- Marigold: two flower tones; ruffled petals come from dashed strokes -->
+      <symbol id="mg-a" viewBox="-10 -10 20 20">
+        <circle r="7.6" class="mg-petal" />
+        <circle r="7.6" class="mg-ruffle" />
+        <circle r="4.2" class="mg-ruffle mg-ruffle--inner" />
+      </symbol>
+      <symbol id="mg-b" viewBox="-10 -10 20 20">
+        <circle r="7.6" class="mg-petal mg-petal--deep" />
+        <circle r="7.6" class="mg-ruffle mg-ruffle--deep" />
+        <circle r="4.2" class="mg-ruffle mg-ruffle--inner mg-ruffle--deep" />
+      </symbol>
+      <g id="mg-leaf">
+        <path class="mg-leaf" d="M0 0C3.5-3.6 11-4.2 17 0C11 4.2 3.5 3.6 0 0Z" />
+        <path class="mg-vein" d="M2 0H14" />
+      </g>
+
+      <!-- Marigold: one corner garland (top-left; mirrored for top-right). viewBox 0 0 200 200 -->
+      <symbol id="mg-garland" viewBox="-4 -4 208 196" overflow="visible">
+        <path class="mg-string" d="M6 6Q96 120 196 4M6 6V158M99.5 62.5V124M196 4V52" />
+        <!-- swag -->
+        <use href="#mg-b" x="10.4" y="12.4" width="12.5" height="12.5"/><use href="#mg-a" x="19.8" y="22.1" width="15" height="15"/><use href="#mg-a" x="31.8" y="32.8" width="12.5" height="12.5"/><use href="#mg-b" x="41.4" y="39.4" width="15" height="15"/><use href="#mg-a" x="53.6" y="46.9" width="12.5" height="12.5"/><use href="#mg-a" x="63.3" y="50.3" width="15" height="15"/><use href="#mg-b" x="75.6" y="54.6" width="12.5" height="12.5"/><use href="#mg-a" x="85.4" y="54.9" width="15" height="15"/><use href="#mg-a" x="97.8" y="56" width="12.5" height="12.5"/><use href="#mg-b" x="107.8" y="53" width="15" height="15"/><use href="#mg-a" x="120.4" y="51" width="12.5" height="12.5"/><use href="#mg-a" x="130.5" y="44.8" width="15" height="15"/><use href="#mg-b" x="143.2" y="39.6" width="12.5" height="12.5"/><use href="#mg-a" x="153.5" y="30.3" width="15" height="15"/><use href="#mg-a" x="166.4" y="21.9" width="12.5" height="12.5"/><use href="#mg-b" x="176.8" y="9.4" width="15" height="15"/>
+        <!-- drops -->
+        <use href="#mg-a" x="-0.5" y="12.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="25.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="38.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="51.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="64.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="77.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="90.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="103.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="116.5" width="13" height="13"/><use href="#mg-b" x="-0.5" y="129.5" width="13" height="13"/><use href="#mg-a" x="-0.5" y="142.5" width="13" height="13"/>
+        <use href="#mg-a" x="93" y="69" width="13" height="13"/><use href="#mg-b" x="93" y="82" width="13" height="13"/><use href="#mg-a" x="93" y="95" width="13" height="13"/><use href="#mg-b" x="93" y="108" width="13" height="13"/>
+        <use href="#mg-a" x="189.5" y="10.5" width="13" height="13"/><use href="#mg-b" x="189.5" y="23.5" width="13" height="13"/><use href="#mg-a" x="189.5" y="36.5" width="13" height="13"/>
+        <!-- foliage: corner knot, swag leaves, tassels -->
+        <use href="#mg-leaf" transform="translate(6 6) rotate(10)" />
+        <use href="#mg-leaf" transform="translate(6 6) rotate(55)" />
+        <use href="#mg-leaf" transform="translate(196 4) rotate(170)" />
+        <use href="#mg-leaf" transform="translate(196 4) rotate(125)" />
+        <use href="#mg-leaf" transform="translate(48 50) rotate(115)" />
+        <use href="#mg-leaf" transform="translate(150 47) rotate(65)" />
+        <use href="#mg-leaf" transform="translate(6 156) rotate(65)" />
+        <use href="#mg-leaf" transform="translate(6 156) rotate(115)" />
+        <use href="#mg-leaf" transform="translate(99.5 121) rotate(65)" />
+        <use href="#mg-leaf" transform="translate(99.5 121) rotate(115)" />
+        <use href="#mg-leaf" transform="translate(196 50) rotate(70)" />
+        <use href="#mg-leaf" transform="translate(196 50) rotate(110)" />
+      </symbol>
+
+      <!-- Marigold: toran strip (string, alternating leaf + bloom), tiled horizontally -->
+      <pattern id="mg-toran" width="36" height="34" patternUnits="userSpaceOnUse" x="-18">
+        <path class="mg-string" d="M0 5H36" />
+        <use href="#mg-leaf" transform="translate(18 5) rotate(90) scale(1.35)" />
+        <use href="#mg-a" x="-6" y="-1" width="12" height="12" />
+        <use href="#mg-a" x="30" y="-1" width="12" height="12" />
+      </pattern>
+
+      <!-- Jaali: corner fleuron for the fixed frame (top-left; mirrored for others) -->
+      <g id="jl-corner">
+        <path d="M0 34V0H34" class="jl-line" />
+        <path d="M6 30V6H30" class="jl-line jl-line--thin" />
+        <path d="M6 6L22 22" class="jl-line jl-line--thin" />
+        <path d="M22 13L25 22L22 31L19 22Z M13 22L22 19L31 22L22 25Z" class="jl-fill" />
+        <circle cx="22" cy="22" r="1.6" class="jl-dot" />
+        <circle cx="34" cy="0" r="1.4" class="jl-dot" /><circle cx="0" cy="34" r="1.4" class="jl-dot" />
+      </g>
+
+      <!-- Jaali: 8-point star medallion -->
+      <g id="jl-star">
+        <path d="M0-14L4-4L14 0L4 4L0 14L-4 4L-14 0L-4-4Z" class="jl-line" />
+        <path d="M-9.9-9.9L-1.5-3.6L1.5-3.6L9.9-9.9L3.6-1.5L3.6 1.5L9.9 9.9L1.5 3.6L-1.5 3.6L-9.9 9.9L-3.6 1.5L-3.6-1.5Z" class="jl-line jl-line--thin" />
+        <circle r="2" class="jl-dot" />
+      </g>
+    </defs>
+  </svg>
+
+  <!--
+    Fixed backdrop: base colour + faint pattern that stays put while content scrolls.
+    Everything decorative is aria-hidden and carries a data-anim hint for future motion.
+  -->
+  <div class="backdrop" aria-hidden="true">
+    <div class="backdrop__pattern" data-anim="fade"></div>
+
+    <!-- Midnight jaali: viewport frame with corner fleurons -->
+    <div class="deco deco--jaali jl-frame" data-anim="draw">
+      <svg class="jl-frame__corner jl-frame__corner--tl" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
+      <svg class="jl-frame__corner jl-frame__corner--tr" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
+      <svg class="jl-frame__corner jl-frame__corner--bl" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
+      <svg class="jl-frame__corner jl-frame__corner--br" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
+    </div>
+  </div>
+
+  <main>
+    <!-- ============ Section 1: opening screen ============ -->
+    <section class="screen screen--hero" aria-labelledby="couple">
+      <div class="screen__deco" aria-hidden="true">
+
+        <!-- Ivory courtyard: cusped arch inside a rectangular frame -->
+        <div class="deco deco--ivory iv-arch" data-anim="draw">
+          <svg class="iv-arch__crown" viewBox="0 0 300 190" preserveAspectRatio="xMidYMin meet">
+            <path class="iv-line" d="M0 1H300" />
+            <path class="iv-line" d="M0 190A177.1 177.1 0 0 1 150 15A177.1 177.1 0 0 1 300 190" />
+            <path class="iv-line iv-line--fine" d="M14 190A50.1 50.1 0 0 1 20.4 144.8A50.1 50.1 0 0 1 39 103.1A50.1 50.1 0 0 1 68.5 68.3A50.1 50.1 0 0 1 106.5 43A50.1 50.1 0 0 1 150 29.2A50.1 50.1 0 0 1 193.5 43A50.1 50.1 0 0 1 231.5 68.3A50.1 50.1 0 0 1 261 103.1A50.1 50.1 0 0 1 279.6 144.8A50.1 50.1 0 0 1 286 190" />
+            <path class="iv-accent" d="M150 3.5L153.5 8.5L150 13.5L146.5 8.5Z" />
+            <use href="#iv-spandrel" />
+            <use href="#iv-spandrel" transform="matrix(-1 0 0 1 300 0)" />
+          </svg>
+          <div class="iv-arch__body">
+            <svg class="iv-arch__sprig iv-arch__sprig--l" viewBox="-14 -54 28 56"><use href="#iv-sprig" /></svg>
+            <svg class="iv-arch__sprig iv-arch__sprig--r" viewBox="-14 -54 28 56"><use href="#iv-sprig" /></svg>
+          </div>
+        </div>
+
+        <!-- Marigold celebration: garlands from the top corners -->
+        <svg class="deco deco--marigold mg-garland mg-garland--l" viewBox="-4 -4 208 196" data-anim="sway"><use href="#mg-garland" /></svg>
+        <svg class="deco deco--marigold mg-garland mg-garland--r" viewBox="-4 -4 208 196" data-anim="sway"><use href="#mg-garland" /></svg>
+
+      </div>
+
+      <div class="screen__content hero" data-reveal>
+        <!-- Midnight jaali: small crest above the names -->
+        <svg class="deco deco--jaali jl-crest" viewBox="-60 -18 120 36" aria-hidden="true" data-anim="fade">
+          <path class="jl-line jl-line--thin" d="M-58 0H-22M22 0H58" />
+          <circle cx="-58" r="1.4" class="jl-dot" /><circle cx="58" r="1.4" class="jl-dot" />
+          <use href="#jl-star" />
+        </svg>
+        <p class="eyebrow">Together with their families</p>
+        <h1 class="names" id="couple">
+          <span class="names__one">Aarav</span>
+          <span class="names__amp" aria-label="and">&amp;</span>
+          <span class="names__two">Meera</span>
+        </h1>
+        <p class="invite-line">request the pleasure of your company as they begin their life together</p>
+        <p class="hero__date">
+          <span>Saturday · 13 February 2027</span>
+          <span class="hero__place">Udaipur, Rajasthan</span>
+        </p>
+        <p class="scroll-cue" aria-hidden="true">
+          <span>Scroll</span>
+          <svg viewBox="0 0 12 8" width="12" height="8"><path d="M1 1.5L6 6.5L11 1.5" /></svg>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Section 2: shows how the background continues ============ -->
+    <section class="screen screen--details" aria-labelledby="celebrations">
+      <div class="screen__deco" aria-hidden="true">
+        <!-- Ivory: small arcade band -->
+        <svg class="deco deco--ivory iv-arcade" viewBox="0 0 240 34" data-anim="draw">
+          <path class="iv-line" d="M0 33H240" />
+          <path class="iv-line iv-line--fine" d="M12 33V20A18 18 0 0 1 30 4A18 18 0 0 1 48 20V33M72 33V20A18 18 0 0 1 90 4A18 18 0 0 1 108 20V33M132 33V20A18 18 0 0 1 150 4A18 18 0 0 1 168 20V33M192 33V20A18 18 0 0 1 210 4A18 18 0 0 1 228 20V33" />
+          <circle class="iv-accent" cx="60" cy="18" r="1.8" /><circle class="iv-accent" cx="120" cy="18" r="2.4" /><circle class="iv-accent" cx="180" cy="18" r="1.8" />
+        </svg>
+
+        <!-- Marigold: toran of leaves and blooms across the top of the section -->
+        <svg class="deco deco--marigold mg-toran" data-anim="sway">
+          <rect width="100%" height="34" fill="url(#mg-toran)" />
+        </svg>
+      </div>
+
+      <div class="screen__content details" data-reveal>
+        <p class="eyebrow">Join us for</p>
+        <h2 class="section-title" id="celebrations">The Celebrations</h2>
+
+        <ol class="events">
+          <li class="event">
+            <h3 class="event__name">Mehendi</h3>
+            <p class="event__meta">Thursday, 11 February ·&nbsp;4&nbsp;pm</p>
+            <p class="event__place">The Courtyard, Lake Palace</p>
+          </li>
+          <li class="event">
+            <h3 class="event__name">Sangeet</h3>
+            <p class="event__meta">Friday, 12 February ·&nbsp;7&nbsp;pm</p>
+            <p class="event__place">Garden Terrace</p>
+          </li>
+          <li class="event">
+            <h3 class="event__name">Wedding</h3>
+            <p class="event__meta">Saturday, 13 February ·&nbsp;10&nbsp;am</p>
+            <p class="event__place">The Durbar Hall</p>
+          </li>
+          <li class="event">
+            <h3 class="event__name">Reception</h3>
+            <p class="event__meta">Saturday, 13 February ·&nbsp;7:30&nbsp;pm</p>
+            <p class="event__place">Lakeside Lawns</p>
+          </li>
+        </ol>
+
+        <p class="closing">Your presence is the greatest blessing.<br>Kindly reply by 10 January.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Preview-only control for comparing background directions -->
+  <nav class="picker" aria-label="Background direction">
+    <button type="button" class="picker__opt" data-bg="ivory" aria-pressed="true" title="Ivory courtyard (recommended)">
+      <span class="picker__swatch" aria-hidden="true"></span>Ivory<span class="picker__rec" aria-label="recommended">★</span>
+    </button>
+    <button type="button" class="picker__opt" data-bg="marigold" aria-pressed="false" title="Marigold celebration">
+      <span class="picker__swatch" aria-hidden="true"></span>Marigold
+    </button>
+    <button type="button" class="picker__opt" data-bg="jaali" aria-pressed="false" title="Midnight jaali">
+      <span class="picker__swatch" aria-hidden="true"></span>Jaali
+    </button>
+  </nav>
+
+  <script src="preview.js"></script>
+</body>
+</html>
