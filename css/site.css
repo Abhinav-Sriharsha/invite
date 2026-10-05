@@ -1,0 +1,577 @@
+/* ==========================================================================
+   Wedding invitation of Abhiram & Trilokya
+   Static by default: scenes stack in reading order. When html.motion is set
+   (motion allowed + GSAP loaded), chapters become tall scroll tracks with a
+   sticky stage, and js/main.js drives the transitions.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+/* Subset to the few script words used ("the", "and") */
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("../assets/fonts/pinyon-script-subset.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --script: "Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
+
+  --ink: #7A1420;          /* burgundy, sampled from the references */
+  --text: #4A2A22;
+  --text-soft: #6E4F40;
+  --gold: #B08A4F;
+  --gold-fine: rgba(176, 138, 79, .62);
+  --rule: rgba(176, 138, 79, .5);
+  --paper: #FAF0DC;
+  --bg: #FAF5EB;
+
+  --stage-w: min(100vw, 56.25svh);
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, ol, address { margin: 0; }
+address { font-style: normal; }
+img { display: block; max-width: 100%; }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cg fill='%23B08A4F' fill-opacity='.3'%3E%3Ccircle cx='14' cy='11.4' r='.9'/%3E%3Ccircle cx='16.6' cy='14' r='.9'/%3E%3Ccircle cx='14' cy='16.6' r='.9'/%3E%3Ccircle cx='11.4' cy='14' r='.9'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(120% 80% at 50% 38%, #FCF9F2 0%, #FAF5EB 55%, #F3EAD8 100%);
+}
+
+.script {
+  font-family: var(--script);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+[data-placeholder] {
+  text-decoration: underline dotted rgba(122, 20, 32, .4);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+
+/* Hairline divider with a lotus fleuron */
+.rule {
+  display: flex;
+  align-items: center;
+  gap: .7em;
+  width: min(62%, 15rem);
+  margin-inline: auto;
+  color: var(--ink);
+}
+.rule::before,
+.rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: .55;
+}
+.rule svg { width: 1.6em; height: auto; fill: currentColor; }
+.lotus-base { fill: none; stroke: currentColor; stroke-width: .9; }
+
+.eyebrow {
+  color: var(--ink);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .55em 1.5em;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: #FFF7EA;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-decoration: none;
+}
+.btn--ghost { background: transparent; color: var(--ink); }
+.btn--small { min-height: 40px; font-size: .9rem; padding: .4em 1.2em; background: rgba(250, 240, 220, .85); color: var(--ink); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ==========================================================================
+   Illustrated scenes
+   Sizes use container units of the scene so type sits where the painting
+   left room for it (cqh tracks the image height under object-fit: cover).
+   ========================================================================== */
+
+.scene {
+  position: relative;
+  width: var(--stage-w);
+  height: 100vh;
+  height: 100svh;
+  margin-inline: auto;
+  overflow: hidden;
+  container-type: size;
+  background: var(--paper);
+}
+
+.plate,
+.plate picture,
+.plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.plate img { object-fit: cover; }
+
+.copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-inline: 6cqw;
+  text-align: center;
+  color: var(--ink);
+}
+
+/* --- 1. Invocation --- */
+.s1-copy { top: 5.4%; }
+.ganesha { height: 18cqh; width: auto; margin: 0 auto 1.4cqh; }
+.s1-copy .rule { font-size: max(12px, 1.5cqh); }
+.title {
+  margin-block: 1.8cqh;
+  font-weight: 600;
+  font-size: min(4.3cqh, 10cqw);
+  line-height: 1.12;
+  letter-spacing: -.005em;
+}
+.title span { display: block; }
+
+.scroll-cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(18px, 3cqh);
+  width: max-content;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 16px 6px;
+  border-radius: 999px;
+  background: rgba(250, 240, 220, .82);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+}
+.scroll-cue path { fill: none; stroke: currentColor; stroke-width: 1.3; }
+
+/* --- 2. Save the date --- */
+.s2-copy { top: 48.5%; }
+.save {
+  font-weight: 500;
+  font-size: min(6.4cqh, 14cqw);
+  line-height: 1;
+  white-space: nowrap;
+}
+.save .script { font-size: .92em; padding-inline: .06em; }
+.lead-line {
+  margin: 2.2cqh auto 1.6cqh;
+  color: var(--ink);
+  font-size: max(12px, min(1.55cqh, 3.6cqw));
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.s2-copy .rule { font-size: max(12px, 1.5cqh); }
+@container (max-width: 360px) {
+  .lead-line { max-width: 17em; }
+}
+
+/* --- 3. Names --- */
+.s3-copy { top: 69%; padding-inline: 8cqw; }
+.s3-lead { margin: 0 0 2.4cqh; }
+.names {
+  display: grid;
+  font-weight: 500;
+  font-size: min(6cqh, 14cqw);
+  line-height: 1;
+}
+.names__one { justify-self: start; }
+.names__and { justify-self: center; margin: .1em 0 .05em 1.4em; font-size: .62em; }
+.names__two { justify-self: end; }
+
+/* --- 4. Invitation panel (end state; motion slides it in) --- */
+.scene--4 .plate { transform: translateY(-14%); }
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 9cqh 7cqw max(5cqh, 28px);
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(250, 240, 220, 0) 0, rgba(250, 240, 220, .9) 7cqh, var(--paper) 13cqh);
+}
+.panel .eyebrow { font-size: max(12px, min(1.5cqh, 3.3cqw)); }
+.panel__lede {
+  margin-top: 1cqh;
+  color: var(--text);
+  font-size: max(15px, min(2.2cqh, 4.6cqw));
+}
+.fullnames {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2cqh;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: min(4.4cqh, 8.6cqw);
+  line-height: 1.1;
+}
+.fullnames__and { margin-block: .15em .05em; font-size: .78em; font-weight: 400; }
+.parents {
+  margin-top: .45em;
+  color: var(--text-soft);
+  font-size: max(13px, min(1.75cqh, 3.7cqw));
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* --- 5. Sumuhurtham --- */
+.door { position: absolute; inset: 0; }
+.door--r { display: none; }
+.s5-copy { top: 75.5%; }
+.muhurtham {
+  font-weight: 500;
+  font-size: min(6cqh, 13cqw);
+  line-height: 1;
+}
+.s5-copy .rule { margin-block: 1.4cqh; font-size: max(12px, 1.4cqh); }
+.when {
+  color: var(--ink);
+  font-size: max(16px, min(2.4cqh, 5.2cqw));
+  font-weight: 600;
+  line-height: 1.25;
+}
+.when span { display: block; font-size: 1.15em; }
+.s5-copy .btn { margin-top: 1.6cqh; }
+
+/* Portal parts are motion-only */
+.portal, .portal__inner { position: absolute; inset: 0; }
+.portal__arch { display: none; }
+
+/* ==========================================================================
+   Information sections: Ivory courtyard system
+   ========================================================================== */
+
+.info {
+  position: relative;
+  padding-bottom: 0;
+  text-align: center;
+}
+
+.block {
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: 72px 28px;
+}
+
+.block__title {
+  margin-top: 8px;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 10vw, 3rem);
+  line-height: 1.1;
+}
+
+.celebrations { padding-top: 0; }
+.jasmine {
+  display: block;
+  width: min(100%, 480px);
+  height: auto;
+  margin: 0 auto 28px;
+  overflow: visible;
+}
+#jflower ellipse { fill: #FFFDF6; stroke: #D9CBA8; stroke-width: .3; }
+#jflower .jf-eye { fill: #E9D184; stroke: none; }
+#jbud { fill: #FFFCF2; stroke: #D9CBA8; stroke-width: .3; }
+.lbud-sepal { fill: none; stroke: #5F7F45; stroke-width: .8; }
+#mleaf { fill: #6E8B4E; }
+.js-thread { fill: none; stroke: #CDB98E; stroke-width: .5; }
+.js-rope { fill: none; stroke: #B39A6A; stroke-width: .8; }
+
+.events {
+  list-style: none;
+  margin-top: 28px;
+  padding: 0;
+}
+
+.event { padding-block: 26px; }
+.event + .event::before {
+  content: "";
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: -12px auto 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 -13 26 26'%3E%3Cpath d='M0 0C-5-3.5-5-10.5 0-10.5C5-10.5 5-3.5 0 0C3.5-5 10.5-5 10.5 0C10.5 5 3.5 5 0 0C5 3.5 5 10.5 0 10.5C-5 10.5-5 3.5 0 0C-3.5 5-10.5 5-10.5 0C-10.5-5-3.5-5 0 0Z' fill='none' stroke='%23B08A4F' stroke-width='.9'/%3E%3Cg fill='%237A1420'%3E%3Ccircle cy='-6' r='1'/%3E%3Ccircle cx='6' r='1'/%3E%3Ccircle cy='6' r='1'/%3E%3Ccircle cx='-6' r='1'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.event__name {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+.event__note { color: var(--text-soft); font-size: 1rem; }
+.event__when {
+  margin-top: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.event__where { margin-top: 2px; color: var(--text-soft); }
+.event--key .event__name { font-size: 1.9rem; }
+
+/* Venue: arch window card, reusing the Ivory arch geometry */
+.arch-card {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 360px);
+  margin-inline: auto;
+}
+.arch-card__crown { display: block; width: 100%; height: auto; overflow: visible; }
+.arch-line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.arch-line--fine { stroke: var(--gold-fine); }
+.arch-accent { fill: var(--ink); }
+.draw-line path { fill: none; stroke: var(--gold); stroke-width: 1.1; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.draw-line circle { fill: var(--gold); }
+
+.arch-card__body {
+  position: relative;
+  margin-inline: -.5px;
+  padding: 8px 36px 40px;
+  border: 1px solid var(--gold);
+  border-top: 0;
+}
+.arch-card__body::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(4.6667% - 1px) 6px;
+  border: 1px solid var(--gold-fine);
+  border-top: 0;
+  pointer-events: none;
+}
+.venue__address { display: flex; flex-direction: column; margin-top: 12px; color: var(--text-soft); }
+.venue__note { margin-block: 14px 22px; font-size: 1rem; }
+
+.kolam-mark { display: block; width: 44px; height: 44px; margin: 0 auto 18px; }
+#kolam .kolam-line path { fill: none; stroke: var(--gold); stroke-width: .9; }
+#kolam circle { fill: var(--ink); }
+.rsvp__text { margin-top: 12px; }
+.rsvp__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+.signoff {
+  margin-top: 40px;
+  color: var(--text-soft);
+}
+.signoff span {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.lotus-strip { max-width: 760px; margin: 8px auto 0; }
+.lotus-strip img { width: 100%; height: auto; }
+
+/* Overlays only exist for motion */
+.overlay { display: none; }
+
+/* Desktop: the 9:16 scenes sit centred over the ivory courtyard */
+@media (min-aspect-ratio: 10/16) {
+  .scene { box-shadow: 0 0 0 1px rgba(176, 138, 79, .35), 0 24px 60px rgba(70, 40, 20, .12); }
+}
+
+/* ==========================================================================
+   Motion mode: tall chapters with a sticky stage
+   Initial (pre-JS) states live here so the first paint already matches.
+   ========================================================================== */
+
+.motion .chapter {
+  position: relative;
+  z-index: 1;
+  height: calc(var(--len) * 1vh);
+  height: calc(var(--len) * 1lvh);
+}
+
+.motion .stage {
+  position: sticky;
+  top: 0;
+  width: var(--stage-w);
+  height: 100vh;
+  height: 100lvh;
+  margin-inline: auto;
+  overflow: hidden;
+  container-type: size;
+}
+
+.motion .scene {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  box-shadow: none;
+}
+.motion .stage { --stage-w: min(100vw, 56.25lvh); }
+@media (min-aspect-ratio: 10/16) {
+  .motion .stage { box-shadow: 0 0 0 1px rgba(176, 138, 79, .35), 0 24px 60px rgba(70, 40, 20, .12); }
+}
+
+/* Chapter A: the save-the-date scene waits behind an arch portal */
+.motion .scene--2 { background: none; }
+.motion .portal {
+  opacity: 0;
+  transform-origin: 50% 74%;
+  clip-path: polygon(-31.6% 140%,-31.6% 30.1%,-33.1% 26.2%,-32.9% 22.2%,-31.1% 18.3%,-27.8% 14.8%,-27.3% 10.8%,-25.2% 7%,-21.6% 3.6%,-16.6% .8%,-14.2% -3%,-10.3% -6.3%,-5.1% -9%,1.1% -11%,5.3% -14.2%,10.7% -16.8%,17% -18.6%,23.9% -19.5%,29.5% -21.9%,36% -23.6%,42.9% -24.3%,50% -24.2%,57.1% -24.3%,64% -23.6%,70.5% -21.9%,76.1% -19.5%,83% -18.6%,89.3% -16.8%,94.7% -14.2%,98.9% -11%,105.1% -9%,110.3% -6.3%,114.2% -3%,116.6% .8%,121.6% 3.6%,125.2% 7%,127.3% 10.8%,127.8% 14.8%,131.1% 18.3%,132.9% 22.2%,133.1% 26.2%,131.6% 30.1%,131.6% 140%);
+}
+.motion .portal__inner { transform-origin: 50% 74%; }
+/* slight overscan so the scaled scene never shows an edge inside the window */
+.motion .portal__inner .plate { inset: -2%; width: auto; height: auto; }
+.motion .portal__arch {
+  display: block;
+  position: absolute;
+  left: -40%;
+  top: -34%;
+  width: 180%;
+  height: 174%;
+  overflow: visible;
+}
+.portal__arch path { fill: none; stroke: #E9D5AE; stroke-width: 5; }
+.portal__arch .fine { stroke: var(--gold); stroke-width: 1.4; }
+.motion .s2-copy > * { opacity: 0; }
+.motion .scene--1 .plate { transform-origin: 50% 74%; }
+
+/* Chapter C: scenes 4 and 5 wait invisibly above scene 3 */
+.motion .scene--4,
+.motion .scene--5 { opacity: 0; background: none; }
+.motion .scene--3 { background: none; }
+.motion .names > span { opacity: 0; }
+.motion .panel { transform: translateY(100%); }
+.motion .scene--4 .plate { transform: none; }
+.motion .s5-copy > * { opacity: 0; }
+.motion .door--r { display: block; }
+.motion .door--l { clip-path: inset(0 50% 0 0); }
+.motion .door--r { clip-path: inset(0 0 0 50%); }
+.motion .stage { pointer-events: none; }
+.motion .stage a { pointer-events: auto; }
+
+/* The information sections slide in beneath the opening doors */
+.motion .info { z-index: 0; margin-top: -100vh; margin-top: -100lvh; }
+
+/* Bridge overlay: a stage-sized fixed frame for the carried line and petals */
+.motion .overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: min(100vw, 56.25lvh);
+  height: 100vh;
+  height: 100lvh;
+  transform: translateX(-50%);
+  container-type: size;
+  pointer-events: none;
+}
+.carry {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: max-content;
+  max-width: 92%;
+  margin: 0;
+  padding: .45em 1.1em;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(250, 240, 220, .95) 60%, rgba(250, 240, 220, 0));
+  text-align: center;
+  translate: -50% -.45em;
+  visibility: hidden;
+}
+.carrying .carry { visibility: visible; }
+.carrying .s2-line,
+.carrying .s3-lead { visibility: hidden; }
+
+.petals svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4.5cqw;
+  min-width: 14px;
+  height: auto;
+  opacity: 0;
+}
+
+/* Reveal targets start hidden only in motion mode */
+.motion [data-reveal] { opacity: 0; }
+.motion #kolam .kolam-line path,
+.motion #gopuram path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

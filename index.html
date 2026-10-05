@@ -3,184 +3,301 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Background Preview</title>
-  <meta name="description" content="Background directions for a mobile-first Indian wedding invitation.">
-  <meta name="theme-color" content="#FAF5EB">
-  <link rel="stylesheet" href="styles.css">
+  <title>Abhiram & Trilokya</title>
+  <meta name="description" content="Wedding invitation of Abhiram Praharsha and Varalakshmi Trilokya, Sunday 22 November 2026.">
+  <meta name="theme-color" content="#FAF0DC">
+  <script>
+    // Scroll choreography only when motion is welcome; main.js removes this if GSAP fails to load.
+    if (matchMedia('(prefers-reduced-motion: no-preference)').matches) document.documentElement.classList.add('motion');
+  </script>
+  <link rel="preload" href="assets/fonts/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/cormorant-garamond-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" type="image/avif" fetchpriority="high"
+        imagesrcset="assets/scenes/s1-640.avif 640w, assets/scenes/s1-941.avif 941w" imagesizes="56vh">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="js/main.js" defer></script>
 </head>
-<body data-bg="ivory">
+<body>
 
-  <!--
-    Shared SVG sprite. Colours come from CSS custom properties so each
-    background direction can recolour the same shapes.
-  -->
+  <!-- Shared motifs. Colours come from CSS custom properties. -->
   <svg class="sprite" aria-hidden="true" focusable="false">
     <defs>
-      <!-- Ivory: five-petal flower and leaf used in the spandrels / base sprigs -->
-      <g id="iv-flower">
-        <circle r="3.2" cy="-5" /><circle r="3.2" cx="4.8" cy="-1.5" /><circle r="3.2" cx="3" cy="4" />
-        <circle r="3.2" cx="-3" cy="4" /><circle r="3.2" cx="-4.8" cy="-1.5" />
-        <circle class="iv-accent" r="1.6" />
-      </g>
-      <path id="iv-leaf" d="M0 0C2.5-3 8-3.5 12 0C8 3.5 2.5 3 0 0Z" />
+      <linearGradient id="petal-g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#F6C3D2" /><stop offset="1" stop-color="#E0708F" />
+      </linearGradient>
+      <linearGradient id="lbud-g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#F3B6C8" /><stop offset="1" stop-color="#D9577D" />
+      </linearGradient>
 
-      <!-- Ivory: spandrel ornament (top-left; mirrored for top-right) -->
-      <g id="iv-spandrel">
-        <path class="iv-line" d="M12 52C26 44 30 30 44 26S66 30 80 22" />
-        <use href="#iv-flower" transform="translate(30 30) scale(1.5)" />
-        <use href="#iv-leaf" transform="translate(44 26) rotate(-30)" />
-        <use href="#iv-leaf" transform="translate(58 27) rotate(25)" />
-        <use href="#iv-leaf" transform="translate(20 46) rotate(150)" />
-        <circle class="iv-accent" cx="80" cy="22" r="1.8" />
+      <!-- Lotus fleuron for dividers -->
+      <g id="lotus">
+        <path d="M0-10C2.6-7 2.6-2.5 0 .8C-2.6-2.5-2.6-7 0-10Z" />
+        <path d="M-.6 .8C-2-3-5-5.6-9-5.6C-8-2.2-4.6.4-.6.8ZM.6 .8C2-3 5-5.6 9-5.6C8-2.2 4.6.4.6.8Z" />
+        <path d="M-5 2.6H5" class="lotus-base" />
       </g>
 
-      <!-- Ivory: small flowering sprig for the base of the arch -->
-      <g id="iv-sprig">
-        <path class="iv-line" d="M0 0C0-14 2-26 0-40M0-12C-6-16-10-22-10-28M0-22C6-25 10-30 10-36" />
-        <use href="#iv-leaf" transform="translate(0 -6) rotate(-140)" />
-        <use href="#iv-leaf" transform="translate(0 -9) rotate(-40)" />
-        <use href="#iv-flower" transform="translate(0 -44) scale(.9)" />
-        <circle class="iv-accent" cx="-10" cy="-30" r="2" />
-        <circle class="iv-accent" cx="10" cy="-38" r="2" />
+      <!-- Falling lotus petal -->
+      <path id="petal" d="M0-9C4.5-5 4.5 4 0 9C-4.5 4-4.5-5 0-9Z" fill="url(#petal-g)" />
+
+      <!-- Kolam (muggu) knot used between events -->
+      <g id="kolam">
+        <g class="kolam-line">
+          <path pathLength="1" d="M0 0C-5-3.5-5-10.5 0-10.5C5-10.5 5-3.5 0 0C3.5-5 10.5-5 10.5 0C10.5 5 3.5 5 0 0C5 3.5 5 10.5 0 10.5C-5 10.5-5 3.5 0 0C-3.5 5-10.5 5-10.5 0C-10.5-5-3.5-5 0 0Z" />
+        </g>
+        <circle cx="0" cy="-6" r="1" /><circle cx="6" cy="0" r="1" /><circle cx="0" cy="6" r="1" /><circle cx="-6" cy="0" r="1" />
       </g>
 
-      <!-- Jaali: corner fleuron for the fixed frame (top-left; mirrored for others) -->
-      <g id="jl-corner">
-        <path d="M0 34V0H34" class="jl-line" />
-        <path d="M6 30V6H30" class="jl-line jl-line--thin" />
-        <path d="M6 6L22 22" class="jl-line jl-line--thin" />
-        <path d="M22 13L25 22L22 31L19 22Z M13 22L22 19L31 22L22 25Z" class="jl-fill" />
-        <circle cx="22" cy="22" r="1.6" class="jl-dot" />
-        <circle cx="34" cy="0" r="1.4" class="jl-dot" /><circle cx="0" cy="34" r="1.4" class="jl-dot" />
+      <!-- Jasmine strand parts -->
+      <g id="jflower">
+        <ellipse rx="1.3" ry="2.3" cy="-2.1" /><ellipse rx="1.3" ry="2.3" cy="-2.1" transform="rotate(72)" />
+        <ellipse rx="1.3" ry="2.3" cy="-2.1" transform="rotate(144)" /><ellipse rx="1.3" ry="2.3" cy="-2.1" transform="rotate(216)" />
+        <ellipse rx="1.3" ry="2.3" cy="-2.1" transform="rotate(288)" />
+        <circle r=".9" class="jf-eye" />
       </g>
+      <ellipse id="jbud" rx="1.2" ry="2.6" />
+      <g id="lbud">
+        <path d="M0-5C2.8-2.4 2.8 2.8 0 6C-2.8 2.8-2.8-2.4 0-5Z" fill="url(#lbud-g)" />
+        <path d="M-2.3-3.2L0-5.6L2.3-3.2" class="lbud-sepal" />
+      </g>
+      <path id="mleaf" d="M0 0C2.5-2.4 8-2.9 12 0C8 2.9 2.5 2.4 0 0Z" />
 
-      <!-- Jaali: 8-point star medallion -->
-      <g id="jl-star">
-        <path d="M0-14L4-4L14 0L4 4L0 14L-4 4L-14 0L-4-4Z" class="jl-line" />
-        <path d="M-9.9-9.9L-1.5-3.6L1.5-3.6L9.9-9.9L3.6-1.5L3.6 1.5L9.9 9.9L1.5 3.6L-1.5 3.6L-9.9 9.9L-3.6 1.5L-3.6-1.5Z" class="jl-line jl-line--thin" />
-        <circle r="2" class="jl-dot" />
+      <!-- Gopuram line drawing (venue) -->
+      <g id="gopuram" class="draw-line">
+        <path pathLength="1" d="M4 152H116M10 152V146H110V152M16 146V118H104V146M52 146V130Q60 121 68 130V146M20 118L36 40M100 118L84 40M23.3 102H96.7M26.6 86H93.4M29.8 70H90.2M33.1 54H86.9M32 40H88M34 40V34Q60 18 86 34V40" />
+        <path pathLength="1" d="M57 92h6v8h-6zM57 76h6v8h-6zM57 60h6v8h-6zM57 44h6v8h-6zM27 126h8v12h-8zM85 126h8v12h-8z" />
+        <path pathLength="1" d="M46 25V20M53 23V18M60 22.5V16M67 23V18M74 25V20" />
+        <circle cx="46" cy="27" r="1.8" /><circle cx="53" cy="25.2" r="1.8" /><circle cx="60" cy="24.6" r="1.8" /><circle cx="67" cy="25.2" r="1.8" /><circle cx="74" cy="27" r="1.8" />
       </g>
     </defs>
   </svg>
 
-  <!--
-    Fixed backdrop: base colour + faint pattern that stays put while content scrolls.
-    Everything decorative is aria-hidden and carries a data-anim hint for future motion.
-  -->
-  <div class="backdrop" aria-hidden="true">
-    <div class="backdrop__pattern" data-anim="fade"></div>
-
-    <!-- Midnight jaali: viewport frame with corner fleurons -->
-    <div class="deco deco--jaali jl-frame" data-anim="draw">
-      <svg class="jl-frame__corner jl-frame__corner--tl" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
-      <svg class="jl-frame__corner jl-frame__corner--tr" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
-      <svg class="jl-frame__corner jl-frame__corner--bl" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
-      <svg class="jl-frame__corner jl-frame__corner--br" viewBox="-2 -2 40 40"><use href="#jl-corner" /></svg>
-    </div>
-  </div>
+  <div class="backdrop" aria-hidden="true"></div>
 
   <main>
-    <!-- ============ Section 1: opening screen ============ -->
-    <section class="screen screen--hero" aria-labelledby="couple">
-      <div class="screen__deco" aria-hidden="true">
+    <!-- ======================= Chapter A: invocation → save the date ======================= -->
+    <div class="chapter chapter--a" style="--len: 310">
+      <div class="stage">
 
-        <!-- Ivory courtyard: cusped arch inside a rectangular frame -->
-        <div class="deco deco--ivory iv-arch" data-anim="draw">
-          <svg class="iv-arch__crown" viewBox="0 0 300 190" preserveAspectRatio="xMidYMin meet">
-            <path class="iv-line" d="M0 1H300" />
-            <path class="iv-line" d="M0 190A177.1 177.1 0 0 1 150 15A177.1 177.1 0 0 1 300 190" />
-            <path class="iv-line iv-line--fine" d="M14 190A50.1 50.1 0 0 1 20.4 144.8A50.1 50.1 0 0 1 39 103.1A50.1 50.1 0 0 1 68.5 68.3A50.1 50.1 0 0 1 106.5 43A50.1 50.1 0 0 1 150 29.2A50.1 50.1 0 0 1 193.5 43A50.1 50.1 0 0 1 231.5 68.3A50.1 50.1 0 0 1 261 103.1A50.1 50.1 0 0 1 279.6 144.8A50.1 50.1 0 0 1 286 190" />
-            <path class="iv-accent" d="M150 3.5L153.5 8.5L150 13.5L146.5 8.5Z" />
-            <use href="#iv-spandrel" />
-            <use href="#iv-spandrel" transform="matrix(-1 0 0 1 300 0)" />
-          </svg>
-          <div class="iv-arch__body">
-            <svg class="iv-arch__sprig iv-arch__sprig--l" viewBox="-14 -54 28 56"><use href="#iv-sprig" /></svg>
-            <svg class="iv-arch__sprig iv-arch__sprig--r" viewBox="-14 -54 28 56"><use href="#iv-sprig" /></svg>
+        <section class="scene scene--1" aria-labelledby="title">
+          <div class="plate">
+            <picture>
+              <source type="image/avif" srcset="assets/scenes/s1-640.avif 640w, assets/scenes/s1-941.avif 941w" sizes="56vh">
+              <img src="assets/scenes/s1-941.webp" srcset="assets/scenes/s1-640.webp 640w, assets/scenes/s1-941.webp 941w" sizes="56vh"
+                   width="941" height="1672" fetchpriority="high" decoding="async"
+                   alt="A carved sandstone arch hung with jasmine frames a temple gopuram beside a lotus pond.">
+            </picture>
           </div>
-        </div>
+          <div class="copy s1-copy">
+            <img class="ganesha" src="assets/ganesha.svg" width="310" height="304" lang="te" alt="శ్రీ గణేశాయ నమః">
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+            <h1 class="title" id="title">Anumanchi’s<span>Wedding Invitation</span></h1>
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+          </div>
+          <p class="scroll-cue" aria-hidden="true">
+            <span>Scroll</span>
+            <svg viewBox="0 0 12 8" width="12" height="8"><path d="M1 1.5L6 6.5L11 1.5" /></svg>
+          </p>
+        </section>
 
+        <section class="scene scene--2" aria-labelledby="save">
+          <!-- Arch portal: the clip window grows from the gopuram doorway (motion only) -->
+          <div class="portal">
+            <div class="portal__inner">
+              <div class="plate">
+                <picture>
+                  <source type="image/avif" srcset="assets/scenes/s2-640.avif 640w, assets/scenes/s2-941.avif 941w" sizes="56vh">
+                  <img src="assets/scenes/s2-941.webp" srcset="assets/scenes/s2-640.webp 640w, assets/scenes/s2-941.webp 941w" sizes="56vh"
+                       width="941" height="1672" loading="lazy" decoding="async"
+                       alt="The groom and bride, seen only by their hands, offer each other pink lotuses above a terrace and lotus pond.">
+                </picture>
+              </div>
+            </div>
+            <svg class="portal__arch" viewBox="0 0 300 516" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 516V190A177.1 177.1 0 0 1 150 15A177.1 177.1 0 0 1 300 190V516" />
+              <path class="fine" d="M14 516V190A50.1 50.1 0 0 1 20.4 144.8A50.1 50.1 0 0 1 39 103.1A50.1 50.1 0 0 1 68.5 68.3A50.1 50.1 0 0 1 106.5 43A50.1 50.1 0 0 1 150 29.2A50.1 50.1 0 0 1 193.5 43A50.1 50.1 0 0 1 231.5 68.3A50.1 50.1 0 0 1 261 103.1A50.1 50.1 0 0 1 279.6 144.8A50.1 50.1 0 0 1 286 190V516" />
+            </svg>
+          </div>
+          <div class="copy s2-copy">
+            <h2 class="save" id="save">Save <span class="script">the</span> Date</h2>
+            <p class="lead-line s2-line">For the wedding celebrations of</p>
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+          </div>
+        </section>
 
       </div>
+    </div>
 
-      <div class="screen__content hero" data-reveal>
-        <!-- Midnight jaali: small crest above the names -->
-        <svg class="deco deco--jaali jl-crest" viewBox="-60 -18 120 36" aria-hidden="true" data-anim="fade">
-          <path class="jl-line jl-line--thin" d="M-58 0H-22M22 0H58" />
-          <circle cx="-58" r="1.4" class="jl-dot" /><circle cx="58" r="1.4" class="jl-dot" />
-          <use href="#jl-star" />
-        </svg>
-        <p class="eyebrow">Together with their families</p>
-        <h1 class="names" id="couple">
-          <span class="names__one">Aarav</span>
-          <span class="names__amp" aria-label="and">&amp;</span>
-          <span class="names__two">Meera</span>
-        </h1>
-        <p class="invite-line">request the pleasure of your company as they begin their life together</p>
-        <p class="hero__date">
-          <span>Saturday · 13 February 2027</span>
-          <span class="hero__place">Udaipur, Rajasthan</span>
-        </p>
-        <p class="scroll-cue" aria-hidden="true">
-          <span>Scroll</span>
-          <svg viewBox="0 0 12 8" width="12" height="8"><path d="M1 1.5L6 6.5L11 1.5" /></svg>
-        </p>
+    <!-- ======================= Chapter C: names → invitation → muhurtham ======================= -->
+    <div class="chapter chapter--c" style="--len: 670">
+      <div class="stage">
+
+        <section class="scene scene--3" aria-labelledby="names">
+          <div class="plate">
+            <picture>
+              <source type="image/avif" srcset="assets/scenes/s3-640.avif 640w, assets/scenes/s3-941.avif 941w" sizes="56vh">
+              <img src="assets/scenes/s3-941.webp" srcset="assets/scenes/s3-640.webp 640w, assets/scenes/s3-941.webp 941w" sizes="56vh"
+                   width="941" height="1672" loading="lazy" decoding="async"
+                   alt="The couple’s feet face each other across a white kolam, among brass lamps, jasmine and scattered petals.">
+            </picture>
+          </div>
+          <div class="copy s3-copy">
+            <p class="lead-line s3-lead" aria-hidden="true">For the wedding celebrations of</p>
+            <h2 class="names" id="names">
+              <span class="names__one">Abhiram</span>
+              <span class="names__and script">and</span>
+              <span class="names__two">Trilokya</span>
+            </h2>
+          </div>
+        </section>
+
+        <section class="scene scene--4" aria-labelledby="couple">
+          <div class="plate">
+            <picture>
+              <source type="image/avif" srcset="assets/scenes/s4-640.avif 640w, assets/scenes/s4-941.avif 941w" sizes="56vh">
+              <img src="assets/scenes/s4-941.webp" srcset="assets/scenes/s4-640.webp 640w, assets/scenes/s4-941.webp 941w" sizes="56vh"
+                   width="941" height="1672" loading="lazy" decoding="async"
+                   alt="Abhiram and Trilokya exchange jasmine and rose garlands in a temple courtyard.">
+            </picture>
+          </div>
+          <div class="panel">
+            <p class="eyebrow">With the blessings of our elders</p>
+            <p class="panel__lede">we joyfully invite you and your family to the wedding of</p>
+            <h2 class="fullnames" id="couple">
+              <span class="fullnames__name">Abhiram Praharsha</span>
+              <span class="parents">son of <span data-placeholder>Smt. Mother’s Name &amp; Sri Father’s Name</span></span>
+              <span class="fullnames__and script">and</span>
+              <span class="fullnames__name">Varalakshmi Trilokya</span>
+              <span class="parents">daughter of <span data-placeholder>Smt. Mother’s Name &amp; Sri Father’s Name</span></span>
+            </h2>
+          </div>
+        </section>
+
+        <section class="scene scene--5" aria-labelledby="muhurtham">
+          <!-- Two halves of one picture: they part like doors at the end of the chapter (motion only) -->
+          <div class="door door--l">
+            <div class="plate">
+              <picture>
+                <source type="image/avif" srcset="assets/scenes/s5-640.avif 640w, assets/scenes/s5-941.avif 941w" sizes="56vh">
+                <img src="assets/scenes/s5-941.webp" srcset="assets/scenes/s5-640.webp 640w, assets/scenes/s5-941.webp 941w" sizes="56vh"
+                     width="941" height="1672" loading="lazy" decoding="async"
+                     alt="Seated on low wooden seats, the couple place jeelakarra-bellam on each other’s heads.">
+              </picture>
+            </div>
+          </div>
+          <div class="door door--r" aria-hidden="true">
+            <div class="plate">
+              <picture>
+                <source type="image/avif" srcset="assets/scenes/s5-640.avif 640w, assets/scenes/s5-941.avif 941w" sizes="56vh">
+                <img src="assets/scenes/s5-941.webp" srcset="assets/scenes/s5-640.webp 640w, assets/scenes/s5-941.webp 941w" sizes="56vh"
+                     width="941" height="1672" loading="lazy" decoding="async" alt="">
+              </picture>
+            </div>
+          </div>
+          <div class="copy s5-copy">
+            <h2 class="muhurtham" id="muhurtham">Sumuhurtham</h2>
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+            <p class="when"><time datetime="2026-11-22T20:48+05:30">Sunday, 22 November 2026<span>8:48 p.m.</span></time></p>
+            <a class="btn btn--small" href="assets/muhurtham.ics" download>Add to calendar</a>
+          </div>
+        </section>
+
       </div>
-    </section>
+    </div>
 
-    <!-- ============ Section 2: shows how the background continues ============ -->
-    <section class="screen screen--details" aria-labelledby="celebrations">
-      <div class="screen__deco" aria-hidden="true">
-        <!-- Ivory: small arcade band -->
-        <svg class="deco deco--ivory iv-arcade" viewBox="0 0 240 34" data-anim="draw">
-          <path class="iv-line" d="M0 33H240" />
-          <path class="iv-line iv-line--fine" d="M12 33V20A18 18 0 0 1 30 4A18 18 0 0 1 48 20V33M72 33V20A18 18 0 0 1 90 4A18 18 0 0 1 108 20V33M132 33V20A18 18 0 0 1 150 4A18 18 0 0 1 168 20V33M192 33V20A18 18 0 0 1 210 4A18 18 0 0 1 228 20V33" />
-          <circle class="iv-accent" cx="60" cy="18" r="1.8" /><circle class="iv-accent" cx="120" cy="18" r="2.4" /><circle class="iv-accent" cx="180" cy="18" r="1.8" />
-        </svg>
-      </div>
+    <!-- ======================= Information (Ivory courtyard system) ======================= -->
+    <div class="info">
 
-      <div class="screen__content details" data-reveal>
-        <p class="eyebrow">Join us for</p>
-        <h2 class="section-title" id="celebrations">The Celebrations</h2>
+      <section class="block celebrations" aria-labelledby="celebrations">
+        <svg class="jasmine" viewBox="0 -4 390 132" aria-hidden="true" data-reveal="drop"><path class="js-rope" d="M0 2Q195 14 390 2"/><use href="#mleaf" transform="translate(0 2) rotate(110)"/><use href="#mleaf" transform="translate(15 3.8) rotate(70)"/><use href="#mleaf" transform="translate(30 5.4) rotate(110)"/><use href="#mleaf" transform="translate(45 6.9) rotate(70)"/><use href="#mleaf" transform="translate(60 8.2) rotate(110)"/><use href="#mleaf" transform="translate(75 9.5) rotate(70)"/><use href="#mleaf" transform="translate(90 10.5) rotate(110)"/><use href="#mleaf" transform="translate(105 11.4) rotate(70)"/><use href="#mleaf" transform="translate(120 12.2) rotate(110)"/><use href="#mleaf" transform="translate(135 12.9) rotate(70)"/><use href="#mleaf" transform="translate(150 13.4) rotate(110)"/><use href="#mleaf" transform="translate(165 13.7) rotate(70)"/><use href="#mleaf" transform="translate(180 13.9) rotate(110)"/><use href="#mleaf" transform="translate(195 14) rotate(70)"/><use href="#mleaf" transform="translate(210 13.9) rotate(110)"/><use href="#mleaf" transform="translate(225 13.7) rotate(70)"/><use href="#mleaf" transform="translate(240 13.4) rotate(110)"/><use href="#mleaf" transform="translate(255 12.9) rotate(70)"/><use href="#mleaf" transform="translate(270 12.2) rotate(110)"/><use href="#mleaf" transform="translate(285 11.4) rotate(70)"/><use href="#mleaf" transform="translate(300 10.5) rotate(110)"/><use href="#mleaf" transform="translate(315 9.5) rotate(70)"/><use href="#mleaf" transform="translate(330 8.2) rotate(110)"/><use href="#mleaf" transform="translate(345 6.9) rotate(70)"/><use href="#mleaf" transform="translate(360 5.4) rotate(110)"/><use href="#mleaf" transform="translate(375 3.8) rotate(70)"/><use href="#mleaf" transform="translate(390 2) rotate(110)"/><path class="js-thread" d="M8 0V118"/><use href="#jflower" x="6.4" y="6"/><use href="#jflower" x="9.6" y="13"/><use href="#jbud" x="6.4" y="20"/><use href="#jflower" x="9.6" y="27"/><use href="#jflower" x="6.4" y="34"/><use href="#jbud" x="9.6" y="41"/><use href="#jflower" x="6.4" y="48"/><use href="#jflower" x="9.6" y="55"/><use href="#jbud" x="6.4" y="62"/><use href="#jflower" x="9.6" y="69"/><use href="#jflower" x="6.4" y="76"/><use href="#jbud" x="9.6" y="83"/><use href="#jflower" x="6.4" y="90"/><use href="#jflower" x="9.6" y="97"/><use href="#jbud" x="6.4" y="104"/><use href="#jflower" x="9.6" y="111"/><use href="#lbud" x="8" y="122"/><path class="js-thread" d="M20 0V92"/><use href="#jflower" x="18.4" y="6"/><use href="#jflower" x="21.6" y="13"/><use href="#jbud" x="18.4" y="20"/><use href="#jflower" x="21.6" y="27"/><use href="#jflower" x="18.4" y="34"/><use href="#jbud" x="21.6" y="41"/><use href="#jflower" x="18.4" y="48"/><use href="#jflower" x="21.6" y="55"/><use href="#jbud" x="18.4" y="62"/><use href="#jflower" x="21.6" y="69"/><use href="#jflower" x="18.4" y="76"/><use href="#jbud" x="21.6" y="83"/><use href="#lbud" x="20" y="96"/><path class="js-thread" d="M33 0V104"/><use href="#jflower" x="31.4" y="6"/><use href="#jflower" x="34.6" y="13"/><use href="#jbud" x="31.4" y="20"/><use href="#jflower" x="34.6" y="27"/><use href="#jflower" x="31.4" y="34"/><use href="#jbud" x="34.6" y="41"/><use href="#jflower" x="31.4" y="48"/><use href="#jflower" x="34.6" y="55"/><use href="#jbud" x="31.4" y="62"/><use href="#jflower" x="34.6" y="69"/><use href="#jflower" x="31.4" y="76"/><use href="#jbud" x="34.6" y="83"/><use href="#jflower" x="31.4" y="90"/><use href="#jflower" x="34.6" y="97"/><use href="#lbud" x="33" y="108"/><path class="js-thread" d="M47 0V70"/><use href="#jflower" x="45.4" y="6"/><use href="#jflower" x="48.6" y="13"/><use href="#jbud" x="45.4" y="20"/><use href="#jflower" x="48.6" y="27"/><use href="#jflower" x="45.4" y="34"/><use href="#jbud" x="48.6" y="41"/><use href="#jflower" x="45.4" y="48"/><use href="#jflower" x="48.6" y="55"/><use href="#jbud" x="45.4" y="62"/><use href="#lbud" x="47" y="74"/><path class="js-thread" d="M62 0V52"/><use href="#jflower" x="60.4" y="6"/><use href="#jflower" x="63.6" y="13"/><use href="#jbud" x="60.4" y="20"/><use href="#jflower" x="63.6" y="27"/><use href="#jflower" x="60.4" y="34"/><use href="#jbud" x="63.6" y="41"/><use href="#lbud" x="62" y="56"/><path class="js-thread" d="M80 0V34"/><use href="#jflower" x="78.4" y="6"/><use href="#jflower" x="81.6" y="13"/><use href="#jbud" x="78.4" y="20"/><use href="#jflower" x="81.6" y="27"/><use href="#lbud" x="80" y="38"/><path class="js-thread" d="M310 0V34"/><use href="#jflower" x="308.4" y="6"/><use href="#jflower" x="311.6" y="13"/><use href="#jbud" x="308.4" y="20"/><use href="#jflower" x="311.6" y="27"/><use href="#lbud" x="310" y="38"/><path class="js-thread" d="M328 0V52"/><use href="#jflower" x="326.4" y="6"/><use href="#jflower" x="329.6" y="13"/><use href="#jbud" x="326.4" y="20"/><use href="#jflower" x="329.6" y="27"/><use href="#jflower" x="326.4" y="34"/><use href="#jbud" x="329.6" y="41"/><use href="#lbud" x="328" y="56"/><path class="js-thread" d="M343 0V70"/><use href="#jflower" x="341.4" y="6"/><use href="#jflower" x="344.6" y="13"/><use href="#jbud" x="341.4" y="20"/><use href="#jflower" x="344.6" y="27"/><use href="#jflower" x="341.4" y="34"/><use href="#jbud" x="344.6" y="41"/><use href="#jflower" x="341.4" y="48"/><use href="#jflower" x="344.6" y="55"/><use href="#jbud" x="341.4" y="62"/><use href="#lbud" x="343" y="74"/><path class="js-thread" d="M357 0V104"/><use href="#jflower" x="355.4" y="6"/><use href="#jflower" x="358.6" y="13"/><use href="#jbud" x="355.4" y="20"/><use href="#jflower" x="358.6" y="27"/><use href="#jflower" x="355.4" y="34"/><use href="#jbud" x="358.6" y="41"/><use href="#jflower" x="355.4" y="48"/><use href="#jflower" x="358.6" y="55"/><use href="#jbud" x="355.4" y="62"/><use href="#jflower" x="358.6" y="69"/><use href="#jflower" x="355.4" y="76"/><use href="#jbud" x="358.6" y="83"/><use href="#jflower" x="355.4" y="90"/><use href="#jflower" x="358.6" y="97"/><use href="#lbud" x="357" y="108"/><path class="js-thread" d="M370 0V92"/><use href="#jflower" x="368.4" y="6"/><use href="#jflower" x="371.6" y="13"/><use href="#jbud" x="368.4" y="20"/><use href="#jflower" x="371.6" y="27"/><use href="#jflower" x="368.4" y="34"/><use href="#jbud" x="371.6" y="41"/><use href="#jflower" x="368.4" y="48"/><use href="#jflower" x="371.6" y="55"/><use href="#jbud" x="368.4" y="62"/><use href="#jflower" x="371.6" y="69"/><use href="#jflower" x="368.4" y="76"/><use href="#jbud" x="371.6" y="83"/><use href="#lbud" x="370" y="96"/><path class="js-thread" d="M382 0V118"/><use href="#jflower" x="380.4" y="6"/><use href="#jflower" x="383.6" y="13"/><use href="#jbud" x="380.4" y="20"/><use href="#jflower" x="383.6" y="27"/><use href="#jflower" x="380.4" y="34"/><use href="#jbud" x="383.6" y="41"/><use href="#jflower" x="380.4" y="48"/><use href="#jflower" x="383.6" y="55"/><use href="#jbud" x="380.4" y="62"/><use href="#jflower" x="383.6" y="69"/><use href="#jflower" x="380.4" y="76"/><use href="#jbud" x="383.6" y="83"/><use href="#jflower" x="380.4" y="90"/><use href="#jflower" x="383.6" y="97"/><use href="#jbud" x="380.4" y="104"/><use href="#jflower" x="383.6" y="111"/><use href="#lbud" x="382" y="122"/></svg>
+        <p class="eyebrow" data-reveal>Join us for the</p>
+        <h2 class="block__title" id="celebrations" data-reveal>Celebrations</h2>
 
         <ol class="events">
-          <li class="event">
-            <h3 class="event__name">Mehendi</h3>
-            <p class="event__meta">Thursday, 11 February ·&nbsp;4&nbsp;pm</p>
-            <p class="event__place">The Courtyard, Lake Palace</p>
+          <li class="event" data-reveal>
+            <h3 class="event__name">Pellikuthuru</h3>
+            <p class="event__note">The bride’s ceremony</p>
+            <p class="event__when" data-placeholder>Friday, 20 November · 10:00 a.m.</p>
+            <p class="event__where" data-placeholder>Bride’s residence, City</p>
           </li>
-          <li class="event">
-            <h3 class="event__name">Sangeet</h3>
-            <p class="event__meta">Friday, 12 February ·&nbsp;7&nbsp;pm</p>
-            <p class="event__place">Garden Terrace</p>
+          <li class="event" data-reveal>
+            <h3 class="event__name">Pellikoduku</h3>
+            <p class="event__note">The groom’s ceremony</p>
+            <p class="event__when" data-placeholder>Friday, 20 November · 4:00 p.m.</p>
+            <p class="event__where" data-placeholder>Groom’s residence, City</p>
           </li>
-          <li class="event">
-            <h3 class="event__name">Wedding</h3>
-            <p class="event__meta">Saturday, 13 February ·&nbsp;10&nbsp;am</p>
-            <p class="event__place">The Durbar Hall</p>
+          <li class="event" data-reveal>
+            <h3 class="event__name">Sangeet &amp; Mehendi</h3>
+            <p class="event__when" data-placeholder>Saturday, 21 November · 6:30 p.m.</p>
+            <p class="event__where" data-placeholder>Venue lawns</p>
           </li>
-          <li class="event">
+          <li class="event event--key" data-reveal>
+            <h3 class="event__name">Sumuhurtham</h3>
+            <p class="event__note">The wedding</p>
+            <p class="event__when">Sunday, 22 November 2026 · 8:48 p.m.</p>
+            <p class="event__where" data-placeholder>Kalyana Mandapam, City</p>
+          </li>
+          <li class="event" data-reveal>
             <h3 class="event__name">Reception</h3>
-            <p class="event__meta">Saturday, 13 February ·&nbsp;7:30&nbsp;pm</p>
-            <p class="event__place">Lakeside Lawns</p>
+            <p class="event__when" data-placeholder>Monday, 23 November · 7:00 p.m.</p>
+            <p class="event__where" data-placeholder>Banquet hall, City</p>
           </li>
         </ol>
+      </section>
 
-        <p class="closing">Your presence is the greatest blessing.<br>Kindly reply by 10 January.</p>
+      <section class="block venue" aria-labelledby="venue">
+        <div class="arch-card" data-reveal>
+          <svg class="arch-card__crown" viewBox="0 0 300 190" aria-hidden="true">
+            <path class="arch-line" d="M0 190A177.1 177.1 0 0 1 150 15A177.1 177.1 0 0 1 300 190" />
+            <path class="arch-line arch-line--fine" d="M14 190A50.1 50.1 0 0 1 20.4 144.8A50.1 50.1 0 0 1 39 103.1A50.1 50.1 0 0 1 68.5 68.3A50.1 50.1 0 0 1 106.5 43A50.1 50.1 0 0 1 150 29.2A50.1 50.1 0 0 1 193.5 43A50.1 50.1 0 0 1 231.5 68.3A50.1 50.1 0 0 1 261 103.1A50.1 50.1 0 0 1 279.6 144.8A50.1 50.1 0 0 1 286 190" />
+            <path class="arch-accent" d="M150 2L154 8L150 14L146 8Z" />
+            <use href="#gopuram" transform="translate(105 46) scale(.75)" />
+          </svg>
+          <div class="arch-card__body">
+            <p class="eyebrow">The venue</p>
+            <h2 class="block__title" id="venue" data-placeholder>Kalyana Mandapam</h2>
+            <address class="venue__address">
+              <span data-placeholder>Street name, Area</span>
+              <span data-placeholder>City, State 500 000</span>
+            </address>
+            <p class="venue__note">Muhurtham at 8:48 p.m. Kindly be seated by <span data-placeholder>8:15 p.m.</span></p>
+            <a class="btn" href="https://maps.google.com/?q=Kalyana+Mandapam" target="_blank" rel="noopener" data-placeholder-link>Open in Maps</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="block rsvp" aria-labelledby="rsvp">
+        <svg class="kolam-mark" viewBox="-13 -13 26 26" aria-hidden="true" data-reveal="draw"><use href="#kolam" /></svg>
+        <p class="eyebrow" data-reveal>Kindly reply by <span data-placeholder>1 November 2026</span></p>
+        <h2 class="block__title" id="rsvp" data-reveal>RSVP</h2>
+        <p class="rsvp__text" data-reveal>Your presence and blessings would mean the world to us.</p>
+        <div class="rsvp__actions" data-reveal>
+          <a class="btn" href="https://wa.me/910000000000?text=Namaste!%20We%20would%20love%20to%20attend%20the%20wedding%20of%20Abhiram%20and%20Trilokya." target="_blank" rel="noopener" data-placeholder-link>Reply on WhatsApp</a>
+          <a class="btn btn--ghost" href="tel:+910000000000" data-placeholder-link>Call us</a>
+        </div>
+        <p class="signoff" data-reveal>With love and blessings,<span>The Anumanchi Family</span></p>
+      </section>
+
+      <div class="lotus-strip" aria-hidden="true" data-reveal="rise">
+        <picture>
+          <source type="image/avif" srcset="assets/scenes/lotus-strip.avif">
+          <img src="assets/scenes/lotus-strip.webp" width="941" height="242" loading="lazy" decoding="async" alt="">
+        </picture>
       </div>
-    </section>
+    </div>
   </main>
 
-  <!-- Preview-only control for comparing background directions -->
-  <nav class="picker" aria-label="Background direction">
-    <button type="button" class="picker__opt" data-bg="ivory" aria-pressed="true" title="Ivory courtyard (recommended)">
-      <span class="picker__swatch" aria-hidden="true"></span>Ivory<span class="picker__rec" aria-label="recommended">★</span>
-    </button>
-    <button type="button" class="picker__opt" data-bg="jaali" aria-pressed="false" title="Midnight jaali (backup)">
-      <span class="picker__swatch" aria-hidden="true"></span>Jaali
-    </button>
-  </nav>
-
-  <script src="preview.js"></script>
+  <!-- Motion-only overlays for the save-the-date → names bridge (duplicates are hidden from assistive tech) -->
+  <div class="overlay" aria-hidden="true">
+    <p class="lead-line carry">For the wedding celebrations of</p>
+    <div class="petals">
+      <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
+      <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
+      <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
+      <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
+      <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
+    </div>
+  </div>
 </body>
 </html>
