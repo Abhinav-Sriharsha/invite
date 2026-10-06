@@ -227,49 +227,81 @@ img { display: block; max-width: 100%; }
   .lead-line { max-width: 17em; }
 }
 
-/* --- 3. Names --- */
-.s3-copy { top: 69%; padding-inline: 8cqw; }
-.s3-lead { margin: 0 0 2.4cqh; }
-.names {
-  display: grid;
-  font-weight: 500;
-  font-size: min(6cqh, 14cqw);
-  line-height: 1;
-}
-.names__one { justify-self: start; }
-.names__and { justify-self: center; margin: .1em 0 .05em 1.4em; font-size: .62em; }
-.names__two { justify-self: end; }
-
-/* --- 4. Invitation panel (end state; motion slides it in) --- */
-.scene--4 .plate { transform: translateY(-14%); }
-.panel {
+/* --- 3. The couple: their figure above, the courtyard floor and names below --- */
+/* Top half. The figure is 941 × 1672 with its nose at the top row and its feet
+   at row 1637; at 52.7cqh wide, the waist-to-nose view fills this window. */
+.pan {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  padding: 9cqh 7cqw max(5cqh, 28px);
-  text-align: center;
-  background: linear-gradient(to bottom, rgba(250, 240, 220, 0) 0, rgba(250, 240, 220, .9) 7cqh, var(--paper) 13cqh);
+  top: 0;
+  height: 57%;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 55% at 50% 35%, rgba(255, 249, 234, .9), rgba(255, 249, 234, 0) 70%),
+    linear-gradient(#FAEED6, #F7E0B8 70%, #F4D3A0);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 6cqh), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 6cqh), transparent);
 }
-.panel .eyebrow { font-size: max(12px, min(1.5cqh, 3.3cqw)); }
-.panel__lede {
-  margin-top: 1cqh;
+.pan__couple {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 52.7cqh;
+  margin-left: -26.35cqh;
+  aspect-ratio: 941 / 1672;
+}
+.pan__couple picture,
+.pan__couple img { display: block; width: 100%; height: auto; }
+/* soft shadow where the feet meet the floor */
+.pan__couple::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 96.5%;
+  height: 3%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(90, 50, 20, .28), rgba(90, 50, 20, 0));
+  z-index: -1;
+}
+/* Bottom half: names. The static page shows the full names straight away. */
+.s3-copy {
+  top: 59%;
+  z-index: 1;
+  padding-inline: 7cqw;
+}
+.s3-copy::before {
+  content: "";
+  position: absolute;
+  inset: -3cqh -4cqw -4cqh;
+  z-index: -1;
+  background: radial-gradient(62% 58% at 50% 48%, rgba(250, 240, 220, .94) 55%, rgba(250, 240, 220, 0));
+}
+.s3-lead { display: none; }
+.s3-lede {
+  max-width: 24em;
+  margin-inline: auto;
   color: var(--text);
-  font-size: max(15px, min(2.2cqh, 4.6cqw));
+  font-size: max(14px, min(1.95cqh, 4.2cqw));
+  line-height: 1.4;
+  text-wrap: balance;
 }
-.fullnames {
+.couple-names {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2cqh;
+  margin-top: 1.6cqh;
   color: var(--ink);
   font-weight: 600;
   font-size: min(4.4cqh, 8.6cqw);
   line-height: 1.1;
 }
-.fullnames__and { margin-block: .15em .05em; font-size: .78em; font-weight: 400; }
+.cn { position: relative; display: block; white-space: nowrap; }
+.cn__first, .cn__more { display: inline-block; }
+.cn__and { margin-block: .15em .05em; font-size: .78em; font-weight: 400; }
 .parents {
-  margin-top: .45em;
+  margin-top: .35em;
   color: var(--text-soft);
   font-size: max(13px, min(1.75cqh, 3.7cqw));
   font-weight: 500;
@@ -277,14 +309,14 @@ img { display: block; max-width: 100%; }
   text-wrap: balance;
 }
 
-/* --- 5. Sumuhurtham --- */
-.s5-copy { top: 75.5%; }
+/* --- 4. Sumuhurtham --- */
+.s4-copy { top: 75.5%; }
 .muhurtham {
   font-weight: 500;
   font-size: min(6cqh, 13cqw);
   line-height: 1;
 }
-.s5-copy .rule { margin-block: 1.4cqh; font-size: max(12px, 1.4cqh); }
+.s4-copy .rule { margin-block: 1.4cqh; font-size: max(12px, 1.4cqh); }
 .when {
   color: var(--ink);
   font-size: max(16px, min(2.4cqh, 5.2cqw));
@@ -292,11 +324,11 @@ img { display: block; max-width: 100%; }
   line-height: 1.25;
 }
 .when span { display: block; font-size: 1.15em; }
-.s5-copy .btn { margin-top: 1.6cqh; }
+.s4-copy .btn { margin-top: 1.6cqh; }
 /* short phones: lift the muhurtham block so the button clears the lotuses */
 @container (max-height: 640px) {
-  .s5-copy { top: 71%; }
-  .s5-copy .btn { margin-top: 8px; }
+  .s4-copy { top: 71%; }
+  .s4-copy .btn { margin-top: 8px; }
 }
 
 /* Portal parts are motion-only */
@@ -441,7 +473,7 @@ img { display: block; max-width: 100%; }
 
 /* Overlays only exist for motion */
 /* Transition layers only exist for motion; scene 3's iris wrappers are plain boxes */
-.carry, .petals, .fringe, .tera, .paper { display: none; }
+.carry, .petals, .fringe, .paper { display: none; }
 .iris, .iris__clip, .iris__inner { position: absolute; inset: 0; }
 .iris__rim { display: none; }
 
@@ -509,14 +541,17 @@ img { display: block; max-width: 100%; }
 .motion .s2-copy > * { opacity: 0; }
 .motion .scene--1 .plate { transform-origin: 50% 74%; }
 
-/* Scenes 3–5 wait hidden on the same stage until their transition */
+/* Scenes 3 and 4 wait hidden on the same stage until their transition */
 .motion .scene--3,
-.motion .scene--4,
-.motion .scene--5 { visibility: hidden; background: none; }
-.motion .names > span,
-.motion .s5-copy > * { opacity: 0; }
-.motion .s3-lead { visibility: hidden; }
-.motion .scene--4 .plate { transform: none; }
+.motion .scene--4 { visibility: hidden; background: none; }
+.motion .s4-copy > *,
+.motion .cn,
+.motion .cn__and,
+.motion .cn__more,
+.motion .s3-lede,
+.motion .couple-names .parents { opacity: 0; }
+/* the carried line sits over the space the invitation line will take */
+.motion .s3-lead { display: block; position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; visibility: hidden; }
 .motion .scene--4 { box-shadow: 0 10px 22px rgba(60, 30, 10, .28); }
 .motion .stage { pointer-events: none; }
 .motion .stage a { pointer-events: auto; }
@@ -575,7 +610,7 @@ img { display: block; max-width: 100%; }
   opacity: 0;
 }
 
-/* Jasmine curtain edge (names → invitation) */
+/* Jasmine curtain edge (the couple → muhurtham) */
 .motion .fringe {
   display: block;
   position: absolute;
@@ -587,34 +622,6 @@ img { display: block; max-width: 100%; }
   overflow: visible;
   visibility: hidden;
 }
-
-/* Turmeric silk cloth with a red and gold border (invitation → muhurtham) */
-.motion .tera {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  inset: -2% 0 0;
-  z-index: 3;
-  visibility: hidden;
-  background:
-    linear-gradient(#C9A24E 0 3px, #8E1626 3px 8%, #C9A24E 8% calc(8% + 2px), #8E1626 calc(8% + 2px) calc(8% + 6px), #C9A24E calc(8% + 6px) calc(8% + 8px), transparent calc(8% + 8px)),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, .16) 0 2.5%, rgba(150, 100, 20, .08) 2.5% 6%, rgba(255, 255, 255, 0) 6% 9%),
-    linear-gradient(#F6E4AE, #F1D68E 50%, #EACA78);
-  box-shadow: inset 7px 0 0 #8E1626, inset 9px 0 0 #C9A24E, inset -7px 0 0 #8E1626, inset -9px 0 0 #C9A24E, 0 -12px 30px rgba(60, 30, 10, .3);
-}
-.tera__motif {
-  display: grid;
-  place-items: center;
-  width: 42cqw;
-  aspect-ratio: 1;
-  border: 2px solid #8E1626;
-  border-radius: 50%;
-  outline: 1px solid #8E1626;
-  outline-offset: 6px;
-  color: #8E1626;
-}
-.tera__motif svg { width: 62%; height: auto; fill: currentColor; }
-.tera__motif .lotus-base { stroke: currentColor; }
 
 /* Painting fades into the courtyard's ivory paper (muhurtham → celebrations) */
 .motion .paper {

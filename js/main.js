@@ -62,16 +62,25 @@
     const ch = $('.chapter--story');
     const stage = $('.stage', ch);
     const gate = $('.gate', ch);
-    const [s1, s2, s3, s4, s5] = [1, 2, 3, 4, 5].map((n) => $(`.scene--${n}`, ch));
+    const [s1, s2, s3, s4] = [1, 2, 3, 4].map((n) => $(`.scene--${n}`, ch));
     const plate1 = $('.plate', s1);
     const plate3 = $('.plate', s3);
     const plate4 = $('.plate', s4);
-    const plate5 = $('.plate', s5);
-    const panel = $('.panel', s4);
+    const pan = $('.pan', s3);
+    const couple = $('.pan__couple', s3);
+    const [lineA, lineB] = $$('.cn', s3);
+    const [firstA, firstB] = $$('.cn__first', s3);
+    const [moreA, moreB] = $$('.cn__more', s3);
     const carry = $('.carry', stage);
     const fringe = $('.fringe', stage);
-    const tera = $('.tera', stage);
     const paper = $('.paper', stage);
+
+    // How far a first name must shift to sit centred on its line before the
+    // other half of the name arrives (measured from layout, so it survives resizes).
+    const centreShift = (word) => () => {
+      const line = word.parentElement;
+      return line.offsetWidth / 2 - (word.offsetLeft + word.offsetWidth / 2);
+    };
 
     // Arch window from the gopuram doorway (scene 1 → 2)
     const arch = $('.portal__arch', s2);
@@ -91,9 +100,9 @@
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const T3 = 570; // names have been read
-    const T4 = 830; // invitation has been read
-    const T5 = 1060; // muhurtham has been read
+    const T3 = 570; // the short names have been read
+    const T4 = 780; // the invitation has been read
+    const T5 = 990; // muhurtham has been read
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -132,41 +141,38 @@
         { y: () => offsetIn($('.s3-lead', s3), stage), duration: 80, ease: 'sine.inOut' }, T2 + 30)
       .set(carry, { visibility: 'hidden' }, T2 + 111)
       .set($('.s3-lead', s3), { visibility: 'visible' }, T2 + 111)
-      .fromTo($('.names__one', s3), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 30, ease: 'power2.out' }, T2 + 100)
-      .fromTo($('.names__two', s3), { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 30, ease: 'power2.out' }, T2 + 108)
-      .fromTo($('.names__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, T2 + 116)
+      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 100)
+      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, T2 + 108)
+      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 116)
 
-      // A curtain of jasmine descends, drawing the garland exchange down over the scene
-      .to($('.s3-copy', s3), { opacity: 0, y: 24, duration: 30 }, T3)
-      .set([s4, fringe], { visibility: 'visible' }, T3 + 4)
-      .fromTo(s4, { y: 0, yPercent: -100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T3 + 5)
-      .fromTo(plate4, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T3 + 5)
+      // The top half pans up the couple from their feet to their faces while,
+      // below, the names grow into full names and the invitation appears
+      .to($('.s3-lead', s3), { opacity: 0, duration: 20 }, T3)
+      .fromTo(couple, { yPercent: -43.5 }, { yPercent: 0, duration: 130, ease: 'sine.inOut' }, T3 + 5)
+      .fromTo([lineA, lineB], { scale: 1.3 }, { scale: 1, duration: 80, ease: 'sine.inOut' }, T3 + 30)
+      .fromTo(firstA, { x: centreShift(firstA) }, { x: 0, duration: 80, ease: 'sine.inOut' }, T3 + 30)
+      .fromTo(firstB, { x: centreShift(firstB) }, { x: 0, duration: 80, ease: 'sine.inOut' }, T3 + 30)
+      .fromTo(moreA, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 45 }, T3 + 60)
+      .fromTo(moreB, { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 45 }, T3 + 60)
+      .fromTo($('.s3-lede', s3), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 35 }, T3 + 40)
+      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, T3 + 95)
+
+      // A curtain of jasmine descends, drawing the muhurtham down over the scene
+      .to($('.s3-copy', s3), { opacity: 0, y: 24, duration: 25 }, T4)
+      .set([s4, fringe], { visibility: 'visible' }, T4 + 4)
+      .fromTo(s4, { y: 0, yPercent: -100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T4 + 5)
+      .fromTo(plate4, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T4 + 5)
       .fromTo(fringe, { y: () => -fringe.getBoundingClientRect().height * 0.04 },
-        { y: () => stage.clientHeight - fringe.getBoundingClientRect().height * 0.04, duration: 100, ease: 'power1.inOut' }, T3 + 5)
-      .to(plate3, { yPercent: 8, duration: 100 }, T3 + 5)
-      .set([s3, fringe], { visibility: 'hidden' }, T3 + 106)
-
-      // The invitation rises over the floor; the picture lifts to keep faces clear
-      .fromTo(panel, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 100 }, T3 + 115)
-      .to(plate4, { yPercent: -14, duration: 100 }, T3 + 115)
-      .fromTo($$('.panel > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 30, stagger: 12 }, T3 + 135)
-
-      // The silk cloth rises between us and is lowered at the muhurtham
-      .to(panel, { opacity: 0, duration: 20 }, T4)
-      .set(tera, { visibility: 'visible' }, T4 + 4)
-      .fromTo(tera, { y: 0, yPercent: 102 }, { yPercent: 0, duration: 60, ease: 'power2.inOut' }, T4 + 5)
-      .set(s4, { visibility: 'hidden' }, T4 + 66)
-      .set(s5, { visibility: 'visible' }, T4 + 66)
-      .to(tera, { yPercent: 102, duration: 60, ease: 'power2.inOut' }, T4 + 75)
-      .fromTo(plate5, { scale: 1.06 }, { scale: 1, duration: 70 }, T4 + 75)
-      .set(tera, { visibility: 'hidden' }, T4 + 136)
-      .fromTo($$('.s5-copy > *', s5), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 130)
+        { y: () => stage.clientHeight - fringe.getBoundingClientRect().height * 0.04, duration: 100, ease: 'power1.inOut' }, T4 + 5)
+      .to([plate3, pan], { yPercent: 8, duration: 100 }, T4 + 5)
+      .set([s3, fringe], { visibility: 'hidden' }, T4 + 106)
+      .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 110)
 
       // The painting fades into the courtyard's ivory paper
-      .to($('.s5-copy', s5), { opacity: 0, y: -20, duration: 20 }, T5)
+      .to($('.s4-copy', s4), { opacity: 0, y: -20, duration: 20 }, T5)
       .set(paper, { visibility: 'visible' }, T5 + 4)
       .fromTo(paper, { y: 0, yPercent: 67 }, { yPercent: -26, duration: 70 }, T5 + 5)
-      .to(plate5, { scale: 1.06, duration: 80 }, T5)
+      .to(plate4, { scale: 1.06, duration: 80 }, T5)
       .to(stage, { autoAlpha: 0, duration: 30 }, T5 + 70)
       .set({}, {}, trackLength(ch));
 
