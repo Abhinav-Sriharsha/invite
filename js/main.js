@@ -68,18 +68,9 @@
     const pan = $('.pan', s3);
     const couple = $('.pan__couple', s3);
     const [lineA, lineB] = $$('.cn', s3);
-    const [firstA, firstB] = $$('.cn__first', s3);
-    const [moreA, moreB] = $$('.cn__more', s3);
     const carry = $('.carry', stage);
     const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
-
-    // How far a first name must shift to sit centred on its line before the
-    // other half of the name arrives (measured from layout, so it survives resizes).
-    const centreShift = (word) => () => {
-      const line = word.parentElement;
-      return line.offsetWidth / 2 - (word.offsetLeft + word.offsetWidth / 2);
-    };
 
     // Arch window from the gopuram doorway (scene 1 → 2)
     const arch = $('.portal__arch', s2);
@@ -88,7 +79,7 @@
     });
 
     // Lotus window from where the offered lotuses meet (scene 2 → 3)
-    const iris = windowDrawer($('.iris', s3), $('.iris__inner', s3), 0.034, 0.9);
+    const iris = windowDrawer($('.iris', s3), $('.iris__inner', s3), 0.034, 1);
     const shapeIris = () => {
       const clip = lotusClip(58, 30, stage.clientHeight / stage.clientWidth);
       $('.iris__clip', s3).style.clipPath = clip;
@@ -99,9 +90,8 @@
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const T3 = 570; // the short names have been read
-    const T4 = 780; // the invitation has been read
-    const T5 = 990; // muhurtham has been read
+    const T4 = 610; // the invitation has been read
+    const T5 = 820; // muhurtham has been read
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -128,40 +118,33 @@
       .fromTo($$('.s2-copy > *', s2), { opacity: 0, y: 18 },
         { opacity: 1, y: 0, duration: 24, stagger: 6, ease: 'power1.out' }, D + 138)
 
-      // A lotus window blooms from where the offered lotuses meet; petals fall
-      // and "for the wedding celebrations of" stays put to meet the names
+      // A lotus window blooms from where the offered lotuses meet and opens
+      // straight onto the couple. Petals fall, and "for the wedding
+      // celebrations of" drifts down to become the invitation line.
       .to($$('.save, .s2-copy .rule', s2), { opacity: 0, y: -24, duration: 25 }, T2)
       .set($('.s2-line', s2), { visibility: 'hidden' }, T2 + 5)
       .set(carry, { visibility: 'visible' }, T2 + 5)
       .set(s3, { visibility: 'visible' }, T2 + 9)
       .to($('.plate', s2), { scale: 1.08, duration: 110 }, T2 + 10)
       .to(iris.state, { p: 1, duration: 100, onUpdate: iris.draw }, T2 + 10)
+      // the couple settles back as the window opens; scaling from the top edge keeps their faces in frame
+      .fromTo(couple, { scale: 1.08 }, { scale: 1, duration: 110, ease: 'sine.out' }, T2 + 10)
+      .fromTo($('.s3-copy', s3), { opacity: 0 }, { opacity: 1, duration: 40 }, T2 + 70)
       .fromTo(carry, { y: () => offsetIn($('.s2-line', s2), stage) },
-        { y: () => offsetIn($('.s3-lead', s3), stage), duration: 80, ease: 'sine.inOut' }, T2 + 30)
-      .set(carry, { visibility: 'hidden' }, T2 + 111)
-      .set($('.s3-lead', s3), { visibility: 'visible' }, T2 + 111)
-      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 100)
-      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, T2 + 108)
-      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 116)
+        { y: () => offsetIn($('.s3-lede', s3), stage), duration: 80, ease: 'sine.inOut' }, T2 + 30)
+      .to(carry, { opacity: 0, duration: 20 }, T2 + 108)
+      .fromTo($('.s3-lede', s3), { opacity: 0 }, { opacity: 1, duration: 22 }, T2 + 106)
+      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 118)
+      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, T2 + 128)
+      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 136)
+      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, T2 + 150)
 
-      // The top half pans up the couple from their feet to their faces while,
-      // below, the names grow into full names and the invitation appears
-      .to($('.s3-lead', s3), { opacity: 0, duration: 20 }, T3)
-      .fromTo(couple, { yPercent: -43.5 }, { yPercent: 0, duration: 130, ease: 'sine.inOut' }, T3 + 5)
-      .fromTo([lineA, lineB], { scale: 1.3 }, { scale: 1, duration: 80, ease: 'sine.inOut' }, T3 + 30)
-      .fromTo(firstA, { x: centreShift(firstA) }, { x: 0, duration: 80, ease: 'sine.inOut' }, T3 + 30)
-      .fromTo(firstB, { x: centreShift(firstB) }, { x: 0, duration: 80, ease: 'sine.inOut' }, T3 + 30)
-      .fromTo(moreA, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 45 }, T3 + 60)
-      .fromTo(moreB, { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 45 }, T3 + 60)
-      .fromTo($('.s3-lede', s3), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 35 }, T3 + 40)
-      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, T3 + 95)
-
-      // The camera keeps tilting up: the couple drifts down and away while the
+      // The camera moves in: the couple grows and fades while the
       // close-up of the jeelakarra-bellam moment comes down from above.
       // The background stays put; only the foreground changes.
       .to($('.s3-copy', s3), { opacity: 0, y: 24, duration: 25 }, T4)
       .set(s4, { visibility: 'visible' }, T4 + 4)
-      .to(couple, { yPercent: 16, duration: 90, ease: 'sine.in' }, T4 + 5)
+      .to(couple, { scale: 1.1, duration: 90, ease: 'sine.in' }, T4 + 5)
       .to(couple, { opacity: 0, duration: 50 }, T4 + 40)
       .fromTo(closeup, { opacity: 0, yPercent: -45, scale: 1.08 },
         { opacity: 1, yPercent: 0, scale: 1, duration: 90, ease: 'sine.out' }, T4 + 35)
