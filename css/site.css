@@ -227,9 +227,11 @@ img { display: block; max-width: 100%; }
   .lead-line { max-width: 17em; }
 }
 
-/* --- 3. The couple: their figure above, the courtyard floor and names below --- */
-/* Top half. The figure is 941 × 1672 with its nose at the top row and its feet
-   at row 1637; at 52.7cqh wide, the waist-to-nose view fills this window. */
+/* --- 3. The couple: one fixed background for the whole screen; the figure above, names below --- */
+/* The figure is 941 × 1672 with its nose at the top row and its feet at row
+   1637; at 52.7cqh wide, the waist-to-nose view fills this window. The window
+   only clips the figure: it fades out at the floor line so the names below
+   stay clear while the background shows through everywhere. */
 .pan {
   position: absolute;
   left: 0;
@@ -237,9 +239,6 @@ img { display: block; max-width: 100%; }
   top: 0;
   height: 57%;
   overflow: hidden;
-  background:
-    radial-gradient(70% 55% at 50% 35%, rgba(255, 249, 234, .9), rgba(255, 249, 234, 0) 70%),
-    linear-gradient(#FAEED6, #F7E0B8 70%, #F4D3A0);
   -webkit-mask-image: linear-gradient(#000 calc(100% - 6cqh), transparent);
   mask-image: linear-gradient(#000 calc(100% - 6cqh), transparent);
 }
