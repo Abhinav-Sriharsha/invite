@@ -65,14 +65,13 @@
     const [s1, s2, s3, s4] = [1, 2, 3, 4].map((n) => $(`.scene--${n}`, ch));
     const plate1 = $('.plate', s1);
     const plate3 = $('.plate', s3);
-    const plate4 = $('.plate', s4);
     const pan = $('.pan', s3);
     const couple = $('.pan__couple', s3);
     const [lineA, lineB] = $$('.cn', s3);
     const [firstA, firstB] = $$('.cn__first', s3);
     const [moreA, moreB] = $$('.cn__more', s3);
     const carry = $('.carry', stage);
-    const fringe = $('.fringe', stage);
+    const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
 
     // How far a first name must shift to sit centred on its line before the
@@ -157,22 +156,22 @@
       .fromTo($('.s3-lede', s3), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 35 }, T3 + 40)
       .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, T3 + 95)
 
-      // A curtain of jasmine descends, drawing the muhurtham down over the scene
+      // The camera keeps tilting up: the couple drifts down and away while the
+      // close-up of the jeelakarra-bellam moment comes down from above.
+      // The background stays put; only the foreground changes.
       .to($('.s3-copy', s3), { opacity: 0, y: 24, duration: 25 }, T4)
-      .set([s4, fringe], { visibility: 'visible' }, T4 + 4)
-      .fromTo(s4, { y: 0, yPercent: -100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T4 + 5)
-      .fromTo(plate4, { y: 0, yPercent: 100 }, { yPercent: 0, duration: 100, ease: 'power1.inOut' }, T4 + 5)
-      .fromTo(fringe, { y: () => -fringe.getBoundingClientRect().height * 0.04 },
-        { y: () => stage.clientHeight - fringe.getBoundingClientRect().height * 0.04, duration: 100, ease: 'power1.inOut' }, T4 + 5)
-      .to([plate3, pan], { yPercent: 8, duration: 100 }, T4 + 5)
-      .set([s3, fringe], { visibility: 'hidden' }, T4 + 106)
-      .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 110)
+      .set(s4, { visibility: 'visible' }, T4 + 4)
+      .to(couple, { yPercent: 16, duration: 90, ease: 'sine.in' }, T4 + 5)
+      .to(couple, { opacity: 0, duration: 50 }, T4 + 40)
+      .fromTo(closeup, { opacity: 0, yPercent: -45, scale: 1.08 },
+        { opacity: 1, yPercent: 0, scale: 1, duration: 90, ease: 'sine.out' }, T4 + 35)
+      .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 100)
 
       // The painting fades into the courtyard's ivory paper
       .to($('.s4-copy', s4), { opacity: 0, y: -20, duration: 20 }, T5)
       .set(paper, { visibility: 'visible' }, T5 + 4)
       .fromTo(paper, { y: 0, yPercent: 67 }, { yPercent: -26, duration: 70 }, T5 + 5)
-      .to(plate4, { scale: 1.06, duration: 80 }, T5)
+      .to(closeup, { scale: 1.06, duration: 80 }, T5)
       .to(stage, { autoAlpha: 0, duration: 30 }, T5 + 70)
       .set({}, {}, trackLength(ch));
 

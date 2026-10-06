@@ -308,8 +308,27 @@ img { display: block; max-width: 100%; }
   text-wrap: balance;
 }
 
-/* --- 4. Sumuhurtham --- */
-.s4-copy { top: 75.5%; }
+/* --- 4. Sumuhurtham: the close-up of the jeelakarra-bellam moment, same background --- */
+/* The close-up is 2:1 with a softened lower edge just below the eyes; it is
+   wider than the stage so the bowed heads fill the frame, and its lower edge
+   melts into the ivory glow behind the text. */
+.closeup {
+  position: absolute;
+  left: -20cqw;
+  bottom: 44%;
+  width: 140cqw;
+  aspect-ratio: 2 / 1;
+}
+.closeup picture,
+.closeup img { display: block; width: 100%; height: auto; }
+.s4-copy { top: 60%; z-index: 1; }
+.s4-copy::before {
+  content: "";
+  position: absolute;
+  inset: -7cqh -8cqw -4cqh;
+  z-index: -1;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(250, 240, 220, .95) 45%, rgba(250, 240, 220, 0) 100%);
+}
 .muhurtham {
   font-weight: 500;
   font-size: min(6cqh, 13cqw);
@@ -326,7 +345,6 @@ img { display: block; max-width: 100%; }
 .s4-copy .btn { margin-top: 1.6cqh; }
 /* short phones: lift the muhurtham block so the button clears the lotuses */
 @container (max-height: 640px) {
-  .s4-copy { top: 71%; }
   .s4-copy .btn { margin-top: 8px; }
 }
 
@@ -472,7 +490,7 @@ img { display: block; max-width: 100%; }
 
 /* Overlays only exist for motion */
 /* Transition layers only exist for motion; scene 3's iris wrappers are plain boxes */
-.carry, .petals, .fringe, .paper { display: none; }
+.carry, .petals, .paper { display: none; }
 .iris, .iris__clip, .iris__inner { position: absolute; inset: 0; }
 .iris__rim { display: none; }
 
@@ -551,7 +569,9 @@ img { display: block; max-width: 100%; }
 .motion .couple-names .parents { opacity: 0; }
 /* the carried line sits over the space the invitation line will take */
 .motion .s3-lead { display: block; position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; visibility: hidden; }
-.motion .scene--4 { box-shadow: 0 10px 22px rgba(60, 30, 10, .28); }
+/* scene 4 shares scene 3's background, so in motion only its foreground is drawn */
+.motion .scene--4 .plate { display: none; }
+.motion .closeup { opacity: 0; }
 .motion .stage { pointer-events: none; }
 .motion .stage a { pointer-events: auto; }
 
@@ -607,19 +627,6 @@ img { display: block; max-width: 100%; }
   min-width: 14px;
   height: auto;
   opacity: 0;
-}
-
-/* Jasmine curtain edge (the couple → muhurtham) */
-.motion .fringe {
-  display: block;
-  position: absolute;
-  left: -2%;
-  top: 0;
-  z-index: 3;
-  width: 104%;
-  height: auto;
-  overflow: visible;
-  visibility: hidden;
 }
 
 /* Painting fades into the courtyard's ivory paper (muhurtham → celebrations) */
