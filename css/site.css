@@ -278,13 +278,6 @@ img { display: block; max-width: 100%; }
   font-style: italic;
 }
 
-/* Marigolds in the flower band */
-.mg-petal { fill: #F0A93A; }
-.mg-petal--deep { fill: #E2791F; }
-.mg-ruffle { fill: none; stroke: #CF8424; stroke-width: 3.4; stroke-dasharray: 1.3 1.1; }
-.mg-ruffle--inner { stroke-width: 2.6; stroke-dasharray: 1 .9; }
-.mg-ruffle--deep { stroke: #B85C14; }
-
 /* --- Sangeet: night garden with the dancing couple --- */
 /* Background and couple share one 941 × 1672 canvas sized like object-fit:
    cover (slightly overscanned), so the couple stays exactly where the
@@ -630,9 +623,10 @@ img { display: block; max-width: 100%; }
 
 /* Overlays only exist for motion */
 /* Transition layers only exist for motion; the Sangeet scene's iris wrappers are plain boxes */
-.petals, .paper, .flower-band { display: none; }
+.petals, .paper { display: none; }
 .iris, .iris__clip, .iris__inner,
-.wipe, .wipe__inner { position: absolute; inset: 0; }
+.mwin, .mwin__clip, .mwin__inner { position: absolute; inset: 0; }
+.mwin__rim { display: none; }
 .iris__rim { display: none; }
 
 /* Desktop: the 9:16 scenes sit centred over the ivory courtyard */
@@ -698,6 +692,7 @@ img { display: block; max-width: 100%; }
 .portal__arch .fine { stroke: var(--gold); stroke-width: 1.4; }
 .motion .s2-copy > * { opacity: 0; }
 .motion .scene--1 .plate { transform-origin: 50% 74%; }
+.motion .scene--haldi .plate { transform-origin: 49% 77%; }
 
 /* Later scenes wait hidden on the same stage until their transition */
 .motion .scene--haldi,
@@ -708,21 +703,22 @@ img { display: block; max-width: 100%; }
 .motion .sg-bottom,
 .motion .hd-top,
 .motion .hd-bottom { opacity: 0; }
-/* the Sangeet is revealed from the top down: the outer box slides, the inner counter-slides */
-.motion .wipe { overflow: hidden; }
-
-/* Band of marigolds, jasmine and leaves that hides the Haldi → Sangeet edge */
-.motion .flower-band {
+/* Marigold window (Haldi → Sangeet), opening from the bowl of marigolds.
+   JS sets the ruffled clip path; the rim is the same shape, slightly larger. */
+.motion .mwin { transform-origin: 49% 77%; opacity: 0; }
+.motion .mwin__inner { transform-origin: 49% 77%; }
+.motion .mwin__rim {
   display: block;
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 4;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 400 / 260;
-  overflow: visible;
-  visibility: hidden;
+  inset: 0;
+  transform: scale(1.05);
+  transform-origin: 49% 77%;
+}
+.motion .mwin__rim::before {
+  content: "";
+  position: absolute;
+  inset: -400%;
+  background: radial-gradient(circle at 50% 50%, #FFD27A, #F0A030 30%, #C9701A 60%);
 }
 .motion .sg-dusk { opacity: .55; }
 .motion .s4-copy > * { opacity: 0; }

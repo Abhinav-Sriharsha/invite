@@ -11,8 +11,8 @@ build step: open `index.html` through any static server (for example
 | 0 | Royal doors: teak leaves with brass rosettes and studs, set in a sandstone doorway hung with jasmine | CSS/SVG | The doors swing inward in 3D, light floods in, and you step through the doorway (scrubbed, about 1.6 screens). In static mode the doors are skipped. |
 | 1 | Invocation: Ganesha mark, "Anumanchi's Wedding Invitation" | `r1` temple | An arch window opens from the gopuram doorway and grows until you pass through it (scrubbed, about 1.2 screens) |
 | 2 | Save the date | `r2` lotus offering | A lotus-shaped window with a gold rim blooms from where the two offered lotuses meet and opens onto the Haldi, while petals fall (scrubbed, about 1.1 screens) |
-| 2¼ | Haldi: "A morning of turmeric & blessings", date and venue | `haldi` painting | Holds for about 0.9 screens, then a thick band of marigolds, jasmine and leaves sweeps down the screen. The Sangeet is uncovered above it, so the flowers carry the morning into the night (scrubbed, about 1.2 screens) |
-| 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the flowers pass, the garden's lights come up from dusk and the couple sinks into their dip (rotating about the groom's planted foot). Then it holds for about 0.9 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
+| 2¼ | Haldi: "A morning of turmeric & blessings", date and venue | `haldi` painting | Holds for about 0.9 screens, then a marigold-shaped window with a saffron rim blooms from the bowl of marigolds on the low table and opens onto the Sangeet, like the lotus window before it (scrubbed, about 1.1 screens) |
+| 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the marigold window opens, the garden's lights come up from dusk and the couple sinks into their dip (rotating about the groom's planted foot). Then it holds for about 0.9 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
 | 3 | The couple, waist up, with the invitation line, full names and parents | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the couple grows and fades as the close-up comes down from above (about 1 screen) |
 | 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `closeup`: the jeelakarra-bellam close-up over the same `couple-bg` | The painting fades into ivory paper and the celebrations appear (scrubbed, 1 screen) |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
@@ -39,8 +39,7 @@ build step: open `index.html` through any static server (for example
   `sangeet-bg-*` is the night garden and `sangeet-couple-*` the dancing couple,
   cropped to the figure (911 × 992) and drawn at 0.672 scale on the same
   941 × 1672 canvas, which is where the composite painting places them.
-  `haldi-*` is the Haldi painting. The flower band for the Haldi → Sangeet
-  wipe is inline SVG (marigolds, jasmine and leaves from the sprite).
+  `haldi-*` is the Haldi painting.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
   Script subset to "the" and "and".

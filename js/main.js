@@ -52,6 +52,20 @@
     return `polygon(${pts.join(',')})`;
   }
 
+  // Marigold outline: a ruffled circle of 22 rounded petal tips, round on the
+  // actual stage shape. Its smallest radius still covers the far corners at
+  // full size when it opens from low on the screen.
+  function marigoldClip(cx, cy, aspect) {
+    const pts = [];
+    const n = 22 * 12;
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * Math.PI * 2;
+      const r = 215 + 26 * Math.sqrt(Math.abs(Math.cos(11 * t)));
+      pts.push(`${(cx + r * Math.cos(t)).toFixed(2)}% ${(cy - (r * Math.sin(t)) / aspect).toFixed(2)}%`);
+    }
+    return `polygon(${pts.join(',')})`;
+  }
+
   function story() {
     const ch = $('.chapter--story');
     const stage = $('.stage', ch);
@@ -64,7 +78,6 @@
     const hd = $('.scene--haldi', ch);
     const sg = $('.scene--sangeet', ch);
     const sgCouple = $('.sg-couple', sg);
-    const band = $('.flower-band', stage);
     const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
 
@@ -91,21 +104,15 @@
     const T4 = 1060; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
     const T5 = 1270; // muhurtham has been read
 
-    // Flower wipe (Haldi → Sangeet): the band's middle is the edge between the
-    // two scenes. Above it the Sangeet is uncovered by sliding its outer box
-    // down while the inner box counter-slides, so only transforms change.
-    const wipeOuter = $('.wipe', sg);
-    const wipeInner = $('.wipe__inner', sg);
-    const wipe = { e: 0 };
-    const drawWipe = () => {
-      const H = stage.clientHeight;
-      const B = band.getBoundingClientRect().height;
-      const edge = -B / 2 + wipe.e * (H + B);
-      const outer = Math.min(0, edge - H);
-      wipeOuter.style.transform = `translateY(${outer}px)`;
-      wipeInner.style.transform = `translateY(${-outer}px)`;
-      band.style.transform = `translateY(${edge - B / 2}px)`;
+    // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
+    const mwin = windowDrawer($('.mwin', sg), $('.mwin__inner', sg), 0.03, 0.92);
+    const shapeMwin = () => {
+      const clip = marigoldClip(49, 77, stage.clientHeight / stage.clientWidth);
+      $('.mwin__clip', sg).style.clipPath = clip;
+      $('.mwin__rim', sg).style.clipPath = clip;
     };
+    shapeMwin();
+    ScrollTrigger.addEventListener('refreshInit', shapeMwin);
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -142,13 +149,14 @@
       .fromTo($$('.hd-top > *', hd), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
       .fromTo($('.hd-bottom', hd), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
 
-      // A band of marigolds, jasmine and leaves sweeps down the screen and
-      // carries the morning into the night: the Sangeet appears above it,
-      // its lights come up and the couple sinks into their dip.
+      // A marigold-shaped window with a saffron rim blooms from the bowl of
+      // marigolds and opens onto the Sangeet at night; its lights come up
+      // and the couple sinks into their dip.
       .to($$('.hd-top, .hd-bottom', hd), { opacity: 0, duration: 20 }, TH)
-      .set([sg, band], { visibility: 'visible' }, TH + 9)
-      .fromTo(wipe, { e: 0 }, { e: 1, duration: 120, ease: 'sine.inOut', onUpdate: drawWipe }, TH + 10)
-      .set([hd, band], { visibility: 'hidden' }, TH + 131)
+      .set(sg, { visibility: 'visible' }, TH + 9)
+      .to($('.plate', hd), { scale: 1.08, duration: 110 }, TH + 10)
+      .to(mwin.state, { p: 1, duration: 110, onUpdate: mwin.draw }, TH + 10)
+      .set(hd, { visibility: 'hidden' }, TH + 121)
       .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, TH + 50)
       .fromTo(sgCouple, { rotation: 9 }, { rotation: 0, duration: 100, ease: 'sine.inOut' }, TH + 45)
       .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, TH + 125)
@@ -197,14 +205,13 @@
 
     portal.draw();
     iris.draw();
-    drawWipe();
+    mwin.draw();
     return () => {
       portal.reset();
       arch.style.cssText = '';
       iris.reset();
-      wipeOuter.style.cssText = '';
-      wipeInner.style.cssText = '';
-      band.style.cssText = '';
+      mwin.reset();
+      ScrollTrigger.removeEventListener('refreshInit', shapeMwin);
       ScrollTrigger.removeEventListener('refreshInit', shapeIris);
     };
   }
