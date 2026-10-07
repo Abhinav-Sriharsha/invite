@@ -84,9 +84,9 @@
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const TS = 700; // the Sangeet has been read (a long hold, so one swipe doesn't skip it)
-    const T4 = 980; // the invitation has been read
-    const T5 = 1190; // muhurtham has been read
+    const TS = 612; // the Sangeet has been read (its text settles at 525; hold ~0.9 screen so one swipe doesn't skip it)
+    const T4 = 802; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
+    const T5 = 1012; // muhurtham has been read
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
