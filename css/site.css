@@ -572,7 +572,7 @@ img { display: block; max-width: 100%; }
 
 /* Overlays only exist for motion */
 /* Transition layers only exist for motion; the Sangeet scene's iris wrappers are plain boxes */
-.petals, .bloom, .paper { display: none; }
+.petals, .sky, .paper { display: none; }
 .iris, .iris__clip, .iris__inner { position: absolute; inset: 0; }
 .iris__rim { display: none; }
 
@@ -679,20 +679,52 @@ img { display: block; max-width: 100%; }
   background: radial-gradient(circle at 50% 50%, #EBD192, #C9A24E 30%, #9C7632 60%);
 }
 
-/* Lantern light that swells to fill the screen (Sangeet → the couple) */
-.motion .bloom {
+/* Overnight sky (Sangeet → the couple). Its bottom edge matches the top row
+   of each painting: navy #082250 above the night garden, cream #F8E7C6 above
+   the courtyard, so the tilt up and back down has no seam. */
+.motion .sky {
   display: block;
   position: absolute;
-  left: 33%;
-  top: 24%;
-  z-index: 4;
-  width: 60cqw;
-  aspect-ratio: 1;
-  margin: -30cqw 0 0 -30cqw;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, #FFF9EC 0%, #FFF1D2 45%, rgba(255, 214, 140, .85) 70%, rgba(255, 196, 110, 0));
-  opacity: 0;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
   visibility: hidden;
+  background:
+    radial-gradient(1.4px 1.4px at 14% 12%, #FFF6DC 60%, transparent),
+    radial-gradient(1px 1px at 31% 27%, #FFF6DC 60%, transparent),
+    radial-gradient(1.6px 1.6px at 52% 9%, #FFF6DC 60%, transparent),
+    radial-gradient(1px 1px at 68% 22%, #FFF6DC 60%, transparent),
+    radial-gradient(1.4px 1.4px at 86% 14%, #FFF6DC 60%, transparent),
+    radial-gradient(1px 1px at 22% 44%, #FFF6DC 60%, transparent),
+    radial-gradient(1.2px 1.2px at 44% 36%, #FFF6DC 60%, transparent),
+    radial-gradient(1px 1px at 76% 41%, #FFF6DC 60%, transparent),
+    radial-gradient(1.2px 1.2px at 9% 58%, #FFF6DC 60%, transparent),
+    radial-gradient(1px 1px at 61% 55%, #FFF6DC 60%, transparent),
+    radial-gradient(1.4px 1.4px at 92% 62%, #FFF6DC 60%, transparent),
+    linear-gradient(#030A1E, #061638 55%, #082250);
+}
+.sky__dawn {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#2A2350, #7A4A6E 40%, #D98468 75%, #F2B27E);
+  opacity: 0;
+}
+.sky__day {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#F3CBA6, #F9E2BF 45%, #F8E7C6);
+  opacity: 0;
+}
+.sky__sun {
+  position: absolute;
+  left: 50%;
+  bottom: -30cqw;
+  width: 130cqw;
+  aspect-ratio: 1;
+  margin-left: -65cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 236, 196, .95), rgba(255, 196, 140, .6) 40%, rgba(255, 180, 130, 0));
+  opacity: 0;
 }
 
 .motion .petals { display: block; position: absolute; inset: 0; z-index: 4; }
