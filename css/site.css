@@ -17,7 +17,7 @@
   font-weight: 600;
   font-display: swap;
 }
-/* Subset to the few script words used ("the", "and") */
+/* Subset to the few script words used ("the", "and", "With best wishes from") */
 @font-face {
   font-family: "Pinyon Script";
   src: url("../assets/fonts/pinyon-script-subset.woff2") format("woff2");
@@ -513,6 +513,67 @@ img { display: block; max-width: 100%; }
   .s4-copy .btn { margin-top: 8px; }
 }
 
+/* --- 5. Venue: the toe-ring painting, address as live text --- */
+.vn-copy { top: 65.5%; z-index: 1; }
+.vn-copy::before,
+.bw-copy::before {
+  content: "";
+  position: absolute;
+  inset: -4cqh -6cqw -3cqh;
+  z-index: -1;
+  background: radial-gradient(52% 52% at 50% 50%, rgba(252, 243, 224, .9) 50%, rgba(252, 243, 224, 0));
+}
+.vn-label {
+  font-size: min(3.4cqh, 7.4cqw);
+  font-weight: 600;
+  line-height: 1.1;
+}
+.vn-name {
+  margin-top: .3cqh;
+  font-weight: 600;
+  font-size: min(4.1cqh, 8.8cqw);
+  line-height: 1.1;
+}
+.vn-copy .rule { margin-block: 1.4cqh; font-size: max(12px, 1.4cqh); }
+.vn-address {
+  color: var(--ink);
+  font-size: max(15px, min(2.2cqh, 4.7cqw));
+  line-height: 1.4;
+}
+.vn-copy .btn { margin-top: 1.8cqh; }
+
+/* --- 6. With best wishes: the joined-hands painting, family names as live text --- */
+.bw-copy { top: 71%; z-index: 1; padding-inline: 4cqw; }
+.bw-title {
+  font-size: min(4.6cqh, 10cqw);
+  line-height: 1.15;
+}
+.bw-copy .rule { margin-block: 1cqh 1.2cqh; font-size: max(12px, 1.4cqh); }
+.bw-names {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink);
+  font-size: max(12.5px, min(1.75cqh, 3.7cqw));
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+.bw-names li + li { margin-top: .15em; }
+/* short phones: raise the block and keep each pair on one line */
+@container (max-height: 700px) {
+  .bw-copy { top: 66%; padding-inline: 2cqw; }
+  .bw-title { font-size: min(4.2cqh, 9cqw); }
+  .bw-copy .rule { margin-block: .6cqh .8cqh; }
+  .bw-names { font-size: min(1.9cqh, 3.35cqw); line-height: 1.38; letter-spacing: -.005em; text-wrap: nowrap; }
+  .bw-names li + li { margin-top: 0; }
+  .vn-copy .btn { margin-top: 1cqh; }
+}
+
+/* Ring window wrappers are plain boxes when there is no motion */
+.rwin, .rwin__clip, .rwin__inner { position: absolute; inset: 0; }
+.rwin__rim { display: none; }
+
 /* Portal parts are motion-only */
 .portal, .portal__inner { position: absolute; inset: 0; }
 .portal__arch { display: none; }
@@ -729,6 +790,8 @@ img { display: block; max-width: 100%; }
 /* Later scenes wait hidden on the same stage until their transition */
 .motion .scene--haldi,
 .motion .scene--sangeet,
+.motion .scene--venue,
+.motion .scene--wishes,
 .motion .scene--3,
 .motion .scene--4 { visibility: hidden; background: none; }
 .motion .sg-top,
@@ -753,7 +816,36 @@ img { display: block; max-width: 100%; }
   background: radial-gradient(circle at 50% 50%, #FFD27A, #F0A030 30%, #C9701A 60%);
 }
 .motion .sg-dusk { opacity: .55; }
-.motion .s4-copy > * { opacity: 0; }
+.motion .s4-copy > *,
+.motion .vn-copy > *,
+.motion .bw-copy > * { opacity: 0; }
+/* the seated couple grows toward where their hands meet as the ring opens */
+.motion .seated { transform-origin: 51% 12%; }
+
+/* Ring window (muhurtham → venue): JS places it where the couple's hands meet */
+.motion .rwin { transform-origin: var(--ring-x, 50%) var(--ring-y, 20%); opacity: 0; }
+.motion .rwin__inner { transform-origin: var(--ring-x, 50%) var(--ring-y, 20%); }
+.motion .rwin__rim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  transform: scale(1.07);
+  transform-origin: var(--ring-x, 50%) var(--ring-y, 20%);
+}
+.motion .rwin__rim::before {
+  content: "";
+  position: absolute;
+  inset: -400%;
+  background: conic-gradient(from 20deg, #F7E3A1, #C99A3E, #8E6A26, #E9C978, #FFF3C8, #B8882F, #F7E3A1);
+}
+
+/* Arch window (venue → best wishes) rises from the floor between the two
+   brass lamps, so its base sits on the ground like a doorway */
+.motion .portal--wishes,
+.motion .portal--wishes .portal__inner { transform-origin: 50% 70%; }
+.motion .scene--venue .plate { transform-origin: 50% 70%; }
+.portal--wishes .portal__arch path { stroke: #C9A24E; stroke-width: 6; }
+.portal--wishes .portal__arch .fine { stroke: #8E6A26; stroke-width: 1.6; }
 /* scene 4 shares scene 3's background, so in motion only its foreground is drawn */
 .motion .scene--4 .plate { display: none; }
 .motion .seated { opacity: 0; }

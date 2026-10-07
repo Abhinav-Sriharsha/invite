@@ -14,7 +14,9 @@ build step: open `index.html` through any static server (for example
 | 2¼ | Haldi: "A morning of turmeric & blessings", date and venue | `haldi` painting | Holds for about 0.9 screens, then a marigold-shaped window with a saffron rim blooms from the bowl of marigolds on the low table and opens onto the Sangeet, like the lotus window before it (scrubbed, about 1.1 screens) |
 | 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the marigold window opens, the garden's lights come up from dusk and the couple sinks into their dip (rotating about the groom's planted foot). Then it holds for about 0.9 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
 | 3 | The couple, waist up, with the invitation line, full names and parents | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the standing couple fades as the seated couple settles onto the floor (about 1 screen) |
-| 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | The painting fades into ivory paper and the celebrations appear (scrubbed, 1 screen) |
+| 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring ceremony (scrubbed, about 1.2 screens) |
+| 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `venue` toe-ring painting (text removed, set as live text) | After a hold, the pillared arch from the start of the invitation rises from the floor between the brass lamps and opens into the arched courtyard (scrubbed, about 1.3 screens) |
+| 6 | With best wishes from the families | `wishes` joined-hands painting (text removed, set as live text) | The painting fades into ivory paper and the celebrations appear (scrubbed, 1 screen) |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
 ## Structure
@@ -40,12 +42,14 @@ build step: open `index.html` through any static server (for example
   `sangeet-bg-*` is the night garden and `sangeet-couple-*` the dancing couple,
   cropped to the figure (911 × 992) and drawn at 0.672 scale on the same
   941 × 1672 canvas, which is where the composite painting places them.
+  `venue-*` and `wishes-*` are the toe-ring and joined-hands paintings with
+  their baked-in text removed.
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
   cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
   that fills the bands above and below it.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
-  Script subset to "the" and "and".
+  Script subset to "the", "and" and "With best wishes from".
 - `references/`: the original reference images (`r1`–`r5`, with text) and the
   source layers for the couple, the close-up and the Sangeet.
 - `explorations/background-preview/`: the earlier background study (Ivory
@@ -70,10 +74,9 @@ on the page:
 - the parents' names (scene 3)
 - the Haldi and Sangeet dates, times and venues
 - the dates, times and places for the Pellikuthuru, Pellikoduku, Sangeet &
-  Mehendi and Reception events, and the Sumuhurtham venue
-- the venue name, address and arrival time, and the Maps link
+  Mehendi and Reception events
+- the arrival time in the venue card
 - the RSVP-by date, WhatsApp number and phone number
-- the venue in `assets/muhurtham.ics`
 
 When the details are final, delete the `[data-placeholder]` rule in
 `css/site.css`.
