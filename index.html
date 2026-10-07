@@ -88,8 +88,8 @@
   <div class="backdrop" aria-hidden="true"></div>
 
   <main>
-    <!-- ======================= Story: royal doors → invocation → save the date → the couple → muhurtham ======================= -->
-    <div class="chapter chapter--story" style="--len: 1020">
+    <!-- ======================= Story: royal doors → invocation → save the date → sangeet → the couple → muhurtham ======================= -->
+    <div class="chapter chapter--story" style="--len: 1280">
       <div class="stage">
 
         <section class="scene scene--1" aria-labelledby="title">
@@ -138,32 +138,61 @@
           </div>
         </section>
 
-        <section class="scene scene--3" aria-labelledby="couple">
+        <section class="scene scene--sangeet" aria-labelledby="sangeet">
           <!-- Lotus window: blooms open from where the offered lotuses meet (motion only) -->
           <div class="iris">
             <div class="iris__rim"></div>
             <div class="iris__clip">
               <div class="iris__inner">
-                <div class="plate">
+                <!-- Night garden and the dancing couple share one canvas so the couple stays where the painting puts them -->
+                <div class="sg-canvas">
                   <picture>
-                    <source type="image/avif" srcset="assets/scenes/couple-bg-640.avif 640w, assets/scenes/couple-bg-941.avif 941w" sizes="56vh">
-                    <img src="assets/scenes/couple-bg-941.webp" srcset="assets/scenes/couple-bg-640.webp 640w, assets/scenes/couple-bg-941.webp 941w" sizes="56vh"
+                    <source type="image/avif" srcset="assets/scenes/sangeet-bg-640.avif 640w, assets/scenes/sangeet-bg-941.avif 941w" sizes="60vh">
+                    <img class="sg-bg" src="assets/scenes/sangeet-bg-941.webp" srcset="assets/scenes/sangeet-bg-640.webp 640w, assets/scenes/sangeet-bg-941.webp 941w" sizes="60vh"
                          width="941" height="1672" loading="lazy" decoding="async"
-                         alt="A temple terrace between jasmine-hung pillars, with a kolam on the floor, brass lamps, petals and lotuses.">
+                         alt="A garden dance floor at night under palm trees, string lights and paper lanterns, with a lit trellis stage behind it.">
                   </picture>
-                </div>
-                <!-- The couple, in front of one fixed background -->
-                <div class="pan">
-                  <div class="pan__couple">
+                  <div class="sg-dusk"></div>
+                  <div class="sg-couple">
                     <picture>
-                      <source type="image/avif" srcset="assets/scenes/couple-640.avif 640w, assets/scenes/couple-941.avif 941w" sizes="53vh">
-                      <img src="assets/scenes/couple-941.webp" srcset="assets/scenes/couple-640.webp 640w, assets/scenes/couple-941.webp 941w" sizes="53vh"
-                           width="941" height="1672" loading="lazy" decoding="async"
-                           alt="Abhiram and Trilokya stand side by side in wedding clothes, wearing jasmine and rose garlands.">
+                      <source type="image/avif" srcset="assets/scenes/sangeet-couple-600.avif 600w, assets/scenes/sangeet-couple-911.avif 911w" sizes="40vh">
+                      <img src="assets/scenes/sangeet-couple-911.webp" srcset="assets/scenes/sangeet-couple-600.webp 600w, assets/scenes/sangeet-couple-911.webp 911w" sizes="40vh"
+                           width="911" height="992" loading="lazy" decoding="async"
+                           alt="Abhiram dips Trilokya in a dance; she wears an ivory embroidered gown and he wears a navy sherwani.">
                     </picture>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="copy sg-top">
+            <p class="sg-eyebrow">An evening of music &amp; dance</p>
+            <h2 class="sg-title" id="sangeet">Sangeet</h2>
+          </div>
+          <div class="copy sg-bottom">
+            <p class="sg-when" data-placeholder>Saturday, 21 November 2026 · 6:30 p.m.</p>
+            <p class="sg-where" data-placeholder>Garden lawns, venue name</p>
+          </div>
+        </section>
+
+        <section class="scene scene--3" aria-labelledby="couple">
+          <div class="plate">
+            <picture>
+              <source type="image/avif" srcset="assets/scenes/couple-bg-640.avif 640w, assets/scenes/couple-bg-941.avif 941w" sizes="56vh">
+              <img src="assets/scenes/couple-bg-941.webp" srcset="assets/scenes/couple-bg-640.webp 640w, assets/scenes/couple-bg-941.webp 941w" sizes="56vh"
+                   width="941" height="1672" loading="lazy" decoding="async"
+                   alt="A temple terrace between jasmine-hung pillars, with a kolam on the floor, brass lamps, petals and lotuses.">
+            </picture>
+          </div>
+          <!-- The couple, in front of one fixed background -->
+          <div class="pan">
+            <div class="pan__couple">
+              <picture>
+                <source type="image/avif" srcset="assets/scenes/couple-640.avif 640w, assets/scenes/couple-941.avif 941w" sizes="53vh">
+                <img src="assets/scenes/couple-941.webp" srcset="assets/scenes/couple-640.webp 640w, assets/scenes/couple-941.webp 941w" sizes="53vh"
+                     width="941" height="1672" loading="lazy" decoding="async"
+                     alt="Abhiram and Trilokya stand side by side in wedding clothes, wearing jasmine and rose garlands.">
+              </picture>
             </div>
           </div>
           <div class="copy s3-copy">
@@ -204,7 +233,6 @@
         </section>
 
         <!-- Transition layers (motion only) -->
-        <p class="lead-line carry" aria-hidden="true">For the wedding celebrations of</p>
         <div class="petals" aria-hidden="true">
           <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
           <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
@@ -213,6 +241,7 @@
           <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
           <svg viewBox="-10 -10 20 20"><use href="#petal" /></svg><svg viewBox="-10 -10 20 20"><use href="#petal" /></svg>
         </div>
+        <div class="bloom" aria-hidden="true"></div>
         <div class="paper" aria-hidden="true"></div>
 
         <!-- Royal doors that open onto the invocation scene (motion only) -->

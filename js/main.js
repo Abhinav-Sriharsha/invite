@@ -15,12 +15,6 @@
   const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
   // Timeline units are 1/100 of the stage height, so durations read as scroll distance.
   const trackLength = (chapter) => parseFloat(getComputedStyle(chapter).getPropertyValue('--len')) - 100;
-  // Distance from the stage top, ignoring transforms.
-  const offsetIn = (el, stage) => {
-    let y = 0;
-    for (let n = el; n && n !== stage; n = n.offsetParent) y += n.offsetTop;
-    return y;
-  };
   const rand = (i, n) => {
     const v = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453;
     return v - Math.floor(v);
@@ -68,7 +62,9 @@
     const pan = $('.pan', s3);
     const couple = $('.pan__couple', s3);
     const [lineA, lineB] = $$('.cn', s3);
-    const carry = $('.carry', stage);
+    const sg = $('.scene--sangeet', ch);
+    const sgCouple = $('.sg-couple', sg);
+    const bloom = $('.bloom', stage);
     const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
 
@@ -78,20 +74,21 @@
       arch.style.opacity = p < 0.7 ? 1 : Math.max(0, 1 - (p - 0.7) / 0.3);
     });
 
-    // Lotus window from where the offered lotuses meet (scene 2 → 3)
-    const iris = windowDrawer($('.iris', s3), $('.iris__inner', s3), 0.034, 1);
+    // Lotus window from where the offered lotuses meet (save the date → Sangeet)
+    const iris = windowDrawer($('.iris', sg), $('.iris__inner', sg), 0.034, 0.92);
     const shapeIris = () => {
       const clip = lotusClip(58, 30, stage.clientHeight / stage.clientWidth);
-      $('.iris__clip', s3).style.clipPath = clip;
-      $('.iris__rim', s3).style.clipPath = clip;
+      $('.iris__clip', sg).style.clipPath = clip;
+      $('.iris__rim', sg).style.clipPath = clip;
     };
     shapeIris();
     ScrollTrigger.addEventListener('refreshInit', shapeIris);
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const T4 = 610; // the invitation has been read
-    const T5 = 820; // muhurtham has been read
+    const TS = 610; // the Sangeet has been read
+    const T4 = 850; // the invitation has been read
+    const T5 = 1060; // muhurtham has been read
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -119,25 +116,37 @@
         { opacity: 1, y: 0, duration: 24, stagger: 6, ease: 'power1.out' }, D + 138)
 
       // A lotus window blooms from where the offered lotuses meet and opens
-      // straight onto the couple. Petals fall, and "for the wedding
-      // celebrations of" drifts down to become the invitation line.
-      .to($$('.save, .s2-copy .rule', s2), { opacity: 0, y: -24, duration: 25 }, T2)
-      .set($('.s2-line', s2), { visibility: 'hidden' }, T2 + 5)
-      .set(carry, { visibility: 'visible' }, T2 + 5)
-      .set(s3, { visibility: 'visible' }, T2 + 9)
+      // onto the Sangeet at night. Petals fall, the garden's lights come up
+      // and the couple sinks into their dip.
+      .to($('.s2-copy', s2), { opacity: 0, y: -24, duration: 25 }, T2)
+      .set(sg, { visibility: 'visible' }, T2 + 9)
       .to($('.plate', s2), { scale: 1.08, duration: 110 }, T2 + 10)
       .to(iris.state, { p: 1, duration: 100, onUpdate: iris.draw }, T2 + 10)
-      // the couple settles back as the window opens; scaling from the top edge keeps their faces in frame
-      .fromTo(couple, { scale: 1.08 }, { scale: 1, duration: 110, ease: 'sine.out' }, T2 + 10)
-      .fromTo($('.s3-copy', s3), { opacity: 0 }, { opacity: 1, duration: 40 }, T2 + 70)
-      .fromTo(carry, { y: () => offsetIn($('.s2-line', s2), stage) },
-        { y: () => offsetIn($('.s3-lede', s3), stage), duration: 80, ease: 'sine.inOut' }, T2 + 30)
-      .to(carry, { opacity: 0, duration: 20 }, T2 + 108)
-      .fromTo($('.s3-lede', s3), { opacity: 0 }, { opacity: 1, duration: 22 }, T2 + 106)
-      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 118)
-      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, T2 + 128)
-      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, T2 + 136)
-      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, T2 + 150)
+      .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, T2 + 25)
+      .fromTo(sgCouple, { rotation: 9 }, { rotation: 0, duration: 100, ease: 'sine.inOut' }, T2 + 40)
+      .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, T2 + 105)
+      .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
+      .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
+
+      // A lantern's glow swells until warm light fills the screen, then clears
+      // onto the courtyard by day: the couple with their full names.
+      .to($$('.sg-top, .sg-bottom', sg), { opacity: 0, duration: 25 }, TS)
+      .set(bloom, { visibility: 'visible' }, TS + 4)
+      .fromTo(bloom, { opacity: 0, scale: 0.15 }, { opacity: 1, scale: 1.4, duration: 35, ease: 'sine.in' }, TS + 5)
+      .to(bloom, { scale: 7, duration: 45, ease: 'power1.in' }, TS + 40)
+      .to($('.sg-canvas', sg), { scale: 1.08, duration: 80 }, TS + 5)
+      .set(sg, { visibility: 'hidden' }, TS + 85)
+      .set(s3, { visibility: 'visible' }, TS + 85)
+      .to(bloom, { opacity: 0, duration: 45, ease: 'sine.out' }, TS + 88)
+      .set(bloom, { visibility: 'hidden' }, TS + 134)
+      // the couple settles back as the light clears; scaling from the top edge keeps their faces in frame
+      .fromTo(couple, { scale: 1.08 }, { scale: 1, duration: 90, ease: 'sine.out' }, TS + 85)
+      .fromTo($('.s3-copy', s3), { opacity: 0 }, { opacity: 1, duration: 30 }, TS + 100)
+      .fromTo($('.s3-lede', s3), { opacity: 0 }, { opacity: 1, duration: 22 }, TS + 106)
+      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, TS + 118)
+      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, TS + 128)
+      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, TS + 136)
+      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, TS + 150)
 
       // The camera moves in: the couple grows and fades while the
       // close-up of the jeelakarra-bellam moment comes down from above.
@@ -158,7 +167,7 @@
       .to(stage, { autoAlpha: 0, duration: 30 }, T5 + 70)
       .set({}, {}, trackLength(ch));
 
-    // Petals drift down from the lotuses onto the kolam floor
+    // Petals drift down from the lotuses into the garden
     const w = () => stage.clientWidth;
     const h = () => stage.clientHeight;
     $$('.petals svg', stage).forEach((el, i) => {

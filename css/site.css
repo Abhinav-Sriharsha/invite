@@ -227,6 +227,89 @@ img { display: block; max-width: 100%; }
   .lead-line { max-width: 17em; }
 }
 
+/* --- Sangeet: night garden with the dancing couple --- */
+/* Background and couple share one 941 × 1672 canvas sized like object-fit:
+   cover (slightly overscanned), so the couple stays exactly where the
+   composite painting placed them on every screen shape. */
+.scene--sangeet { background: #0B1430; }
+.sg-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(104cqw, 58.5cqh);
+  aspect-ratio: 941 / 1672;
+  translate: -50% -50%;
+}
+.sg-canvas picture,
+.sg-bg { display: block; width: 100%; height: 100%; }
+.sg-dusk {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 60% at 50% 55%, rgba(6, 10, 30, .55), rgba(6, 10, 30, .85));
+  opacity: 0;
+}
+/* the cropped cutout: 911 × 992, placed at the composite's 0.672 scale */
+.sg-couple {
+  position: absolute;
+  left: 22.03%;
+  top: 36.29%;
+  width: 65.06%;
+  aspect-ratio: 911 / 992;
+  transform-origin: 11.96% 95.4%; /* the groom's planted foot */
+}
+.sg-couple picture,
+.sg-couple img { display: block; width: 100%; height: auto; }
+
+.sg-top,
+.sg-bottom { color: #FFF4DC; z-index: 1; }
+.sg-top { top: 0; padding-top: max(28px, 5cqh); }
+.sg-bottom { bottom: 0; padding-bottom: max(28px, 5cqh); }
+.sg-top::before,
+.sg-bottom::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.sg-top::before {
+  top: 0;
+  height: 190%;
+  background: linear-gradient(rgba(7, 12, 34, .88), rgba(7, 12, 34, .6) 55%, rgba(7, 12, 34, 0));
+}
+.sg-bottom::before {
+  bottom: 0;
+  height: 190%;
+  background: linear-gradient(rgba(7, 12, 34, 0), rgba(7, 12, 34, .62) 45%, rgba(7, 12, 34, .88));
+}
+.sg-eyebrow {
+  color: #F2D493;
+  font-size: max(12px, min(1.6cqh, 3.4cqw));
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.sg-title {
+  margin-top: .8cqh;
+  color: #F6DFA4;
+  font-weight: 500;
+  font-size: min(8cqh, 17cqw);
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(255, 196, 110, .45);
+}
+.sg-when {
+  font-size: max(16px, min(2.3cqh, 5cqw));
+  font-weight: 600;
+  line-height: 1.3;
+}
+.sg-where {
+  margin-top: .4em;
+  color: #E8DCC4;
+  font-size: max(14px, min(1.9cqh, 4.2cqw));
+  font-style: italic;
+}
+.scene--sangeet [data-placeholder] { text-decoration-color: rgba(255, 244, 220, .45); }
+
 /* --- 3. The couple: one fixed background for the whole screen; the figure above, names below --- */
 /* The figure is 941 × 1672 with its nose at the top row and its feet at row
    1637; at 52.7cqh wide, the waist-to-nose view fills this window. The window
@@ -488,8 +571,8 @@ img { display: block; max-width: 100%; }
 .lotus-strip img { width: 100%; height: auto; }
 
 /* Overlays only exist for motion */
-/* Transition layers only exist for motion; scene 3's iris wrappers are plain boxes */
-.carry, .petals, .paper { display: none; }
+/* Transition layers only exist for motion; the Sangeet scene's iris wrappers are plain boxes */
+.petals, .bloom, .paper { display: none; }
 .iris, .iris__clip, .iris__inner { position: absolute; inset: 0; }
 .iris__rim { display: none; }
 
@@ -557,9 +640,13 @@ img { display: block; max-width: 100%; }
 .motion .s2-copy > * { opacity: 0; }
 .motion .scene--1 .plate { transform-origin: 50% 74%; }
 
-/* Scenes 3 and 4 wait hidden on the same stage until their transition */
+/* Later scenes wait hidden on the same stage until their transition */
+.motion .scene--sangeet,
 .motion .scene--3,
 .motion .scene--4 { visibility: hidden; background: none; }
+.motion .sg-top,
+.motion .sg-bottom { opacity: 0; }
+.motion .sg-dusk { opacity: .55; }
 .motion .s4-copy > *,
 .motion .cn,
 .motion .cn__and,
@@ -574,10 +661,9 @@ img { display: block; max-width: 100%; }
 /* The information sections wait beneath the stage as the painting fades to paper */
 .motion .info { z-index: 0; margin-top: -100vh; margin-top: -100lvh; }
 
-/* Lotus window (save the date → names). JS sets the petal-shaped clip path. */
+/* Lotus window (save the date → Sangeet). JS sets the petal-shaped clip path. */
 .motion .iris { transform-origin: 58% 30%; opacity: 0; }
 .motion .iris__inner { transform-origin: 58% 30%; }
-.motion .iris__inner .plate { inset: -2%; width: auto; height: auto; }
 .motion .iris__rim {
   display: block;
   position: absolute;
@@ -593,25 +679,20 @@ img { display: block; max-width: 100%; }
   background: radial-gradient(circle at 50% 50%, #EBD192, #C9A24E 30%, #9C7632 60%);
 }
 
-/* Line carried from save the date onto the names */
-.motion .carry {
+/* Lantern light that swells to fill the screen (Sangeet → the couple) */
+.motion .bloom {
   display: block;
   position: absolute;
-  left: 50%;
-  top: 0;
+  left: 33%;
+  top: 24%;
   z-index: 4;
-  width: max-content;
-  max-width: 92%;
-  margin: 0;
-  padding: .45em 1.1em;
-  border-radius: 999px;
-  background: radial-gradient(closest-side, rgba(250, 240, 220, .95) 60%, rgba(250, 240, 220, 0));
-  text-align: center;
-  translate: -50% -.45em;
+  width: 60cqw;
+  aspect-ratio: 1;
+  margin: -30cqw 0 0 -30cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #FFF9EC 0%, #FFF1D2 45%, rgba(255, 214, 140, .85) 70%, rgba(255, 196, 110, 0));
+  opacity: 0;
   visibility: hidden;
-}
-@container (max-width: 360px) {
-  .motion .carry { max-width: 17em; }
 }
 
 .motion .petals { display: block; position: absolute; inset: 0; z-index: 4; }
