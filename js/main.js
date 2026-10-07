@@ -124,14 +124,17 @@
     shapeIris();
     ScrollTrigger.addEventListener('refreshInit', shapeIris);
 
-    const D = 160; // the royal doors use the first 160 units
-    const T2 = 370; // save the date has been read
-    const TH = 612; // the Haldi has been read (its text settles at 525; hold ~0.9 screen)
-    const TS = 870; // the Sangeet has been read (its text settles at TH + 170; hold ~0.9 screen)
-    const T4 = 1060; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
-    const T5 = 1270; // muhurtham has been read
-    const TV = 1510; // the venue has been read (its text settles at T5 + 150; hold ~0.9 screen)
-    // The best wishes settle at TV + 125 and hold ~0.9 screen; the track ends
+    // Each scene holds still for a while after its text settles, so one swipe
+    // doesn't skip it. Holds (in 1/100 screen): invocation 16, save the date 25,
+    // Haldi 61, Sangeet 62, couple 63, muhurtham 43, venue 58, best wishes 75.
+    const D = 153; // the royal doors use the first 153 units (invocation text settles at 145)
+    const T2 = 352; // save the date has been read (its text settles at D + 174)
+    const TH = 568; // the Haldi has been read (its text settles at T2 + 155)
+    const TS = 800; // the Sangeet has been read (its text settles at TH + 170)
+    const T4 = 963; // the invitation has been read (couple arrives at TS + 100)
+    const T5 = 1154; // muhurtham has been read (its text settles at T4 + 148)
+    const TV = 1369; // the venue has been read (its text settles at T5 + 157)
+    // The best wishes settle at TV + 113 and hold 0.75 screen; the track ends
     // there, so the stage then scrolls away like a page onto the celebrations.
 
     // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
