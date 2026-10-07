@@ -78,7 +78,7 @@
     const hd = $('.scene--haldi', ch);
     const sg = $('.scene--sangeet', ch);
     const sgCouple = $('.sg-couple', sg);
-    const closeup = $('.closeup', s4);
+    const seated = $('.seated', s4);
     const paper = $('.paper', stage);
 
     // Arch window from the gopuram doorway (scene 1 → 2)
@@ -172,22 +172,22 @@
       .fromTo(s3, { yPercent: 100 }, { yPercent: 0, duration: 100 }, TS)
       .set(sg, { visibility: 'hidden' }, TS + 101)
 
-      // The camera moves in: the couple grows and fades while the
-      // close-up of the jeelakarra-bellam moment comes down from above.
+      // Same courtyard, next moment: the standing couple fades as the couple,
+      // now seated for the jeelakarra-bellam, settles onto the floor.
       // The background stays put; only the foreground changes.
       .to($('.s3-copy', s3), { opacity: 0, y: 24, duration: 25 }, T4)
       .set(s4, { visibility: 'visible' }, T4 + 4)
       .to(couple, { scale: 1.1, duration: 90, ease: 'sine.in' }, T4 + 5)
       .to(couple, { opacity: 0, duration: 50 }, T4 + 40)
-      .fromTo(closeup, { opacity: 0, yPercent: -45, scale: 1.08 },
-        { opacity: 1, yPercent: 0, scale: 1, duration: 90, ease: 'sine.out' }, T4 + 35)
+      .fromTo(seated, { opacity: 0, yPercent: -6, scale: 1.04 },
+        { opacity: 1, yPercent: 0, scale: 1, duration: 80, ease: 'sine.out' }, T4 + 35)
       .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 100)
 
       // The painting fades into the courtyard's ivory paper
       .to($('.s4-copy', s4), { opacity: 0, y: -20, duration: 20 }, T5)
       .set(paper, { visibility: 'visible' }, T5 + 4)
       .fromTo(paper, { y: 0, yPercent: 67 }, { yPercent: -26, duration: 70 }, T5 + 5)
-      .to(closeup, { scale: 1.06, duration: 80 }, T5)
+      .to(seated, { scale: 1.06, duration: 80 }, T5)
       .to(stage, { autoAlpha: 0, duration: 30 }, T5 + 70)
       .set({}, {}, trackLength(ch));
 

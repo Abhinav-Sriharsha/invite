@@ -441,19 +441,30 @@ img { display: block; max-width: 100%; }
   text-wrap: balance;
 }
 
-/* --- 4. Sumuhurtham: the close-up of the jeelakarra-bellam moment, same background --- */
-/* The close-up is 2:1 with a softened lower edge just below the eyes; it is
-   wider than the stage so the bowed heads fill the frame, and its lower edge
-   melts into the ivory glow behind the text. */
-.closeup {
+/* --- 4. Sumuhurtham: the couple seated for the jeelakarra-bellam moment, same background --- */
+/* The cutout (941 × 775, cropped to the figures) is a little wider than the
+   stage so the drapes run off both sides; it sits on the courtyard floor
+   just above the text, with a soft shadow beneath. */
+.seated {
   position: absolute;
-  left: -20cqw;
-  bottom: 44%;
-  width: 140cqw;
-  aspect-ratio: 2 / 1;
+  left: -4cqw;
+  bottom: 41%;
+  width: 108cqw;
+  aspect-ratio: 941 / 775;
 }
-.closeup picture,
-.closeup img { display: block; width: 100%; height: auto; }
+.seated picture,
+.seated img { display: block; width: 100%; height: auto; }
+.seated::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -2%;
+  height: 8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(90, 50, 20, .3), rgba(90, 50, 20, 0));
+}
 .s4-copy { top: 60%; z-index: 1; }
 .s4-copy::before {
   content: "";
@@ -724,7 +735,7 @@ img { display: block; max-width: 100%; }
 .motion .s4-copy > * { opacity: 0; }
 /* scene 4 shares scene 3's background, so in motion only its foreground is drawn */
 .motion .scene--4 .plate { display: none; }
-.motion .closeup { opacity: 0; }
+.motion .seated { opacity: 0; }
 .motion .stage { pointer-events: none; }
 .motion .stage a { pointer-events: auto; }
 
