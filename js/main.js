@@ -61,10 +61,8 @@
     const plate3 = $('.plate', s3);
     const pan = $('.pan', s3);
     const couple = $('.pan__couple', s3);
-    const [lineA, lineB] = $$('.cn', s3);
     const sg = $('.scene--sangeet', ch);
     const sgCouple = $('.sg-couple', sg);
-    const sky = $('.sky', stage);
     const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
 
@@ -86,9 +84,9 @@
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const TS = 610; // the Sangeet has been read
-    const T4 = 940; // the invitation has been read
-    const T5 = 1150; // muhurtham has been read
+    const TS = 700; // the Sangeet has been read (a long hold, so one swipe doesn't skip it)
+    const T4 = 980; // the invitation has been read
+    const T5 = 1190; // muhurtham has been read
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -128,29 +126,14 @@
       .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
       .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
 
-      // Overnight: the camera tilts up off the dance floor into the starry
-      // sky, the night turns to morning, and the camera tilts back down into
-      // the courtyard, where the couple waits with their full names.
-      .to($$('.sg-top, .sg-bottom', sg), { opacity: 0, duration: 25 }, TS)
-      .set(sky, { visibility: 'visible' }, TS + 4)
-      .fromTo(sg, { yPercent: 0 }, { yPercent: 100, duration: 70, ease: 'sine.inOut' }, TS + 5)
-      .fromTo(sky, { yPercent: -100 }, { yPercent: 0, duration: 70, ease: 'sine.inOut' }, TS + 5)
-      .set(sg, { visibility: 'hidden' }, TS + 76)
-      .fromTo($('.sky__dawn', sky), { opacity: 0 }, { opacity: 1, duration: 32, ease: 'sine.inOut' }, TS + 66)
-      .fromTo($('.sky__sun', sky), { opacity: 0, yPercent: 35 }, { opacity: 1, yPercent: 0, duration: 50, ease: 'sine.out' }, TS + 72)
-      .fromTo($('.sky__day', sky), { opacity: 0 }, { opacity: 1, duration: 34, ease: 'sine.inOut' }, TS + 92)
-      .set(s3, { visibility: 'visible' }, TS + 124)
-      .fromTo(s3, { yPercent: 100 }, { yPercent: 0, duration: 70, ease: 'sine.inOut' }, TS + 125)
-      .to(sky, { yPercent: -100, duration: 70, ease: 'sine.inOut' }, TS + 125)
-      .set(sky, { visibility: 'hidden' }, TS + 196)
-      // the couple appears once the courtyard is in place, so the cutout's cropped top never shows against the sky
-      .fromTo(couple, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 45, ease: 'sine.out' }, TS + 168)
-      .fromTo($('.s3-copy', s3), { opacity: 0 }, { opacity: 1, duration: 30 }, TS + 180)
-      .fromTo($('.s3-lede', s3), { opacity: 0 }, { opacity: 1, duration: 22 }, TS + 186)
-      .fromTo(lineA, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, TS + 198)
-      .fromTo($('.cn__and', s3), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 24, ease: 'power2.out' }, TS + 208)
-      .fromTo(lineB, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 30, ease: 'power2.out' }, TS + 216)
-      .fromTo($$('.couple-names .parents', s3), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 30, stagger: 10 }, TS + 230)
+      // The Sangeet and the couple scene are stitched like two sections of an
+      // ordinary page: after the hold, the Sangeet scrolls up and the couple
+      // scene follows directly beneath it, already complete. Linear, one
+      // screen of scroll per screen of movement, so it feels like normal scrolling.
+      .set(s3, { visibility: 'visible' }, TS - 1)
+      .fromTo(sg, { yPercent: 0 }, { yPercent: -100, duration: 100 }, TS)
+      .fromTo(s3, { yPercent: 100 }, { yPercent: 0, duration: 100 }, TS)
+      .set(sg, { visibility: 'hidden' }, TS + 101)
 
       // The camera moves in: the couple grows and fades while the
       // close-up of the jeelakarra-bellam moment comes down from above.
