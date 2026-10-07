@@ -468,10 +468,13 @@ img { display: block; max-width: 100%; }
    rest on the courtyard floor just above the text, with a soft shadow beneath. */
 .seated {
   position: absolute;
-  left: -4cqw;
+  left: 6.8cqw;
   bottom: 41%;
-  width: 108cqw;
+  width: 86.4cqw;
   aspect-ratio: 941 / 860;
+  /* the drapes are cut at the image's side edges; soften them into the courtyard */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
 .seated picture,
 .seated img { display: block; width: 100%; height: auto; }
@@ -513,19 +516,10 @@ img { display: block; max-width: 100%; }
   .s4-copy .btn { margin-top: 8px; }
 }
 
-/* --- 5. Venue: the toe-ring cutout on the same courtyard, address as live text --- */
-.toe {
-  position: absolute;
-  left: -2cqw;
-  bottom: 40%;
-  width: 104cqw;
-  aspect-ratio: 941 / 1055;
-}
-.toe picture,
-.toe img,
+/* --- 5. Venue: the toe-ring painting, address as live text --- */
 .hands picture,
 .hands img { display: block; width: 100%; height: auto; }
-.vn-copy { top: 61%; z-index: 1; }
+.vn-copy { top: 65.5%; z-index: 1; }
 .vn-copy::before,
 .bw-copy::before {
   content: "";
@@ -557,14 +551,17 @@ img { display: block; max-width: 100%; }
 /* the cutout is cropped just below the hands; its lower edge fades into the courtyard */
 .hands {
   position: absolute;
-  left: -2cqw;
+  left: 8.4cqw;
   top: 0;
-  width: 104cqw;
+  width: 83.2cqw;
   aspect-ratio: 941 / 1150;
-  -webkit-mask-image: linear-gradient(#000 80%, transparent);
-  mask-image: linear-gradient(#000 80%, transparent);
+  /* soft lower edge, and soft sides where the saree and robe meet the image edge */
+  -webkit-mask-image: linear-gradient(#000 80%, transparent), linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(#000 80%, transparent), linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-composite: intersect;
 }
-.bw-copy { top: 61%; z-index: 1; padding-inline: 4cqw; }
+.bw-copy { top: 52%; z-index: 1; padding-inline: 4cqw; }
 .bw-title {
   font-size: min(4.6cqh, 10cqw);
   line-height: 1.15;
@@ -583,7 +580,7 @@ img { display: block; max-width: 100%; }
 .bw-names li + li { margin-top: .15em; }
 /* short phones: raise the block and keep each pair on one line */
 @container (max-height: 700px) {
-  .bw-copy { top: 58%; padding-inline: 2cqw; }
+  .bw-copy { top: 56%; padding-inline: 2cqw; }
   .bw-title { font-size: min(4.2cqh, 9cqw); }
   .bw-copy .rule { margin-block: .6cqh .8cqh; }
   .bw-names { font-size: min(1.9cqh, 3.35cqw); line-height: 1.38; letter-spacing: -.005em; text-wrap: nowrap; }

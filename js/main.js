@@ -87,7 +87,6 @@
     const couple = $('.pan__couple', s3);
     const hd = $('.scene--haldi', ch);
     const sg = $('.scene--sangeet', ch);
-    const sgCouple = $('.sg-couple', sg);
     const seated = $('.seated', s4);
     const vn = $('.scene--venue', ch);
     const bw = $('.scene--wishes', ch);
@@ -188,15 +187,13 @@
       .fromTo($('.hd-bottom', hd), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
 
       // A marigold-shaped window with a saffron rim blooms from the bowl of
-      // marigolds and opens onto the Sangeet at night; its lights come up
-      // and the couple sinks into their dip.
+      // marigolds and opens onto the Sangeet at night; its lights come up.
       .to($$('.hd-top, .hd-bottom', hd), { opacity: 0, duration: 20 }, TH)
       .set(sg, { visibility: 'visible' }, TH + 9)
       .to($('.plate', hd), { scale: 1.08, duration: 110 }, TH + 10)
       .to(mwin.state, { p: 1, duration: 110, onUpdate: mwin.draw }, TH + 10)
       .set(hd, { visibility: 'hidden' }, TH + 121)
       .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, TH + 50)
-      .fromTo(sgCouple, { rotation: 9 }, { rotation: 0, duration: 100, ease: 'sine.inOut' }, TH + 45)
       .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, TH + 125)
       .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, TH + 125)
       .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, TH + 140)
@@ -230,10 +227,9 @@
       .set([s3, s4], { visibility: 'hidden' }, T5 + 121)
       .fromTo($$('.vn-copy > *', vn), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, T5 + 105)
 
-      // Same courtyard, next moment: only the foreground changes, from the
-      // toe ring to their joined hands, and the text with it.
+      // The venue painting dissolves into the courtyard with their joined
+      // hands, and the text changes with it.
       .to($('.vn-copy', vn), { opacity: 0, y: -20, duration: 20 }, TV)
-      .to($('.toe', vn), { opacity: 0, duration: 40 }, TV + 5)
       .set(bw, { visibility: 'visible' }, TV + 29)
       .fromTo(bw, { opacity: 0 }, { opacity: 1, duration: 45 }, TV + 30)
       .fromTo($('.hands', bw), { yPercent: -4 }, { yPercent: 0, duration: 60, ease: 'sine.out' }, TV + 30)

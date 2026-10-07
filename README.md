@@ -12,11 +12,11 @@ build step: open `index.html` through any static server (for example
 | 1 | Invocation: Ganesha mark, "Anumanchi's Wedding Invitation" | `r1` temple | An arch window opens from the gopuram doorway and grows until you pass through it (scrubbed, about 1.2 screens) |
 | 2 | Save the date | `r2` lotus offering | A lotus-shaped window with a gold rim blooms from where the two offered lotuses meet and opens onto the Haldi, while petals fall (scrubbed, about 1.1 screens) |
 | 2¼ | Haldi: "A morning of turmeric & blessings", date and venue | `haldi` painting | Holds for about 0.9 screens, then a marigold-shaped window with a saffron rim blooms from the bowl of marigolds on the low table and opens onto the Sangeet, like the lotus window before it (scrubbed, about 1.1 screens) |
-| 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the marigold window opens, the garden's lights come up from dusk and the couple sinks into their dip (rotating about the groom's planted foot). Then it holds for about 0.9 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
+| 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the marigold window opens, the garden's lights come up from dusk; the couple stays still. Then it holds for about 0.9 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
 | 3 | The couple, waist up, with the invitation line, full names and parents | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the standing couple fades as the seated couple settles onto the floor (about 1 screen) |
-| 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring cutout, on the same courtyard (scrubbed, about 1.2 screens) |
-| 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `toe` cutout on the same `couple-bg` | After a hold, only the foreground changes: the toe ring fades and the joined hands settle in, with the text swapping (about 0.8 screens) |
-| 6 | With best wishes from the families | `hands` cutout on the same `couple-bg`, cropped below the hands with a soft lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
+| 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring painting (scrubbed, about 1.2 screens) |
+| 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `venue` toe-ring painting (text removed, set as live text) | After a hold, the painting dissolves into the courtyard with the joined hands settling in, and the text changes (about 0.8 screens) |
+| 6 | With best wishes from the families | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
 ## Structure
@@ -42,9 +42,10 @@ build step: open `index.html` through any static server (for example
   `sangeet-bg-*` is the night garden and `sangeet-couple-*` the dancing couple,
   cropped to the figure (911 × 992) and drawn at 0.672 scale on the same
   941 × 1672 canvas, which is where the composite painting places them.
-  `toe-*` (941 × 1055) and `hands-*` (941 × 1150, cropped just below the
-  hands) are the transparent toe-ring and joined-hands cutouts. The earlier
-  venue and best-wishes paintings are kept only in `references/`.
+  `venue-*` is the toe-ring painting with its baked-in text removed.
+  `hands-*` (941 × 1150, cropped just below the hands) is the transparent
+  joined-hands cutout. The seated and hands cutouts are drawn at about 86%
+  and 83% of the stage width, with their cut side edges softened by a mask.
   `door-l` and `door-r` are the two halves of the door painting (470 × 1672
   each, split at the middle of the brass centre strip).
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
