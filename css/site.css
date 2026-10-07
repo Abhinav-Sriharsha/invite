@@ -716,7 +716,7 @@ img { display: block; max-width: 100%; }
 
 /* Overlays only exist for motion */
 /* Transition layers only exist for motion; the Sangeet scene's iris wrappers are plain boxes */
-.petals, .paper { display: none; }
+.petals { display: none; }
 .iris, .iris__clip, .iris__inner,
 .mwin, .mwin__clip, .mwin__inner { position: absolute; inset: 0; }
 .mwin__rim { display: none; }
@@ -839,21 +839,22 @@ img { display: block; max-width: 100%; }
   background: conic-gradient(from 20deg, #F7E3A1, #C99A3E, #8E6A26, #E9C978, #FFF3C8, #B8882F, #F7E3A1);
 }
 
-/* Arch window (venue → best wishes) rises from the floor between the two
-   brass lamps, so its base sits on the ground like a doorway */
-.motion .portal--wishes,
-.motion .portal--wishes .portal__inner { transform-origin: 50% 70%; }
-.motion .scene--venue .plate { transform-origin: 50% 70%; }
-.portal--wishes .portal__arch path { stroke: #C9A24E; stroke-width: 6; }
-.portal--wishes .portal__arch .fine { stroke: #8E6A26; stroke-width: 1.6; }
+/* Tilt up (venue → best wishes): the best-wishes painting comes down from
+   above with a feathered lower edge while the venue drifts down beneath it */
+.motion .scene--wishes {
+  --feather: 86%;
+  -webkit-mask-image: linear-gradient(#000 var(--feather), transparent);
+  mask-image: linear-gradient(#000 var(--feather), transparent);
+}
 /* scene 4 shares scene 3's background, so in motion only its foreground is drawn */
 .motion .scene--4 .plate { display: none; }
 .motion .seated { opacity: 0; }
 .motion .stage { pointer-events: none; }
 .motion .stage a { pointer-events: auto; }
 
-/* The information sections wait beneath the stage as the painting fades to paper */
-.motion .info { z-index: 0; margin-top: -100vh; margin-top: -100lvh; }
+/* The story ends like an ordinary page: the last painting scrolls up and the
+   celebrations follow directly beneath it */
+.motion .info { z-index: 0; }
 
 /* Lotus window (save the date → Haldi). JS sets the petal-shaped clip path. */
 .motion .iris { transform-origin: 58% 30%; opacity: 0; }
@@ -882,19 +883,6 @@ img { display: block; max-width: 100%; }
   min-width: 14px;
   height: auto;
   opacity: 0;
-}
-
-/* Painting fades into the courtyard's ivory paper (muhurtham → celebrations) */
-.motion .paper {
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 150%;
-  z-index: 3;
-  background: linear-gradient(rgba(250, 245, 235, 0), #FAF5EB 25%);
-  visibility: hidden;
 }
 
 /* Reveal targets start hidden only in motion mode */

@@ -89,7 +89,6 @@
     const sg = $('.scene--sangeet', ch);
     const sgCouple = $('.sg-couple', sg);
     const seated = $('.seated', s4);
-    const paper = $('.paper', stage);
     const vn = $('.scene--venue', ch);
     const bw = $('.scene--wishes', ch);
 
@@ -109,11 +108,6 @@
     shapeRing();
     ScrollTrigger.addEventListener('refreshInit', shapeRing);
 
-    // Arch window rising from the floor between the brass lamps (venue → best wishes)
-    const arch2 = $('.portal__arch', bw);
-    const portal2 = windowDrawer($('.portal', bw), $('.portal__inner', bw), 0.03, 0.88, (p) => {
-      arch2.style.opacity = p < 0.7 ? 1 : Math.max(0, 1 - (p - 0.7) / 0.3);
-    });
 
     // Arch window from the gopuram doorway (scene 1 → 2)
     const arch = $('.portal__arch', s2);
@@ -138,7 +132,8 @@
     const T4 = 1060; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
     const T5 = 1270; // muhurtham has been read
     const TV = 1510; // the venue has been read (its text settles at T5 + 150; hold ~0.9 screen)
-    const TB = 1770; // the best wishes have been read
+    // The best wishes settle at TV + 150 and hold ~0.9 screen; the track ends
+    // there, so the stage then scrolls away like a page onto the celebrations.
 
     // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
     const mwin = windowDrawer($('.mwin', sg), $('.mwin__inner', sg), 0.03, 0.92);
@@ -235,21 +230,16 @@
       .set([s3, s4], { visibility: 'hidden' }, T5 + 121)
       .fromTo($$('.vn-copy > *', vn), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, T5 + 105)
 
-      // Through the arch: a doorway rises from the floor between the lamps and
-      // opens into the arched courtyard where their hands are tied together.
+      // The camera tilts up from her feet to their joined hands: the
+      // best-wishes painting comes down from above with a soft lower edge
+      // while the venue drifts down beneath it.
       .to($('.vn-copy', vn), { opacity: 0, y: -20, duration: 20 }, TV)
-      .set(bw, { visibility: 'visible' }, TV + 9)
-      .to($('.plate', vn), { scale: 1.1, duration: 120 }, TV + 10)
-      .to(portal2.state, { p: 1, duration: 120, onUpdate: portal2.draw }, TV + 10)
-      .set(vn, { visibility: 'hidden' }, TV + 131)
-      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 125)
-
-      // The painting fades into the courtyard's ivory paper
-      .to($('.bw-copy', bw), { opacity: 0, y: -20, duration: 20 }, TB)
-      .set(paper, { visibility: 'visible' }, TB + 4)
-      .fromTo(paper, { y: 0, yPercent: 67 }, { yPercent: -26, duration: 70 }, TB + 5)
-      .to($('.portal__inner', bw), { scale: 1.06, duration: 80 }, TB)
-      .to(stage, { autoAlpha: 0, duration: 30 }, TB + 70)
+      .set(bw, { visibility: 'visible', '--feather': '86%' }, TV + 9)
+      .fromTo(bw, { yPercent: -100 }, { yPercent: 0, duration: 100, ease: 'sine.inOut' }, TV + 10)
+      .to(vn, { yPercent: 40, duration: 100, ease: 'sine.inOut' }, TV + 10)
+      .set(vn, { visibility: 'hidden' }, TV + 111)
+      .set(bw, { '--feather': '100%' }, TV + 111)
+      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 105)
       .set({}, {}, trackLength(ch));
 
     // Petals drift down from the lotuses into the Haldi
@@ -266,7 +256,6 @@
 
     portal.draw();
     ring.draw();
-    portal2.draw();
     iris.draw();
     mwin.draw();
     return () => {
@@ -276,8 +265,6 @@
       mwin.reset();
       ScrollTrigger.removeEventListener('refreshInit', shapeMwin);
       ring.reset();
-      portal2.reset();
-      arch2.style.cssText = '';
       ScrollTrigger.removeEventListener('refreshInit', shapeRing);
       ScrollTrigger.removeEventListener('refreshInit', shapeIris);
     };
