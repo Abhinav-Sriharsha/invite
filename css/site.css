@@ -513,8 +513,19 @@ img { display: block; max-width: 100%; }
   .s4-copy .btn { margin-top: 8px; }
 }
 
-/* --- 5. Venue: the toe-ring painting, address as live text --- */
-.vn-copy { top: 65.5%; z-index: 1; }
+/* --- 5. Venue: the toe-ring cutout on the same courtyard, address as live text --- */
+.toe {
+  position: absolute;
+  left: -2cqw;
+  bottom: 40%;
+  width: 104cqw;
+  aspect-ratio: 941 / 1055;
+}
+.toe picture,
+.toe img,
+.hands picture,
+.hands img { display: block; width: 100%; height: auto; }
+.vn-copy { top: 61%; z-index: 1; }
 .vn-copy::before,
 .bw-copy::before {
   content: "";
@@ -542,8 +553,18 @@ img { display: block; max-width: 100%; }
 }
 .vn-copy .btn { margin-top: 1.8cqh; }
 
-/* --- 6. With best wishes: the joined-hands painting, family names as live text --- */
-.bw-copy { top: 71%; z-index: 1; padding-inline: 4cqw; }
+/* --- 6. With best wishes: the joined-hands cutout, family names as live text --- */
+/* the cutout is cropped just below the hands; its lower edge fades into the courtyard */
+.hands {
+  position: absolute;
+  left: -2cqw;
+  top: 0;
+  width: 104cqw;
+  aspect-ratio: 941 / 1150;
+  -webkit-mask-image: linear-gradient(#000 80%, transparent);
+  mask-image: linear-gradient(#000 80%, transparent);
+}
+.bw-copy { top: 61%; z-index: 1; padding-inline: 4cqw; }
 .bw-title {
   font-size: min(4.6cqh, 10cqw);
   line-height: 1.15;
@@ -562,7 +583,7 @@ img { display: block; max-width: 100%; }
 .bw-names li + li { margin-top: .15em; }
 /* short phones: raise the block and keep each pair on one line */
 @container (max-height: 700px) {
-  .bw-copy { top: 66%; padding-inline: 2cqw; }
+  .bw-copy { top: 58%; padding-inline: 2cqw; }
   .bw-title { font-size: min(4.2cqh, 9cqw); }
   .bw-copy .rule { margin-block: .6cqh .8cqh; }
   .bw-names { font-size: min(1.9cqh, 3.35cqw); line-height: 1.38; letter-spacing: -.005em; text-wrap: nowrap; }
@@ -839,13 +860,6 @@ img { display: block; max-width: 100%; }
   background: conic-gradient(from 20deg, #F7E3A1, #C99A3E, #8E6A26, #E9C978, #FFF3C8, #B8882F, #F7E3A1);
 }
 
-/* Tilt up (venue → best wishes): the best-wishes painting comes down from
-   above with a feathered lower edge while the venue drifts down beneath it */
-.motion .scene--wishes {
-  --feather: 86%;
-  -webkit-mask-image: linear-gradient(#000 var(--feather), transparent);
-  mask-image: linear-gradient(#000 var(--feather), transparent);
-}
 /* scene 4 shares scene 3's background, so in motion only its foreground is drawn */
 .motion .scene--4 .plate { display: none; }
 .motion .seated { opacity: 0; }

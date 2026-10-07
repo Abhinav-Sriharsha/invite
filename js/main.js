@@ -132,7 +132,7 @@
     const T4 = 1060; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
     const T5 = 1270; // muhurtham has been read
     const TV = 1510; // the venue has been read (its text settles at T5 + 150; hold ~0.9 screen)
-    // The best wishes settle at TV + 150 and hold ~0.9 screen; the track ends
+    // The best wishes settle at TV + 125 and hold ~0.9 screen; the track ends
     // there, so the stage then scrolls away like a page onto the celebrations.
 
     // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
@@ -230,16 +230,15 @@
       .set([s3, s4], { visibility: 'hidden' }, T5 + 121)
       .fromTo($$('.vn-copy > *', vn), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, T5 + 105)
 
-      // The camera tilts up from her feet to their joined hands: the
-      // best-wishes painting comes down from above with a soft lower edge
-      // while the venue drifts down beneath it.
+      // Same courtyard, next moment: only the foreground changes, from the
+      // toe ring to their joined hands, and the text with it.
       .to($('.vn-copy', vn), { opacity: 0, y: -20, duration: 20 }, TV)
-      .set(bw, { visibility: 'visible', '--feather': '86%' }, TV + 9)
-      .fromTo(bw, { yPercent: -100 }, { yPercent: 0, duration: 100, ease: 'sine.inOut' }, TV + 10)
-      .to(vn, { yPercent: 40, duration: 100, ease: 'sine.inOut' }, TV + 10)
-      .set(vn, { visibility: 'hidden' }, TV + 111)
-      .set(bw, { '--feather': '100%' }, TV + 111)
-      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 105)
+      .to($('.toe', vn), { opacity: 0, duration: 40 }, TV + 5)
+      .set(bw, { visibility: 'visible' }, TV + 29)
+      .fromTo(bw, { opacity: 0 }, { opacity: 1, duration: 45 }, TV + 30)
+      .fromTo($('.hands', bw), { yPercent: -4 }, { yPercent: 0, duration: 60, ease: 'sine.out' }, TV + 30)
+      .set(vn, { visibility: 'hidden' }, TV + 76)
+      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 75)
       .set({}, {}, trackLength(ch));
 
     // Petals drift down from the lotuses into the Haldi
