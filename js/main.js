@@ -165,7 +165,7 @@
       .fromTo($('.gate__glow', gate), { opacity: 0 }, { opacity: 1, duration: 30 }, 10)
       .to($('.gate__glow', gate), { opacity: 0, duration: 45 }, 60)
       .fromTo(plate1, { scale: 1.12 }, { scale: 1, duration: 120 }, 10)
-      .to($$('.gate__frame, .gate__doors', gate), { scale: 1.7, duration: 45, ease: 'power1.in' }, 80)
+      .to($('.gate__doors', gate), { scale: 1.7, duration: 45, ease: 'power1.in' }, 80)
       .to(gate, { autoAlpha: 0, duration: 35 }, 90)
       .fromTo($$('.s1-copy > *', s1), { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 22, stagger: 6, ease: 'power1.out' }, 105)
