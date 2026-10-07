@@ -278,6 +278,27 @@ img { display: block; max-width: 100%; }
   font-style: italic;
 }
 
+/* Haldi painting: fitted to the stage width rather than cropped to cover, so
+   tall phones see the whole width at less enlargement. A tiny blurred copy
+   fills the bands above and below, under the title and the date. */
+.hd-plate .hd-fill {
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  filter: blur(14px) saturate(1.05);
+}
+.hd-plate .hd-art {
+  inset: auto 0;
+  top: 50%;
+  height: auto;
+  aspect-ratio: 941 / 1672;
+  translate: 0 -50%;
+  -webkit-mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
+}
+.hd-plate .hd-art img { object-fit: cover; }
+
 /* --- Sangeet: night garden with the dancing couple --- */
 /* Background and couple share one 941 × 1672 canvas sized like object-fit:
    cover (slightly overscanned), so the couple stays exactly where the
@@ -703,7 +724,7 @@ img { display: block; max-width: 100%; }
 .portal__arch .fine { stroke: var(--gold); stroke-width: 1.4; }
 .motion .s2-copy > * { opacity: 0; }
 .motion .scene--1 .plate { transform-origin: 50% 74%; }
-.motion .scene--haldi .plate { transform-origin: 49% 77%; }
+.motion .scene--haldi .plate { transform-origin: var(--bowl-x, 49%) var(--bowl-y, 77%); }
 
 /* Later scenes wait hidden on the same stage until their transition */
 .motion .scene--haldi,
@@ -716,14 +737,14 @@ img { display: block; max-width: 100%; }
 .motion .hd-bottom { opacity: 0; }
 /* Marigold window (Haldi → Sangeet), opening from the bowl of marigolds.
    JS sets the ruffled clip path; the rim is the same shape, slightly larger. */
-.motion .mwin { transform-origin: 49% 77%; opacity: 0; }
-.motion .mwin__inner { transform-origin: 49% 77%; }
+.motion .mwin { transform-origin: var(--bowl-x, 49%) var(--bowl-y, 77%); opacity: 0; }
+.motion .mwin__inner { transform-origin: var(--bowl-x, 49%) var(--bowl-y, 77%); }
 .motion .mwin__rim {
   display: block;
   position: absolute;
   inset: 0;
   transform: scale(1.05);
-  transform-origin: 49% 77%;
+  transform-origin: var(--bowl-x, 49%) var(--bowl-y, 77%);
 }
 .motion .mwin__rim::before {
   content: "";

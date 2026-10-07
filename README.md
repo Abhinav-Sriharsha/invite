@@ -39,7 +39,9 @@ build step: open `index.html` through any static server (for example
   `sangeet-bg-*` is the night garden and `sangeet-couple-*` the dancing couple,
   cropped to the figure (911 × 992) and drawn at 0.672 scale on the same
   941 × 1672 canvas, which is where the composite painting places them.
-  `haldi-*` is the Haldi painting.
+  `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
+  cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
+  that fills the bands above and below it.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
   Script subset to "the" and "and".

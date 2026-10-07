@@ -145,8 +145,10 @@
             <div class="iris__rim"></div>
             <div class="iris__clip">
               <div class="iris__inner">
-                <div class="plate">
-                  <picture>
+                <!-- The whole painting width is shown (less enlargement on tall phones); a blurred copy fills above and below -->
+                <div class="plate hd-plate">
+                  <img class="hd-fill" src="assets/scenes/haldi-blur.webp" width="120" height="213" alt="" decoding="async">
+                  <picture class="hd-art">
                     <source type="image/avif" srcset="assets/scenes/haldi-640.avif 640w, assets/scenes/haldi-941.avif 941w" sizes="56vh">
                     <img src="assets/scenes/haldi-941.webp" srcset="assets/scenes/haldi-640.webp 640w, assets/scenes/haldi-941.webp 941w" sizes="56vh"
                          width="941" height="1672" loading="lazy" decoding="async"

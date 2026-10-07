@@ -106,8 +106,15 @@
 
     // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
     const mwin = windowDrawer($('.mwin', sg), $('.mwin__inner', sg), 0.03, 0.92);
+    // The bowl sits at (48.9%, 76.9%) of the painting, which is fitted to the
+    // stage width and centred vertically, so its screen position depends on the stage shape.
     const shapeMwin = () => {
-      const clip = marigoldClip(49, 77, stage.clientHeight / stage.clientWidth);
+      const w = stage.clientWidth, h = stage.clientHeight;
+      const artH = w * 1672 / 941;
+      const bx = 48.9, by = 50 + (76.9 - 50) * artH / h;
+      stage.style.setProperty('--bowl-x', `${bx}%`);
+      stage.style.setProperty('--bowl-y', `${by.toFixed(2)}%`);
+      const clip = marigoldClip(bx, by, h / w);
       $('.mwin__clip', sg).style.clipPath = clip;
       $('.mwin__rim', sg).style.clipPath = clip;
     };
