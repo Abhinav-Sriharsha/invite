@@ -61,8 +61,10 @@
     const plate3 = $('.plate', s3);
     const pan = $('.pan', s3);
     const couple = $('.pan__couple', s3);
+    const hd = $('.scene--haldi', ch);
     const sg = $('.scene--sangeet', ch);
     const sgCouple = $('.sg-couple', sg);
+    const band = $('.flower-band', stage);
     const closeup = $('.closeup', s4);
     const paper = $('.paper', stage);
 
@@ -72,21 +74,38 @@
       arch.style.opacity = p < 0.7 ? 1 : Math.max(0, 1 - (p - 0.7) / 0.3);
     });
 
-    // Lotus window from where the offered lotuses meet (save the date → Sangeet)
-    const iris = windowDrawer($('.iris', sg), $('.iris__inner', sg), 0.034, 0.92);
+    // Lotus window from where the offered lotuses meet (save the date → Haldi)
+    const iris = windowDrawer($('.iris', hd), $('.iris__inner', hd), 0.034, 0.92);
     const shapeIris = () => {
       const clip = lotusClip(58, 30, stage.clientHeight / stage.clientWidth);
-      $('.iris__clip', sg).style.clipPath = clip;
-      $('.iris__rim', sg).style.clipPath = clip;
+      $('.iris__clip', hd).style.clipPath = clip;
+      $('.iris__rim', hd).style.clipPath = clip;
     };
     shapeIris();
     ScrollTrigger.addEventListener('refreshInit', shapeIris);
 
     const D = 160; // the royal doors use the first 160 units
     const T2 = 370; // save the date has been read
-    const TS = 612; // the Sangeet has been read (its text settles at 525; hold ~0.9 screen so one swipe doesn't skip it)
-    const T4 = 802; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
-    const T5 = 1012; // muhurtham has been read
+    const TH = 612; // the Haldi has been read (its text settles at 525; hold ~0.9 screen)
+    const TS = 870; // the Sangeet has been read (its text settles at TH + 170; hold ~0.9 screen)
+    const T4 = 1060; // the invitation has been read (couple arrives at TS + 100; hold ~0.9 screen)
+    const T5 = 1270; // muhurtham has been read
+
+    // Flower wipe (Haldi → Sangeet): the band's middle is the edge between the
+    // two scenes. Above it the Sangeet is uncovered by sliding its outer box
+    // down while the inner box counter-slides, so only transforms change.
+    const wipeOuter = $('.wipe', sg);
+    const wipeInner = $('.wipe__inner', sg);
+    const wipe = { e: 0 };
+    const drawWipe = () => {
+      const H = stage.clientHeight;
+      const B = band.getBoundingClientRect().height;
+      const edge = -B / 2 + wipe.e * (H + B);
+      const outer = Math.min(0, edge - H);
+      wipeOuter.style.transform = `translateY(${outer}px)`;
+      wipeInner.style.transform = `translateY(${-outer}px)`;
+      band.style.transform = `translateY(${edge - B / 2}px)`;
+    };
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -114,17 +133,27 @@
         { opacity: 1, y: 0, duration: 24, stagger: 6, ease: 'power1.out' }, D + 138)
 
       // A lotus window blooms from where the offered lotuses meet and opens
-      // onto the Sangeet at night. Petals fall, the garden's lights come up
-      // and the couple sinks into their dip.
+      // onto the Haldi, while petals fall.
       .to($('.s2-copy', s2), { opacity: 0, y: -24, duration: 25 }, T2)
-      .set(sg, { visibility: 'visible' }, T2 + 9)
+      .set(hd, { visibility: 'visible' }, T2 + 9)
       .to($('.plate', s2), { scale: 1.08, duration: 110 }, T2 + 10)
       .to(iris.state, { p: 1, duration: 100, onUpdate: iris.draw }, T2 + 10)
-      .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, T2 + 25)
-      .fromTo(sgCouple, { rotation: 9 }, { rotation: 0, duration: 100, ease: 'sine.inOut' }, T2 + 40)
-      .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, T2 + 105)
-      .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
-      .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
+      .fromTo($('.hd-top', hd), { opacity: 0 }, { opacity: 1, duration: 30 }, T2 + 105)
+      .fromTo($$('.hd-top > *', hd), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
+      .fromTo($('.hd-bottom', hd), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
+
+      // A band of marigolds, jasmine and leaves sweeps down the screen and
+      // carries the morning into the night: the Sangeet appears above it,
+      // its lights come up and the couple sinks into their dip.
+      .to($$('.hd-top, .hd-bottom', hd), { opacity: 0, duration: 20 }, TH)
+      .set([sg, band], { visibility: 'visible' }, TH + 9)
+      .fromTo(wipe, { e: 0 }, { e: 1, duration: 120, ease: 'sine.inOut', onUpdate: drawWipe }, TH + 10)
+      .set([hd, band], { visibility: 'hidden' }, TH + 131)
+      .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, TH + 50)
+      .fromTo(sgCouple, { rotation: 9 }, { rotation: 0, duration: 100, ease: 'sine.inOut' }, TH + 45)
+      .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, TH + 125)
+      .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, TH + 125)
+      .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, TH + 140)
 
       // The Sangeet and the couple scene are stitched like two sections of an
       // ordinary page: after the hold, the Sangeet scrolls up and the couple
@@ -154,7 +183,7 @@
       .to(stage, { autoAlpha: 0, duration: 30 }, T5 + 70)
       .set({}, {}, trackLength(ch));
 
-    // Petals drift down from the lotuses into the garden
+    // Petals drift down from the lotuses into the Haldi
     const w = () => stage.clientWidth;
     const h = () => stage.clientHeight;
     $$('.petals svg', stage).forEach((el, i) => {
@@ -168,10 +197,14 @@
 
     portal.draw();
     iris.draw();
+    drawWipe();
     return () => {
       portal.reset();
       arch.style.cssText = '';
       iris.reset();
+      wipeOuter.style.cssText = '';
+      wipeInner.style.cssText = '';
+      band.style.cssText = '';
       ScrollTrigger.removeEventListener('refreshInit', shapeIris);
     };
   }
