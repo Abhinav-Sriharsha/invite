@@ -463,28 +463,28 @@ img { display: block; max-width: 100%; }
 }
 
 /* --- 4. Sumuhurtham: the couple seated for the jeelakarra-bellam moment, same background --- */
-/* The cutout (941 × 775, cropped to the figures) is a little wider than the
-   stage so the drapes run off both sides; it sits on the courtyard floor
-   just above the text, with a soft shadow beneath. */
+/* The cutout (941 × 860, cropped to the figures and their peetalu) is a
+   little wider than the stage so the drapes run off both sides; the seats
+   rest on the courtyard floor just above the text, with a soft shadow beneath. */
 .seated {
   position: absolute;
   left: -4cqw;
   bottom: 41%;
   width: 108cqw;
-  aspect-ratio: 941 / 775;
+  aspect-ratio: 941 / 860;
 }
 .seated picture,
 .seated img { display: block; width: 100%; height: auto; }
 .seated::after {
   content: "";
   position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: -2%;
-  height: 8%;
+  left: 2%;
+  right: 2%;
+  bottom: -1.5%;
+  height: 6%;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(90, 50, 20, .3), rgba(90, 50, 20, 0));
+  background: radial-gradient(closest-side, rgba(90, 50, 20, .34), rgba(90, 50, 20, 0));
 }
 .s4-copy { top: 60%; z-index: 1; }
 .s4-copy::before {
