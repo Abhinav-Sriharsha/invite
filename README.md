@@ -18,7 +18,7 @@ build step: open `index.html` through any static server (for example
 | 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `venue` toe-ring painting (text removed, set as live text) | After a hold, the painting dissolves into the courtyard with the joined hands settling in, and the text changes (about 0.8 screens) |
 | 5½ | Reception: Saturday 28 Nov 2026, from 7 p.m., Hotel Taj Tristar, Secunderabad, on an ivory card like the Haldi | `reception` hall painting | The venue dissolves into the hall and the card appears; after a hold the hall dissolves into the best wishes (about 1.6 screens) |
 | 6 | With best wishes from the families (text sits low, in the clear area under the hands) | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
-| 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
+| 7–8 | Celebrations (one arch card per event, each with date, time, venue, address and Open in Maps) and RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
 ## Structure
 
@@ -87,7 +87,6 @@ build step: open `index.html` through any static server (for example
 Everything marked `data-placeholder` in `index.html` shows a dotted underline
 on the page:
 
-- the arrival time in the venue card
 - the RSVP-by date, WhatsApp number and phone number
 
 When the details are final, delete the `[data-placeholder]` rule in

@@ -632,41 +632,69 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   padding: 0;
 }
 
-.event { padding-block: 26px; }
-.event + .event::before {
-  content: "";
-  display: block;
-  width: 26px;
-  height: 26px;
-  margin: -12px auto 26px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-13 -13 26 26'%3E%3Cpath d='M0 0C-5-3.5-5-10.5 0-10.5C5-10.5 5-3.5 0 0C3.5-5 10.5-5 10.5 0C10.5 5 3.5 5 0 0C5 3.5 5 10.5 0 10.5C-5 10.5-5 3.5 0 0C-3.5 5-10.5 5-10.5 0C-10.5-5-3.5-5 0 0Z' fill='none' stroke='%23B08A4F' stroke-width='.9'/%3E%3Cg fill='%237A1420'%3E%3Ccircle cy='-6' r='1'/%3E%3Ccircle cx='6' r='1'/%3E%3Ccircle cy='6' r='1'/%3E%3Ccircle cx='-6' r='1'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
-}
-
+/* Each event is an arch-framed card, like a temple window */
+.events { display: grid; gap: 30px; }
+.event-card { text-align: center; }
 .event__name {
   color: var(--ink);
   font-weight: 600;
   font-size: calc(1.65rem * 1.1);
-  line-height: 1.12;
+  line-height: 1.1;
 }
-.event__note { color: var(--text-soft); font-size: calc(1rem * 1.1); }
+.event-card--key .event__name { font-size: calc(1.85rem * 1.1); }
+.event__note { margin-top: 2px; color: var(--text-soft); font-size: calc(.95rem * 1.1); font-style: italic; }
 .event__when {
-  margin-top: 8px;
-  font-size: calc(.82rem * 1.1);
+  margin-top: 10px;
+  font-size: calc(.8rem * 1.1);
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-.event__where { margin-top: 2px; color: var(--text-soft); }
-.event--key .event__name { font-size: calc(1.9rem * 1.1); }
+.event__time {
+  display: block;
+  margin-top: 3px;
+  font-size: 1.15em;
+  letter-spacing: .06em;
+  text-transform: none;
+  color: var(--ink);
+}
+.event__place {
+  margin-top: 12px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: calc(1.15rem * 1.1);
+  line-height: 1.2;
+}
+.event__address {
+  margin-top: 4px;
+  color: var(--text-soft);
+  font-size: calc(.98rem * 1.1);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.btn--map { margin-top: 18px; min-height: 40px; padding: .4em 1.3em; font-size: calc(.9rem * 1.1); }
 
-/* Venue: arch window card, reusing the Ivory arch geometry */
+/* Arch window card, reusing the Ivory arch geometry. The crown is drawn
+   shorter than the full arch (it stretches to its box) so four cards stay compact. */
 .arch-card {
   display: flex;
   flex-direction: column;
   width: min(100%, 360px);
   margin-inline: auto;
 }
-.arch-card__crown { display: block; width: 100%; height: auto; overflow: visible; }
+.arch-card__top { position: relative; aspect-ratio: 300 / 112; }
+.arch-card__crown { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+.arch-card__motif {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 46px;
+  height: auto;
+  translate: -50% 0;
+  fill: var(--ink);
+}
+.arch-card__motif .lotus-base { stroke: var(--ink); }
+.arch-card__motif--gopuram { top: 28%; width: 44px; }
 .arch-line {
   fill: none;
   stroke: var(--gold);
@@ -681,7 +709,7 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 .arch-card__body {
   position: relative;
   margin-inline: -.5px;
-  padding: 8px 36px 40px;
+  padding: 4px 30px 30px;
   border: 1px solid var(--gold);
   border-top: 0;
 }
@@ -693,8 +721,6 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   border-top: 0;
   pointer-events: none;
 }
-.venue__address { display: flex; flex-direction: column; margin-top: 12px; color: var(--text-soft); }
-.venue__note { margin-block: 14px 22px; font-size: calc(1rem * 1.1); }
 
 .kolam-mark { display: block; width: 44px; height: 44px; margin: 0 auto 18px; }
 #kolam .kolam-line path { fill: none; stroke: var(--gold); stroke-width: .9; }
@@ -978,7 +1004,7 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 /* small phones: give the venue card and event dates more room */
 @media (max-width: 360px) {
   .block { padding-inline: 18px; }
-  .arch-card__body { padding-inline: 22px; }
+  .arch-card__body { padding-inline: 20px; }
   .event__when { letter-spacing: .06em; }
 }
 

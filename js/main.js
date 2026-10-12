@@ -305,7 +305,7 @@
       const from = kind === 'drop' ? { y: -24 } : kind === 'rise' ? { y: 30 } : { y: 18 };
       const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 96%', once: true } })
         .fromTo(el, { opacity: 0, ...from }, { opacity: 1, y: 0, duration: kind === 'drop' ? 1.2 : 0.9, ease: 'power2.out' });
-      const lines = kind === 'draw' ? drawn.draw : el.classList.contains('arch-card') ? drawn.venue : null;
+      const lines = kind === 'draw' ? drawn.draw : el.querySelector('use[href="#gopuram"]') ? drawn.venue : null;
       if (lines) tl.fromTo(lines, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: 'power1.inOut' }, 0.2);
     });
   }
