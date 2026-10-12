@@ -87,7 +87,7 @@ build step: open `index.html` through any static server (for example
 Everything marked `data-placeholder` in `index.html` shows a dotted underline
 on the page:
 
-- the RSVP-by date, WhatsApp number and phone number
+- the RSVP-by date
 
 When the details are final, delete the `[data-placeholder]` rule in
 `css/site.css`.
