@@ -235,8 +235,8 @@ img { display: block; max-width: 100%; }
   right: auto;
   bottom: max(66px, 8cqh); /* clears the music button */
   z-index: 1;
-  width: min(84cqw, 400px);
-  padding: 2.4cqh 5cqw 2.6cqh;
+  width: min(64cqw, 300px);
+  padding: 1.9cqh 3cqw 2cqh;
   translate: -50% 0;
   border: 1px solid var(--card-line);
   box-shadow:
@@ -262,10 +262,15 @@ img { display: block; max-width: 100%; }
   text-transform: uppercase;
 }
 .ev-copy .ev-eyebrow {
-  font-size: max(10.5px, min(1.4cqh, 2.9cqw));
-  letter-spacing: .14em;
-  white-space: nowrap;
+  font-size: max(9.5px, min(1.15cqh, 2.4cqw));
+  letter-spacing: .12em;
+  line-height: 1.5;
+  text-wrap: balance;
 }
+.ev-copy .ev-title { font-size: min(5.4cqh, 11.5cqw); }
+.ev-copy .ev-when { font-size: max(13.5px, min(1.85cqh, 3.9cqw)); }
+.ev-copy .ev-where { font-size: max(13px, min(1.75cqh, 3.7cqw)); }
+.ev-copy .ev-time { font-size: max(14.5px, min(2.1cqh, 4.4cqw)); }
 .hd-copy .ev-eyebrow { color: #93530F; }
 .sg-copy .ev-eyebrow { color: #F2D493; }
 .ev-title {
@@ -296,7 +301,7 @@ img { display: block; max-width: 100%; }
 sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 @container (max-width: 360px) {
   .ev-copy .ev-eyebrow { letter-spacing: .08em; }
-  .ev-copy { width: 90cqw; padding-inline: 3cqw; }
+  .ev-copy { width: 66cqw; padding-inline: 2.5cqw; }
 }
 
 /* Haldi painting: fitted to the stage width rather than cropped to cover, so
