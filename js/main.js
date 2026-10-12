@@ -185,21 +185,19 @@
       .set(hd, { visibility: 'visible' }, T2 + 9)
       .to($('.plate', s2), { scale: 1.08, duration: 110 }, T2 + 10)
       .to(iris.state, { p: 1, duration: 100, onUpdate: iris.draw }, T2 + 10)
-      .fromTo($('.hd-top', hd), { opacity: 0 }, { opacity: 1, duration: 30 }, T2 + 105)
-      .fromTo($$('.hd-top > *', hd), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, T2 + 105)
-      .fromTo($('.hd-bottom', hd), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, T2 + 125)
+      .fromTo($('.hd-copy', hd), { opacity: 0 }, { opacity: 1, duration: 30 }, T2 + 100)
+      .fromTo($$('.hd-copy > *', hd), { y: 14 }, { y: 0, duration: 30, stagger: 5, ease: 'power1.out' }, T2 + 100)
 
       // A marigold-shaped window with a saffron rim blooms from the bowl of
       // marigolds and opens onto the Sangeet at night; its lights come up.
-      .to($$('.hd-top, .hd-bottom', hd), { opacity: 0, duration: 20 }, TH)
+      .to($('.hd-copy', hd), { opacity: 0, duration: 20 }, TH)
       .set(sg, { visibility: 'visible' }, TH + 9)
       .to($('.plate', hd), { scale: 1.08, duration: 110 }, TH + 10)
       .to(mwin.state, { p: 1, duration: 110, onUpdate: mwin.draw }, TH + 10)
       .set(hd, { visibility: 'hidden' }, TH + 121)
       .fromTo($('.sg-dusk', sg), { opacity: 0.55 }, { opacity: 0, duration: 90, ease: 'sine.inOut' }, TH + 50)
-      .fromTo($('.sg-top', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, TH + 125)
-      .fromTo($$('.sg-top > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 8, ease: 'power1.out' }, TH + 125)
-      .fromTo($('.sg-bottom', sg), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, TH + 140)
+      .fromTo($('.sg-copy', sg), { opacity: 0 }, { opacity: 1, duration: 30 }, TH + 120)
+      .fromTo($$('.sg-copy > *', sg), { y: 14 }, { y: 0, duration: 30, stagger: 5, ease: 'power1.out' }, TH + 120)
 
       // The Sangeet and the couple scene are stitched like two sections of an
       // ordinary page: after the hold, the Sangeet scrolls up and the couple
@@ -219,7 +217,7 @@
       .to(couple, { opacity: 0, duration: 50 }, T4 + 40)
       .fromTo(seated, { opacity: 0, yPercent: -6, scale: 1.04 },
         { opacity: 1, yPercent: 0, scale: 1, duration: 80, ease: 'sine.out' }, T4 + 35)
-      .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 8 }, T4 + 100)
+      .fromTo($$('.s4-copy > *', s4), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 6 }, T4 + 100)
 
       // A gold ring opens from where the couple's hands meet and grows into
       // a window onto the toe-ring ceremony and the venue.

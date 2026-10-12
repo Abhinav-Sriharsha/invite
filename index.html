@@ -20,6 +20,7 @@
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/music.js" defer></script>
 </head>
 <body>
 
@@ -128,7 +129,7 @@
           </div>
           <div class="copy s2-copy">
             <h2 class="save" id="save">Save <span class="script">the</span> Date</h2>
-            <p class="lead-line s2-line">For the wedding celebrations of</p>
+            <p class="lead-line s2-line">For the wedding celebrations</p>
             <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
           </div>
         </section>
@@ -146,19 +147,21 @@
                     <source type="image/avif" srcset="assets/scenes/haldi-640.avif 640w, assets/scenes/haldi-941.avif 941w" sizes="56vh">
                     <img src="assets/scenes/haldi-941.webp" srcset="assets/scenes/haldi-640.webp 640w, assets/scenes/haldi-941.webp 941w" sizes="56vh"
                          width="941" height="1672" loading="lazy" decoding="async"
-                         alt="At the Haldi, friends dab turmeric on Trilokya’s cheek as she and Abhiram sit in yellow before marigold and jasmine garlands, with brass urlis of flowers and a flower rangoli in front.">
+                         alt="The Haldi setting: a cream sofa with yellow cushions before marigold and jasmine garlands, with brass urlis of flowers and a flower rangoli in front.">
                   </picture>
+                  <!-- blurred copy behind the centred text -->
+                  <img class="hd-soft" src="assets/scenes/haldi-soft.webp" width="470" height="835" alt="" loading="lazy" decoding="async">
                 </div>
               </div>
             </div>
           </div>
-          <div class="copy hd-top">
-            <p class="hd-eyebrow">A morning of turmeric &amp; blessings</p>
-            <h2 class="hd-title" id="haldi">Haldi</h2>
-          </div>
-          <div class="copy hd-bottom">
-            <p class="hd-when" data-placeholder>Saturday, 21 November 2026 · 10:00 a.m.</p>
-            <p class="hd-where" data-placeholder>Courtyard, venue name</p>
+          <div class="copy ev-copy hd-copy">
+            <p class="ev-eyebrow">A morning of turmeric &amp; blessings</p>
+            <h2 class="ev-title" id="haldi">Haldi</h2>
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+            <p class="ev-when"><time datetime="2026-11-21T15:00+05:30">Saturday, 21<sup>st</sup> November 2026</time></p>
+            <p class="ev-where">Manduva House, Rajahmundry</p>
+            <p class="ev-time">3 p.m.</p>
           </div>
         </section>
 
@@ -168,7 +171,7 @@
             <div class="mwin__rim"></div>
             <div class="mwin__clip">
               <div class="mwin__inner">
-                <!-- Night garden and the dancing couple share one canvas so the couple stays where the painting puts them -->
+                <!-- Night garden, sized like object-fit: cover -->
                 <div class="sg-canvas">
                   <picture>
                     <source type="image/avif" srcset="assets/scenes/sangeet-bg-640.avif 640w, assets/scenes/sangeet-bg-941.avif 941w" sizes="60vh">
@@ -177,25 +180,19 @@
                          alt="A garden dance floor at night under palm trees, string lights and paper lanterns, with a lit trellis stage behind it.">
                   </picture>
                   <div class="sg-dusk"></div>
-                  <div class="sg-couple">
-                    <picture>
-                      <source type="image/avif" srcset="assets/scenes/sangeet-couple-600.avif 600w, assets/scenes/sangeet-couple-911.avif 911w" sizes="40vh">
-                      <img src="assets/scenes/sangeet-couple-911.webp" srcset="assets/scenes/sangeet-couple-600.webp 600w, assets/scenes/sangeet-couple-911.webp 911w" sizes="40vh"
-                           width="911" height="992" loading="lazy" decoding="async"
-                           alt="Abhiram dips Trilokya in a dance; she wears an ivory embroidered gown and he wears a navy sherwani.">
-                    </picture>
-                  </div>
+                  <!-- blurred copy behind the centred text -->
+                  <img class="sg-soft" src="assets/scenes/sangeet-soft.webp" width="470" height="835" alt="" loading="lazy" decoding="async">
                 </div>
               </div>
             </div>
           </div>
-          <div class="copy sg-top">
-            <p class="sg-eyebrow">An evening of music &amp; dance</p>
-            <h2 class="sg-title" id="sangeet">Sangeet</h2>
-          </div>
-          <div class="copy sg-bottom">
-            <p class="sg-when" data-placeholder>Saturday, 21 November 2026 · 6:30 p.m.</p>
-            <p class="sg-where" data-placeholder>Garden lawns, venue name</p>
+          <div class="copy ev-copy sg-copy">
+            <p class="ev-eyebrow">An evening of music &amp; dance</p>
+            <h2 class="ev-title" id="sangeet">Sangeet</h2>
+            <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
+            <p class="ev-when"><time datetime="2026-11-21T18:30+05:30">Saturday, 21<sup>st</sup> November 2026</time></p>
+            <p class="ev-where">Manduva House, Rajahmundry</p>
+            <p class="ev-time">6:30 p.m.</p>
           </div>
         </section>
 
@@ -222,11 +219,10 @@
           <div class="copy s3-copy">
             <p class="s3-lede">With the blessings of our elders, we joyfully invite you and your family to the wedding of</p>
             <h2 class="couple-names" id="couple">
-              <span class="cn cn--a">Abhiram Praharsha</span>
-              <span class="parents">son of <span data-placeholder>Smt. Mother’s Name &amp; Sri Father’s Name</span></span>
-              <span class="cn__and script">and</span>
-              <span class="cn cn--b">Varalakshmi Trilokya</span>
-              <span class="parents">daughter of <span data-placeholder>Smt. Mother’s Name &amp; Sri Father’s Name</span></span>
+              <span class="cn cn--a"><span class="cn__pre">Chi.</span> Abhiram Praharsha</span>
+              <span class="cn__and script">with</span>
+              <span class="cn cn--b"><span class="cn__pre">Chi.La.Sow.</span> Varalakshmi Trilokya</span>
+              <span class="parents">Daughter of Sri Konduri Narasimhacharyulu – Smt. Ranganayaka Sri</span>
             </h2>
           </div>
         </section>
@@ -251,7 +247,8 @@
           <div class="copy s4-copy">
             <h2 class="muhurtham" id="muhurtham">Sumuhurtham</h2>
             <div class="rule" aria-hidden="true"><svg viewBox="-12 -11 24 14"><use href="#lotus" /></svg></div>
-            <p class="when"><time datetime="2026-11-22T20:48+05:30">Sunday, 22 November 2026<span>8:48 p.m.</span></time></p>
+            <p class="when"><time datetime="2026-11-22T20:48+05:30">Sunday, 22<sup>nd</sup> November 2026<span>at 8:48 p.m.</span></time></p>
+            <p class="nakshatram">“Aswani Nakshatram · Mithuna Lagnam”</p>
             <a class="btn btn--small" href="assets/muhurtham.ics" download>Add to calendar</a>
           </div>
         </section>
@@ -361,32 +358,20 @@
 
         <ol class="events">
           <li class="event" data-reveal>
-            <h3 class="event__name">Pellikuthuru</h3>
-            <p class="event__note">The bride’s ceremony</p>
-            <p class="event__when" data-placeholder>Friday, 20 November · 10:00 a.m.</p>
-            <p class="event__where" data-placeholder>Bride’s residence, City</p>
+            <h3 class="event__name">Haldi</h3>
+            <p class="event__when">Saturday, 21 November 2026 · 3 p.m.</p>
+            <p class="event__where">Manduva House, Rajahmundry</p>
           </li>
           <li class="event" data-reveal>
-            <h3 class="event__name">Pellikoduku</h3>
-            <p class="event__note">The groom’s ceremony</p>
-            <p class="event__when" data-placeholder>Friday, 20 November · 4:00 p.m.</p>
-            <p class="event__where" data-placeholder>Groom’s residence, City</p>
-          </li>
-          <li class="event" data-reveal>
-            <h3 class="event__name">Sangeet &amp; Mehendi</h3>
-            <p class="event__when" data-placeholder>Saturday, 21 November · 6:30 p.m.</p>
-            <p class="event__where" data-placeholder>Venue lawns</p>
+            <h3 class="event__name">Sangeet</h3>
+            <p class="event__when">Saturday, 21 November 2026 · 6:30 p.m.</p>
+            <p class="event__where">Manduva House, Rajahmundry</p>
           </li>
           <li class="event event--key" data-reveal>
             <h3 class="event__name">Sumuhurtham</h3>
-            <p class="event__note">The wedding</p>
+            <p class="event__note">Aswani Nakshatram · Mithuna Lagnam</p>
             <p class="event__when">Sunday, 22 November 2026 · 8:48 p.m.</p>
             <p class="event__where">B.V.R. Sri Convention, Rajahmundry</p>
-          </li>
-          <li class="event" data-reveal>
-            <h3 class="event__name">Reception</h3>
-            <p class="event__when" data-placeholder>Monday, 23 November · 7:00 p.m.</p>
-            <p class="event__where" data-placeholder>Banquet hall, City</p>
           </li>
         </ol>
       </section>
@@ -432,6 +417,13 @@
       </div>
     </div>
   </main>
+
+  <!-- Background music: starts on the visitor's first tap (browsers block sound before that) -->
+  <audio id="bgm" src="assets/audio/pelli.mp3" loop preload="none"></audio>
+  <button class="music" type="button" aria-pressed="false" aria-label="Play music">
+    <svg class="music__on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" /><path class="music__wave" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" /></svg>
+    <svg class="music__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" /><path class="music__wave" d="M16 9.5l5 5M21 9.5l-5 5" /></svg>
+  </button>
 
 </body>
 </html>

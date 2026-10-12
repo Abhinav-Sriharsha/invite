@@ -10,11 +10,11 @@ build step: open `index.html` through any static server (for example
 |---|-------|-----|----------------|
 | 0 | Royal doors: the painted teak doors with brass rosettes, studs and ring handles, filling the screen | `door-l` / `door-r`: the door painting split down its brass centre strip | The doors swing inward in 3D, light floods in, and you step through the doorway (scrubbed, about 1.6 screens). In static mode the doors are skipped. |
 | 1 | Invocation: Ganesha mark, "Anumanchi's Wedding Invitation" | `r1` temple | An arch window opens from the gopuram doorway and grows until you pass through it (scrubbed, about 1.2 screens) |
-| 2 | Save the date | `r2` lotus offering | A lotus-shaped window with a gold rim blooms from where the two offered lotuses meet and opens onto the Haldi, while petals fall (scrubbed, about 1.1 screens) |
-| 2¼ | Haldi: "A morning of turmeric & blessings", date and venue | `haldi` painting | Holds for about 0.6 screens, then a marigold-shaped window with a saffron rim blooms from the bowl of marigolds on the low table and opens onto the Sangeet, like the lotus window before it (scrubbed, about 1.1 screens) |
-| 2½ | Sangeet: "An evening of music & dance", date and venue | `sangeet-couple` cutout on `sangeet-bg`, placed exactly as in the composite | As the marigold window opens, the garden's lights come up from dusk; the couple stays still. Then it holds for about 0.6 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
-| 3 | The couple, waist up, with the invitation line, full names and parents | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the standing couple fades as the seated couple settles onto the floor (about 1 screen) |
-| 4 | Sumuhurtham, 22 Nov 2026, 8:48 p.m. | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring painting (scrubbed, about 1.2 screens) |
+| 2 | Save the date, "For the wedding celebrations" | `r2` lotus offering | A lotus-shaped window with a gold rim blooms from where the two offered lotuses meet and opens onto the Haldi, while petals fall (scrubbed, about 1.1 screens) |
+| 2¼ | Haldi: "A morning of turmeric & blessings", Saturday 21 Nov 2026, Manduva House, Rajahmundry, 3 p.m., centred over a blurred patch of the painting | `haldi` setting (no people) + `haldi-soft` | Holds for about 0.6 screens, then a marigold-shaped window with a saffron rim blooms from the bowl of marigolds on the low table and opens onto the Sangeet, like the lotus window before it (scrubbed, about 1.1 screens) |
+| 2½ | Sangeet: "An evening of music & dance", Saturday 21 Nov 2026, Manduva House, Rajahmundry, 6:30 p.m., centred over a blurred patch | `sangeet-bg` + `sangeet-soft` | As the marigold window opens, the garden's lights come up from dusk. Then it holds for about 0.6 screens, so one swipe doesn't skip it, and scrolls up like a normal page with the couple scene stitched directly beneath it (1 screen) |
+| 3 | The couple, waist up: "Chi. Abhiram Praharsha *with* Chi.La.Sow. Varalakshmi Trilokya", daughter of Sri Konduri Narasimhacharyulu – Smt. Ranganayaka Sri | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the standing couple fades as the seated couple settles onto the floor (about 1 screen) |
+| 4 | Sumuhurtham, Sunday 22 Nov 2026 at 8:48 p.m., Aswani Nakshatram · Mithuna Lagnam | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring painting (scrubbed, about 1.2 screens) |
 | 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `venue` toe-ring painting (text removed, set as live text) | After a hold, the painting dissolves into the courtyard with the joined hands settling in, and the text changes (about 0.8 screens) |
 | 6 | With best wishes from the families | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
@@ -39,9 +39,10 @@ build step: open `index.html` through any static server (for example
   no longer used. `seated-*` is the transparent cutout of the couple seated
   on their peetalu for the jeelakarra-bellam, cropped to the figures and seats
   (941 × 860).
-  `sangeet-bg-*` is the night garden and `sangeet-couple-*` the dancing couple,
-  cropped to the figure (911 × 992) and drawn at 0.672 scale on the same
-  941 × 1672 canvas, which is where the composite painting places them.
+  `sangeet-bg-*` is the night garden. `haldi-soft.webp` and
+  `sangeet-soft.webp` are 470 px pre-blurred copies shown, through a soft
+  oval mask, behind the centred Haldi and Sangeet text (cheaper than a live
+  backdrop blur while the scene is animating).
   `venue-*` is the toe-ring painting with its baked-in text removed.
   `hands-*` (941 × 1150, cropped just below the hands) is the transparent
   joined-hands cutout. The seated and hands cutouts are drawn at about 86%
@@ -51,6 +52,14 @@ build step: open `index.html` through any static server (for example
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
   cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
   that fills the bands above and below it.
+- `assets/audio/pelli.mp3`: the background music, a 109-second seamless loop
+  (tanpura drone, veena-like melody in raga Mohanam and a soft temple bell),
+  composed in code by `assets/audio/make-music.py`, so it is royalty-free. To
+  use your own recording, replace the MP3 (keep the name, or change the `src`
+  of `#bgm` in `index.html`). `js/music.js` starts it on the visitor's first
+  tap (browsers block sound before any interaction), fades it in, pauses it
+  while the tab is hidden, and drives the mute button in the bottom-right
+  corner; a mute is remembered on that device.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
   Script subset to "the", "and" and "With best wishes from".
@@ -75,10 +84,6 @@ build step: open `index.html` through any static server (for example
 Everything marked `data-placeholder` in `index.html` shows a dotted underline
 on the page:
 
-- the parents' names (scene 3)
-- the Haldi and Sangeet dates, times and venues
-- the dates, times and places for the Pellikuthuru, Pellikoduku, Sangeet &
-  Mehendi and Reception events
 - the arrival time in the venue card
 - the RSVP-by date, WhatsApp number and phone number
 
