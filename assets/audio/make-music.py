@@ -1,105 +1,283 @@
-# Procedural "pelli" background music: tanpura drone + veena-like plucks in raga Mohanam + soft temple bell.
-import numpy as np, wave, sys
+"""Composes the invitation's background music in code, so it is royalty-free.
+
+Three loops in the style of a South Indian (Telugu) wedding band, all with a
+nadaswaram lead over an ottu drone, thavil/dolu and jalra:
+
+  mangala.wav  slow mangala vadyam in raga Kalyani (opening, invitation, ending)
+  festive.wav  Hamsadhwani over an Adi talam groove (Haldi and Sangeet)
+  melam.wav    fast pedda melam / gatti melam (Sumuhurtham)
+
+Usage: python make-music.py OUT_DIR   (then encode the WAVs to MP3 with ffmpeg)
+"""
+import sys
+import wave
+
+import numpy as np
+
 SR = 32000
-rng = np.random.default_rng(7)
-BEAT = 0.8                      # slow, ~75 bpm
-SA = 146.83                     # D3
-DEG = {'S': 0, 'R': 2, 'G': 4, 'P': 7, 'D': 9}
-LOOP = 136 * BEAT                # 136 beats, ~109 s
-N = int(LOOP * SR)
-TAIL = int(6 * SR)
-L = np.zeros(N + TAIL); R = np.zeros(N + TAIL)
+SA = 277.18  # C#4, a common nadaswaram pitch
+rng = np.random.default_rng(11)
 
-def add(buf_l, buf_r, sig, t0, pan=0.0):
-    i = int(t0 * SR); j = min(i + len(sig), len(buf_l))
-    if j <= i: return
-    gl, gr = np.cos((pan + 1) * np.pi / 4), np.sin((pan + 1) * np.pi / 4)
-    buf_l[i:j] += sig[:j - i] * gl; buf_r[i:j] += sig[:j - i] * gr
+KALYANI = {'S': 0, 'R': 2, 'G': 4, 'M': 6, 'P': 7, 'D': 9, 'N': 11}
+SHANKARA = {'S': 0, 'R': 2, 'G': 4, 'M': 5, 'P': 7, 'D': 9, 'N': 11}
+HAMSA = {'S': 0, 'R': 2, 'G': 4, 'P': 7, 'N': 11}
 
-def tanpura(f, dur=6.0):
-    t = np.arange(int(dur * SR)) / SR
-    out = np.zeros_like(t)
-    for k in range(1, 28):
-        amp = 1 / k ** 0.9
-        # jawari: upper harmonics bloom after the pluck, then fade
-        bloom = (1 - np.exp(-t * (1.5 + 0.15 * k))) if k > 3 else 1
-        env = np.exp(-t * (0.35 + 0.045 * k)) * bloom
-        for det in (-0.6, 0.6):
-            out += 0.5 * amp * env * np.sin(2 * np.pi * (k * f + det * k * 0.02) * t + rng.uniform(0, 6.28))
-    out *= np.minimum(1, t / 0.01)
-    return out / 6
 
-def pluck(f, dur=3.2, slide=False):
-    t = np.arange(int(dur * SR)) / SR
-    ff = f * (1 - 0.06 * np.exp(-t / 0.05)) if slide else f   # gentle gamaka into the note
-    ph = 2 * np.pi * np.cumsum(np.full_like(t, 1.0) * ff) / SR
-    out = np.zeros_like(t)
-    for k in range(1, 14):
-        a = abs(np.sin(np.pi * k * 0.18)) / k ** 1.05
-        out += a * np.exp(-t * (0.9 + 0.55 * k)) * np.sin(k * ph * (1 + 0.0004 * k * k))
-    out *= np.minimum(1, t / 0.004)
-    return out / 3
+def hz(note, scale):
+    octave = 1 + note.count("'") - note.count('_')
+    return SA * 2 ** (scale[note[0]] / 12) * 2 ** (octave - 1)
 
-def bell(f=880, dur=5.0):
-    t = np.arange(int(dur * SR)) / SR
-    out = np.zeros_like(t)
-    for r, a, d in ((1, 1, 0.9), (2.0, .5, 1.3), (2.76, .35, 1.8), (5.4, .2, 3), (8.93, .1, 4.5)):
-        out += a * np.exp(-t * d) * np.sin(2 * np.pi * f * r * t)
-    return out * np.minimum(1, t / 0.002) / 4
 
-# --- tanpura cycle: P, S', S', S (every 4 beats), the whole loop
-tp = [(SA * 2 ** (7 / 12) / 2 * 2, -0.5), (SA * 2, 0.3), (SA * 2, 0.4), (SA, -0.2)]   # P, Sa, Sa, low Sa
-notes_cache = {}
-t = 0.0
-while t < LOOP:
-    for f, pan in tp:
-        key = round(f, 2)
-        if key not in notes_cache: notes_cache[key] = tanpura(f)
-        add(L, R, notes_cache[key] * 0.55, t, pan)
-        t += BEAT
-# --- melody, octave of D4 (with '_' = lower octave, "'" = upper)
-def hz(n):
-    o = 2 if n.endswith("'") else (0.5 if n.endswith('_') else 1)
-    return SA * 2 * 2 ** (DEG[n[0]] / 12) * o
-A = "G1 P1 D2 P1 G1 R2 | S1 R1 G2 R1 S1 D_2 | S1 R1 G1 P1 G2 R2 | S4 -4"
-B = "P1 D1 S'2 D1 P1 G2 | R1 G1 P1 G1 R2 S2 | D_1 S1 R1 G1 P2 G2 | R2 S2 -4"
-Cq = "-8 | G2 P2 D4 | P2 G2 R4 | S4 -4"   # sparse, calm
-form = [A, B, Cq, B]
-t = 4 * BEAT
-for line in form:
-    for tok in line.replace('|', ' ').split():
-        n, d = (tok[:-1], int(tok[-1])) if tok[0] != '-' else ('-', int(tok[1:]))
-        if n != '-':
-            sig = pluck(hz(n), slide=(rng.random() < 0.35))
-            add(L, R, sig * 0.9, t, 0.05)
-            # a quiet octave double for the long notes
-            if d >= 2: add(L, R, pluck(hz(n) * 2, 2.0) * 0.18, t + 0.01, -0.1)
-        t += d * BEAT
-# --- a soft temple bell at the start of each half
-for tb in (0.0, LOOP / 2):
-    add(L, R, bell(SA * 8 * 2 ** (7/12) / 2) * 0.35, tb + 0.05, 0.4)
+def parse(score, scale):
+    """'S1 R.5 -2 ...' -> [(freq or None, beats)]; '-' is a rest, '|' is ignored."""
+    out = []
+    for tok in score.split():
+        if tok == '|':
+            continue
+        if tok[0] == '-':
+            out.append((None, float(tok[1:])))
+            continue
+        i = 1
+        while i < len(tok) and tok[i] in "'_":
+            i += 1
+        out.append((hz(tok[:i], scale), float(tok[i:])))
+    return out
 
-# --- wrap the tail into the start so the loop is seamless
-L[:TAIL] += L[N:]; R[:TAIL] += R[N:]
-L, R = L[:N], R[:N]
-# --- simple reverb: convolve with decaying noise (FFT)
-def reverb(x, secs=2.2, mix=0.28, seed=1):
+
+def formant(f):
+    """Nasal double-reed colour: peaks near 1.1 kHz and 2.7 kHz."""
+    lf = np.log2(np.maximum(f, 1))
+    g = 0.22 + np.exp(-((lf - np.log2(1100)) / 0.45) ** 2) + 0.75 * np.exp(-((lf - np.log2(2700)) / 0.4) ** 2)
+    return g * (f < 7500)
+
+
+def reed(freq, amp, n_harm=24, bright=0.62):
+    """Additive reed tone following per-sample frequency and amplitude arrays."""
+    phase = 2 * np.pi * np.cumsum(freq) / SR
+    out = np.zeros_like(freq)
+    for k in range(1, n_harm + 1):
+        out += (1 / k ** bright) * formant(k * freq) * np.sin(k * phase)
+    noise = rng.standard_normal(len(freq))
+    breath = np.fft.irfft(np.fft.rfft(noise) * band(len(noise), 900, 4200), len(noise))
+    return (out * 0.18 + breath * 0.025) * amp
+
+
+def band(n, lo, hi):
+    f = np.fft.rfftfreq(n, 1 / SR)
+    return ((f > lo) & (f < hi)).astype(float)
+
+
+def nadaswaram(notes, beat, total, start=0.0, vib=0.35, glide=0.07):
+    """Render a phrase line. Returns mono samples of length total seconds."""
+    n = int(total * SR)
+    freq = np.full(n, SA)
+    amp = np.zeros(n)
+    t = start
+    prev = None
+    for f, beats in notes:
+        d = beats * beat
+        i, j = int(t * SR), min(n, int((t + d) * SR))
+        if j <= i:
+            t += d
+            continue
+        tt = np.arange(j - i) / SR
+        if f is None:
+            prev = None
+        else:
+            semis = np.zeros_like(tt)
+            if prev is not None:  # slide in from the previous note
+                diff = 12 * np.log2(prev / f)
+                w = np.clip(tt / glide, 0, 1)
+                semis += diff * (1 - (0.5 - 0.5 * np.cos(np.pi * w)))
+            if d > 0.45:  # vibrato that grows on held notes
+                grow = np.clip((tt - 0.25 * d) / (0.4 * d), 0, 1)
+                semis += vib * grow * np.sin(2 * np.pi * 5.6 * tt)
+            freq[i:j] = f * 2 ** (semis / 12)
+            a = np.ones_like(tt)
+            a *= 1 - 0.35 * np.exp(-tt / 0.03) * (prev is not None)  # tongued re-attack
+            if prev is None:
+                a *= np.clip(tt / 0.06, 0, 1)
+            amp[i:j] = a * (0.92 + 0.08 * np.sin(2 * np.pi * 0.7 * tt))
+            prev = f
+        t += d
+    # release at the end of each phrase
+    k = np.ones(int(0.08 * SR)) / int(0.08 * SR)
+    amp = np.convolve(amp, k, 'same')
+    return reed(freq, amp)
+
+
+def ottu(total, level=0.32):
+    """Drone nadaswaram on Sa and Pa with slow swells."""
+    n = int(total * SR)
+    t = np.arange(n) / SR
+    sa = reed(np.full(n, SA / 2), np.ones(n), n_harm=18, bright=0.8)
+    pa = reed(np.full(n, SA * 2 ** (7 / 12) / 2), np.ones(n), n_harm=18, bright=0.8)
+    swell = 0.85 + 0.15 * np.sin(2 * np.pi * t / total * 3)
+    return (sa * 0.6 + pa * 0.4) * swell * level
+
+
+def thom(level=1.0):
+    """Thavil bass side: a low skin with a falling pitch."""
+    t = np.arange(int(0.45 * SR)) / SR
+    f = 95 + 60 * np.exp(-t / 0.05)
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    s = (np.sin(ph) + 0.3 * np.sin(2 * ph)) * np.exp(-t / 0.18)
+    s += 0.25 * rng.standard_normal(len(t)) * np.exp(-t / 0.01)
+    return s * level * 0.9
+
+
+def ta(level=1.0):
+    """Thavil stick side: a hard, bright crack."""
+    t = np.arange(int(0.2 * SR)) / SR
+    noise = rng.standard_normal(len(t))
+    crack = np.fft.irfft(np.fft.rfft(noise) * band(len(noise), 1800, 7000), len(noise)) * np.exp(-t / 0.022)
+    ping = np.sin(2 * np.pi * 540 * t) * np.exp(-t / 0.05)
+    return (crack * 1.6 + ping * 0.5) * level * 0.7
+
+
+def jalra(level=1.0):
+    """Small hand cymbals."""
+    t = np.arange(int(0.35 * SR)) / SR
+    s = sum(np.sin(2 * np.pi * f * t + rng.uniform(0, 6.3)) for f in (3150, 4420, 5240, 6880, 8010))
+    return s * np.exp(-t / 0.11) * level * 0.06
+
+
+def place(buf, sig, t0, gain=1.0):
+    i = int(t0 * SR) % len(buf)
+    j = min(len(buf), i + len(sig))
+    buf[i:j] += sig[:j - i] * gain
+    rest = len(sig) - (j - i)
+    if rest > 0:  # wrap into the start so the loop stays seamless
+        buf[:rest] += sig[j - i:] * gain
+
+
+def drums(total, beat, pattern, cycles_from=0, accent_every=None):
+    """pattern: list of per-subdivision strings, e.g. 'T.t.' (T=thom, t=ta, x=both, .=rest)."""
+    n = int(total * SR)
+    buf = np.zeros(n)
+    steps = len(pattern[0])
+    t = 0.0
+    bar = 0
+    while t < total - 1e-6:
+        for beat_pat in pattern:
+            for s, c in enumerate(beat_pat):
+                tt = t + s * beat / steps
+                if tt >= total:
+                    break
+                acc = 1.15 if (s == 0) else 0.8
+                if c in 'Tx':
+                    place(buf, thom(acc), tt)
+                if c in 'tx':
+                    place(buf, ta(acc * rng.uniform(0.85, 1.0)), tt)
+                if c == 'r':
+                    place(buf, ta(0.45), tt)
+            t += beat
+        bar += 1
+    return buf
+
+
+def jalra_track(total, beat, every=1.0):
+    n = int(total * SR)
+    buf = np.zeros(n)
+    t = 0.0
+    while t < total - 1e-6:
+        place(buf, jalra(1.0 if (t / beat) % 2 < 1e-6 else 0.7), t)
+        t += beat * every
+    return buf
+
+
+def reverb(x, secs=1.4, mix=0.2, seed=1):
     g = np.random.default_rng(seed)
-    n = int(secs * SR); tt = np.arange(n) / SR
-    ir = g.standard_normal(n) * np.exp(-tt * 3.2); ir[0] = 0; ir /= np.sqrt((ir ** 2).sum())
-    # circular convolution keeps the loop seamless
-    y = np.fft.irfft(np.fft.rfft(x) * np.fft.rfft(ir, len(x)), len(x))
-    return x * (1 - mix) + y * mix * 1.6
-L, R = reverb(L, seed=1), reverb(R, seed=2)
-# gentle low-pass for warmth (one-pole) applied circularly-ish
-def lp(x, fc=5200):
-    a = np.exp(-2 * np.pi * fc / SR); y = np.empty_like(x); s = x[-1]
-    for i in range(len(x)): s = (1 - a) * x[i] + a * s; y[i] = s
-    return y
-L, R = lp(L), lp(R)
-peak = max(abs(L).max(), abs(R).max()); L, R = L / peak * 0.6, R / peak * 0.6
-rms = np.sqrt(((L ** 2 + R ** 2) / 2).mean())
-print('seconds', N / SR, 'rms dBFS', 20 * np.log10(rms))
-pcm = (np.stack([L, R], 1) * 32767).astype('<i2')
-with wave.open(sys.argv[1], 'wb') as w:
-    w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
+    n = int(secs * SR)
+    tt = np.arange(n) / SR
+    ir = g.standard_normal(n) * np.exp(-tt * 4)
+    ir[0] = 0
+    ir /= np.sqrt((ir ** 2).sum())
+    y = np.fft.irfft(np.fft.rfft(x) * np.fft.rfft(ir, len(x)), len(x))  # circular: seamless loop
+    return x * (1 - mix) + y * mix * 1.5
+
+
+def master(parts, name, out_dir, target_db=-19.0):
+    L = sum(p * g * np.cos((pan + 1) * np.pi / 4) for p, g, pan in parts)
+    R = sum(p * g * np.sin((pan + 1) * np.pi / 4) for p, g, pan in parts)
+    L, R = reverb(L, seed=1), reverb(R, seed=2)
+    rms = np.sqrt(((L ** 2 + R ** 2) / 2).mean())
+    gain = 10 ** (target_db / 20) / rms
+    L, R = L * gain, R * gain
+    peak = max(abs(L).max(), abs(R).max())
+    if peak > 0.89:  # soft limit
+        L, R = np.tanh(L / 0.89) * 0.89, np.tanh(R / 0.89) * 0.89
+    pcm = (np.stack([L, R], 1) * 32767).astype('<i2')
+    with wave.open(f'{out_dir}/{name}.wav', 'wb') as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(SR)
+        w.writeframes(pcm.tobytes())
+    print(name, f'{len(L) / SR:.1f}s')
+
+
+def mangala(out_dir):
+    beat = 60 / 72
+    melody = (
+        "-2 N_1 R1 G1 M1 P4 | M1 D1 N1 S'2 N1 D1 P4 | M1 G1 R1 G1 M2 P2 | G1 R1 S1 N_1 S4 -2 "
+        "| P1 D1 N1 S'1 R'2 S'1 N1 D4 | P1 M1 D1 P1 M1 G1 R2 | G1 M1 P1 M1 G1 R1 S1 N_1 | S6 -2"
+    )
+    notes = parse(melody, KALYANI)
+    total = sum(b for _, b in notes) * beat
+    cycles = int(np.ceil(total / (8 * beat)))
+    total = cycles * 8 * beat
+    lead = nadaswaram(notes, beat, total, vib=0.3)
+    drone = ottu(total)
+    pattern = ['T...', '..t.', 't...', '..r.', 'T...', '..t.', 't.t.', '....']
+    dr = drums(total, beat, pattern)
+    jl = jalra_track(total, beat, every=2)
+    master([(lead, 1.0, 0.0), (drone, 1.0, -0.15), (dr, 0.55, -0.35), (jl, 0.6, 0.4)], 'mangala', out_dir)
+
+
+def festive(out_dir):
+    beat = 60 / 112
+    melody = (
+        "S.5 R.5 G1 P1 N1 | P.5 N.5 S'1 N1 P1 | G.5 P.5 N1 P1 G1 | R.5 G.5 R.5 S.5 N_1 S1 "
+        "| G.5 P.5 N.5 S'.5 R'1 S'1 | N.5 S'.5 N.5 P.5 G1 P1 | N.5 P.5 G.5 R.5 S1 R1 | G2 -2 "
+        "| P1 P.5 N.5 S'2 | R'.5 S'.5 N.5 P.5 N2 | P.5 G.5 R.5 G.5 P1 G1 | R1 S1 N_.5 S1.5 -2"
+    )
+    notes = parse(melody, HAMSA)
+    total = sum(b for _, b in notes) * beat
+    cycles = int(np.ceil(total / (8 * beat)))
+    total = cycles * 8 * beat
+    lead = nadaswaram(notes, beat, total, vib=0.25, glide=0.045)
+    drone = ottu(total, level=0.28)
+    pattern = ['T.t.', 'tTt.', 'T.tt', '.tT.', 'T.t.', 'tTt.', 'T.tt', 'x.x.']
+    dr = drums(total, beat, pattern)
+    jl = jalra_track(total, beat, every=0.5)
+    master([(lead, 1.0, 0.0), (drone, 1.0, -0.15), (dr, 0.8, -0.3), (jl, 0.75, 0.4)], 'festive', out_dir)
+
+
+def melam(out_dir):
+    beat = 60 / 150
+    melody = (
+        "S'2 R'.25 S'.25 N.25 S'.25 R'1 | S.25 R.25 G.25 M.25 P.25 D.25 N.25 S'.25 R'2 "
+        "| S'.5 N.5 D.5 P.5 M.5 G.5 R.5 S.5 | G.25 M.25 P.25 D.25 N.25 S'.25 R'.25 G'.25 R'2 "
+        "| S'1 S'.5 N.5 S'1 R'.5 S'.5 | N.5 D.5 P.5 M.5 G.5 R.5 S1 | P2 N.25 S'.25 R'.25 S'.25 S'4 "
+        "| P1 D.25 P.25 M.25 P.25 D1 N.5 S'.5 | R'1 G'.5 R'.5 S'1 N.5 S'.5 "
+        "| R'.25 S'.25 N.25 S'.25 R'.25 S'.25 N.25 S'.25 G'2 | R'.5 S'.5 N.5 D.5 P1 M.5 G.5 "
+        "| R.25 G.25 M.25 P.25 D.25 N.25 S'.25 R'.25 S'2 | P.5 D.5 N.5 S'.5 S'4"
+    )
+    notes = parse(melody, SHANKARA)
+    total = sum(b for _, b in notes) * beat
+    cycles = int(np.ceil(total / (8 * beat)))
+    total = cycles * 8 * beat
+    lead = nadaswaram(notes, beat, total, vib=0.2, glide=0.03)
+    drone = ottu(total, level=0.3)
+    # gatti melam: continuous rolls with thom accents
+    pattern = ['xtrt', 'Ttrt', 'xtrt', 'Ttrt', 'xtrt', 'Ttrt', 'xtTt', 'xxxx']
+    dr = drums(total, beat, pattern)
+    jl = jalra_track(total, beat, every=0.5)
+    master([(lead, 1.0, 0.0), (drone, 1.0, -0.15), (dr, 0.95, -0.3), (jl, 0.9, 0.4)], 'melam', out_dir, target_db=-17.5)
+
+
+if __name__ == '__main__':
+    out = sys.argv[1]
+    mangala(out)
+    festive(out)
+    melam(out)

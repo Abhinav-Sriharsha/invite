@@ -235,23 +235,42 @@ img { display: block; max-width: 100%; }
   translate: 0 -50%;
   padding-inline: 6cqw;
 }
-/* a soft tint behind the text, on top of the blurred copy of the painting */
-.ev-copy::before {
-  content: "";
-  position: absolute;
-  inset: -6cqh -8cqw;
-  z-index: -1;
-  background: radial-gradient(closest-side, var(--ev-tint) 55%, transparent);
+.hd-copy {
+  color: var(--ink);
+  /* a close cream halo on the letters keeps them readable over the full picture */
+  --halo: #FFF7E4;
 }
-.hd-copy { --ev-tint: rgba(253, 244, 222, .8); color: var(--ink); }
-.sg-copy { --ev-tint: rgba(8, 16, 42, .62); color: #FFF4DC; }
+.sg-copy {
+  color: #FFF4DC;
+  --halo: #050B22;
+}
+/* a tight halo hugging each letter: readable over the full picture without hiding it */
+.ev-copy > * {
+  text-shadow:
+    0 0 1px var(--halo), 0 0 2px var(--halo), 0 0 3px var(--halo), 0 0 5px var(--halo),
+    0 0 9px var(--halo), 0 0 16px color-mix(in srgb, var(--halo) 70%, transparent);
+}
+.ev-where { font-weight: 600; }
+/* the Haldi backdrop is bright yellow and orange, so its halo is denser and the small lines heavier */
+.hd-copy > * {
+  text-shadow:
+    0 0 1px var(--halo), 0 0 2px var(--halo), 0 0 3px var(--halo), 0 0 4px var(--halo),
+    0 0 6px var(--halo), 0 0 8px var(--halo), 0 0 12px var(--halo), 0 0 18px var(--halo),
+    0 0 26px color-mix(in srgb, var(--halo) 80%, transparent);
+}
+.hd-copy .ev-eyebrow { font-weight: 700; font-size: max(12.5px, min(1.7cqh, 3.6cqw)); letter-spacing: .12em; }
+.hd-copy .ev-when,
+.hd-copy .ev-time { font-weight: 700; }
+.ev-copy .rule svg { filter: drop-shadow(0 0 2px var(--halo)) drop-shadow(0 0 4px var(--halo)); }
+.ev-copy .rule::before,
+.ev-copy .rule::after { box-shadow: 0 0 3px var(--halo), 0 0 6px var(--halo); opacity: .9; }
 .ev-eyebrow {
   font-size: max(12px, min(1.6cqh, 3.4cqw));
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
 }
-.hd-copy .ev-eyebrow { color: #7A3E08; }
+.hd-copy .ev-eyebrow { color: #5E2A04; }
 .sg-copy .ev-eyebrow { color: #F2D493; }
 .ev-title {
   margin-top: .6cqh;
@@ -259,7 +278,7 @@ img { display: block; max-width: 100%; }
   font-size: min(8cqh, 17cqw);
   line-height: 1;
 }
-.sg-copy .ev-title { color: #F6DFA4; text-shadow: 0 0 24px rgba(255, 196, 110, .45); }
+.sg-copy .ev-title { color: #F6DFA4; }
 .ev-copy .rule { margin-block: 1.3cqh; font-size: max(12px, 1.4cqh); }
 .sg-copy .rule { color: #E9C978; }
 .ev-when {
@@ -303,16 +322,6 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
 }
 .hd-plate .hd-art img { object-fit: cover; }
-/* blurred copy in the same place as the painting, shown only around the centre */
-.hd-plate .hd-soft {
-  inset: auto 0;
-  top: 50%;
-  height: auto;
-  aspect-ratio: 941 / 1672;
-  translate: 0 -50%;
-  -webkit-mask-image: radial-gradient(ellipse 76% 30% at 50% 49%, #000 55%, transparent);
-  mask-image: radial-gradient(ellipse 76% 30% at 50% 49%, #000 55%, transparent);
-}
 
 /* --- Sangeet: the night garden --- */
 /* The garden is drawn on a 941 × 1672 canvas sized like object-fit: cover
@@ -334,16 +343,6 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   background: radial-gradient(80% 60% at 50% 55%, rgba(6, 10, 30, .55), rgba(6, 10, 30, .85));
   opacity: 0;
 }
-/* blurred copy of the garden, shown only around the centre */
-.sg-soft {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-mask-image: radial-gradient(ellipse 76% 26% at 50% 49%, #000 55%, transparent);
-  mask-image: radial-gradient(ellipse 76% 26% at 50% 49%, #000 55%, transparent);
-}
-
 /* --- 3. The couple: one fixed background for the whole screen; the figure above, names below --- */
 /* The figure is 941 × 1672 with its nose at the top row and its feet at row
    1637; at 52.7cqh wide, the waist-to-nose view fills this window. The window
@@ -384,7 +383,7 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 }
 /* Bottom half: names. The static page shows the full names straight away. */
 .s3-copy {
-  top: 59%;
+  top: 64%;
   z-index: 1;
   padding-inline: 7cqw;
 }
@@ -414,7 +413,6 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   line-height: 1.1;
 }
 .cn { position: relative; display: block; white-space: nowrap; }
-.cn__pre { font-size: .5em; font-weight: 500; letter-spacing: .02em; }
 @container (max-width: 360px) {
   .s3-copy { padding-inline: 4cqw; }
 }

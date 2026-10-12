@@ -238,6 +238,27 @@
       .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 75)
       .set({}, {}, trackLength(ch));
 
+    // Tell the music which part of the story is on screen
+    let theme = '';
+    const themeAt = (u) =>
+      u < T2 + 60 ? 'mangala'      // doors, invocation, save the date
+      : u < TS + 100 ? 'festive'   // Haldi and Sangeet
+      : u < T4 + 30 ? 'mangala'    // the couple and the invitation
+      : u < T5 + 110 ? 'melam'     // Sumuhurtham: pedda melam
+      : 'mangala';                 // venue, best wishes, celebrations
+    ScrollTrigger.create({
+      trigger: ch,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const next = self.progress >= 1 ? 'mangala' : themeAt(self.progress * trackLength(ch));
+        if (next !== theme) {
+          theme = next;
+          document.dispatchEvent(new CustomEvent('invite:scene', { detail: next }));
+        }
+      },
+    });
+
     // Petals drift down from the lotuses into the Haldi
     const w = () => stage.clientWidth;
     const h = () => stage.clientHeight;
