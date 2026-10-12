@@ -227,79 +227,76 @@ img { display: block; max-width: 100%; }
   .lead-line { max-width: 17em; }
 }
 
-/* --- Haldi and Sangeet: one centred block of text over a blurred panel --- */
+/* --- Haldi and Sangeet: the painting stays clear; the details sit on a small
+   card with a gold double border, low on the scene like a printed card --- */
 .scene--haldi { background: #F6E7C4; }
 .ev-copy {
-  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: max(66px, 8cqh); /* clears the music button */
   z-index: 1;
-  translate: 0 -50%;
-  padding-inline: 6cqw;
+  width: min(84cqw, 400px);
+  padding: 2.4cqh 5cqw 2.6cqh;
+  translate: -50% 0;
+  border: 1px solid var(--card-line);
+  box-shadow:
+    inset 0 0 0 5px var(--card),
+    inset 0 0 0 6px var(--card-line),
+    0 14px 34px rgba(30, 14, 4, .35);
+  background: var(--card);
 }
 .hd-copy {
+  --card: rgba(255, 249, 236, .96);
+  --card-line: #C9A24E;
   color: var(--ink);
-  /* a close cream halo on the letters keeps them readable over the full picture */
-  --halo: #FFF7E4;
 }
 .sg-copy {
+  --card: rgba(9, 18, 46, .93);
+  --card-line: #C9A24E;
   color: #FFF4DC;
-  --halo: #050B22;
 }
-/* a tight halo hugging each letter: readable over the full picture without hiding it */
-.ev-copy > * {
-  text-shadow:
-    0 0 1px var(--halo), 0 0 2px var(--halo), 0 0 3px var(--halo), 0 0 5px var(--halo),
-    0 0 9px var(--halo), 0 0 16px color-mix(in srgb, var(--halo) 70%, transparent);
-}
-.ev-where { font-weight: 600; }
-/* the Haldi backdrop is bright yellow and orange, so its halo is denser and the small lines heavier */
-.hd-copy > * {
-  text-shadow:
-    0 0 1px var(--halo), 0 0 2px var(--halo), 0 0 3px var(--halo), 0 0 4px var(--halo),
-    0 0 6px var(--halo), 0 0 8px var(--halo), 0 0 12px var(--halo), 0 0 18px var(--halo),
-    0 0 26px color-mix(in srgb, var(--halo) 80%, transparent);
-}
-.hd-copy .ev-eyebrow { font-weight: 700; font-size: max(12.5px, min(1.7cqh, 3.6cqw)); letter-spacing: .12em; }
-.hd-copy .ev-when,
-.hd-copy .ev-time { font-weight: 700; }
-.ev-copy .rule svg { filter: drop-shadow(0 0 2px var(--halo)) drop-shadow(0 0 4px var(--halo)); }
-.ev-copy .rule::before,
-.ev-copy .rule::after { box-shadow: 0 0 3px var(--halo), 0 0 6px var(--halo); opacity: .9; }
 .ev-eyebrow {
   font-size: max(12px, min(1.6cqh, 3.4cqw));
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
 }
-.hd-copy .ev-eyebrow { color: #5E2A04; }
+.ev-copy .ev-eyebrow {
+  font-size: max(10.5px, min(1.4cqh, 2.9cqw));
+  letter-spacing: .14em;
+  white-space: nowrap;
+}
+.hd-copy .ev-eyebrow { color: #93530F; }
 .sg-copy .ev-eyebrow { color: #F2D493; }
 .ev-title {
-  margin-top: .6cqh;
+  margin-top: .5cqh;
   font-weight: 500;
-  font-size: min(8cqh, 17cqw);
+  font-size: min(6.6cqh, 14cqw);
   line-height: 1;
 }
 .sg-copy .ev-title { color: #F6DFA4; }
-.ev-copy .rule { margin-block: 1.3cqh; font-size: max(12px, 1.4cqh); }
+.ev-copy .rule { margin-block: .9cqh; font-size: max(12px, 1.3cqh); }
 .sg-copy .rule { color: #E9C978; }
 .ev-when {
-  font-size: max(16px, min(2.3cqh, 5cqw));
+  font-size: max(15px, min(2.1cqh, 4.6cqw));
   font-weight: 600;
   line-height: 1.3;
 }
 .ev-where {
-  margin-top: .25em;
-  font-size: max(15px, min(2.15cqh, 4.7cqw));
+  margin-top: .2em;
+  font-size: max(14px, min(2cqh, 4.4cqw));
   font-style: italic;
 }
 .ev-time {
-  margin-top: .3em;
-  font-size: max(17px, min(2.6cqh, 5.6cqw));
+  margin-top: .25em;
+  font-size: max(16px, min(2.4cqh, 5.2cqw));
   font-weight: 600;
   letter-spacing: .04em;
 }
 sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 @container (max-width: 360px) {
-  .ev-eyebrow { letter-spacing: .1em; }
+  .ev-copy .ev-eyebrow { letter-spacing: .08em; }
+  .ev-copy { width: 90cqw; padding-inline: 3cqw; }
 }
 
 /* Haldi painting: fitted to the stage width rather than cropped to cover, so
