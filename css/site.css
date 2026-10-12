@@ -250,6 +250,21 @@ img { display: block; max-width: 100%; }
   --card-line: #C9A24E;
   color: var(--ink);
 }
+.rc-copy {
+  --card: rgba(255, 249, 236, .96);
+  --card-line: #C9A24E;
+  color: var(--ink);
+}
+.rc-copy .ev-eyebrow { color: #93530F; }
+/* the reception has a full address, so its card is a little wider */
+.rc-copy { width: min(78cqw, 340px); }
+.ev-venue {
+  margin-top: .35em;
+  font-weight: 600;
+  font-size: calc(max(15px, min(2.1cqh, 4.5cqw)) * 1.1);
+  line-height: 1.15;
+}
+.ev-venue + .ev-where { margin-top: .1em; font-size: calc(max(12.5px, min(1.65cqh, 3.5cqw)) * 1.1); line-height: 1.3; text-wrap: balance; }
 .sg-copy {
   --card: rgba(9, 18, 46, .93);
   --card-line: #C9A24E;
@@ -302,6 +317,8 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 @container (max-width: 360px) {
   .ev-copy .ev-eyebrow { letter-spacing: .08em; }
   .ev-copy { width: 66cqw; padding-inline: 2.5cqw; }
+  .rc-copy { width: 90cqw; bottom: 58px; padding-block: 1cqh 1.1cqh; }
+  .rc-copy .ev-venue + .ev-where { font-size: 12.5px; }
 }
 
 /* Haldi painting: fitted to the stage width rather than cropped to cover, so
@@ -533,7 +550,7 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   mask-image: linear-gradient(#000 80%, transparent), linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
   mask-composite: intersect;
 }
-.bw-copy { top: 52%; z-index: 1; padding-inline: 2cqw; }
+.bw-copy { top: auto; bottom: max(64px, 8.5cqh); z-index: 1; padding-inline: 2cqw; }
 .bw-title {
   font-size: calc(min(4.6cqh, 8.8cqw) * 1.1);
   line-height: 1.07;
@@ -553,7 +570,7 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 .bw-names li + li { margin-top: .15em; }
 /* short phones: raise the block and keep each pair on one line */
 @container (max-height: 700px) {
-  .bw-copy { top: 56%; padding-inline: 2cqw; }
+  .bw-copy { bottom: 60px; padding-inline: 2cqw; }
   .bw-title { font-size: calc(min(4.2cqh, 8.4cqw) * 1.1); }
   .bw-copy .rule { margin-block: .6cqh .8cqh; }
   .bw-names { line-height: 1.28; letter-spacing: -.005em; }
@@ -782,11 +799,13 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
 .motion .scene--haldi,
 .motion .scene--sangeet,
 .motion .scene--venue,
+.motion .scene--reception,
 .motion .scene--wishes,
 .motion .scene--3,
 .motion .scene--4 { visibility: hidden; background: none; }
 .motion .hd-copy,
-.motion .sg-copy { opacity: 0; }
+.motion .sg-copy,
+.motion .rc-copy { opacity: 0; }
 /* Marigold window (Haldi → Sangeet), opening from the bowl of marigolds.
    JS sets the ruffled clip path; the rim is the same shape, slightly larger. */
 .motion .mwin { transform-origin: var(--bowl-x, 49%) var(--bowl-y, 77%); opacity: 0; }

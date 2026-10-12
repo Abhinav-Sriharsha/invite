@@ -89,6 +89,7 @@
     const sg = $('.scene--sangeet', ch);
     const seated = $('.seated', s4);
     const vn = $('.scene--venue', ch);
+    const rc = $('.scene--reception', ch);
     const bw = $('.scene--wishes', ch);
 
     // Ring window from where the couple's hands meet over their heads (muhurtham → venue).
@@ -134,7 +135,8 @@
     const T4 = 963; // the invitation has been read (couple arrives at TS + 100)
     const T5 = 1154; // muhurtham has been read (its text settles at T4 + 148)
     const TV = 1369; // the venue has been read (its text settles at T5 + 157)
-    // The best wishes settle at TV + 113 and hold 0.75 screen; the track ends
+    const TR = 1529; // the reception has been read (its card settles at TV + 104)
+    // The best wishes settle at TR + 113 and hold 0.75 screen; the track ends
     // there, so the stage then scrolls away like a page onto the celebrations.
 
     // Marigold window from the bowl of marigolds in the Haldi (Haldi → Sangeet)
@@ -228,14 +230,22 @@
       .set([s3, s4], { visibility: 'hidden' }, T5 + 121)
       .fromTo($$('.vn-copy > *', vn), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, T5 + 105)
 
-      // The venue painting dissolves into the courtyard with their joined
-      // hands, and the text changes with it.
+      // The venue dissolves into the reception hall, and its card appears
       .to($('.vn-copy', vn), { opacity: 0, y: -20, duration: 20 }, TV)
-      .set(bw, { visibility: 'visible' }, TV + 29)
-      .fromTo(bw, { opacity: 0 }, { opacity: 1, duration: 45 }, TV + 30)
-      .fromTo($('.hands', bw), { yPercent: -4 }, { yPercent: 0, duration: 60, ease: 'sine.out' }, TV + 30)
-      .set(vn, { visibility: 'hidden' }, TV + 76)
-      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TV + 75)
+      .set(rc, { visibility: 'visible' }, TV + 19)
+      .fromTo(rc, { opacity: 0 }, { opacity: 1, duration: 50 }, TV + 20)
+      .fromTo($('.plate', rc), { scale: 1.06 }, { scale: 1, duration: 80, ease: 'sine.out' }, TV + 20)
+      .set(vn, { visibility: 'hidden' }, TV + 71)
+      .fromTo($('.rc-copy', rc), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 30, ease: 'power1.out' }, TV + 74)
+
+      // The reception hall dissolves into the courtyard with their joined
+      // hands, and the families' best wishes.
+      .to($('.rc-copy', rc), { opacity: 0, y: -20, duration: 20 }, TR)
+      .set(bw, { visibility: 'visible' }, TR + 29)
+      .fromTo(bw, { opacity: 0 }, { opacity: 1, duration: 45 }, TR + 30)
+      .fromTo($('.hands', bw), { yPercent: -4 }, { yPercent: 0, duration: 60, ease: 'sine.out' }, TR + 30)
+      .set(rc, { visibility: 'hidden' }, TR + 76)
+      .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TR + 75)
       .set({}, {}, trackLength(ch));
 
     // Tell the music which part of the story is on screen

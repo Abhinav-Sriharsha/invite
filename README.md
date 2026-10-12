@@ -16,7 +16,8 @@ build step: open `index.html` through any static server (for example
 | 3 | The couple, waist up: "Abhiram Praharsha *with* Varalakshmi Trilokya", daughter of Sri Konduri Narasimhacharyulu – Smt. Ranganayaka Sri | `couple` cutout in front of `couple-bg`, one fixed background for the whole screen | It arrives complete, with the couple and names already in place, and holds before moving on. The cutout's top stays pinned to the top of the screen, so its cropped edge never shows. Then the standing couple fades as the seated couple settles onto the floor (about 1 screen) |
 | 4 | Sumuhurtham, Sunday 22 Nov 2026 at 8:48 p.m., Aswani Nakshatram · Mithuna Lagnam | `seated`: the couple seated on peetalu for the jeelakarra-bellam, on the same `couple-bg` | A gold ring-shaped window opens from where the couple's hands meet over their heads and grows onto the toe-ring painting (scrubbed, about 1.2 screens) |
 | 5 | Venue: B.V.R. Sri Convention, address, "Open in Maps" | `venue` toe-ring painting (text removed, set as live text) | After a hold, the painting dissolves into the courtyard with the joined hands settling in, and the text changes (about 0.8 screens) |
-| 6 | With best wishes from the families | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
+| 5½ | Reception: Saturday 28 Nov 2026, from 7 p.m., Hotel Taj Tristar, Secunderabad, on an ivory card like the Haldi | `reception` hall painting | The venue dissolves into the hall and the card appears; after a hold the hall dissolves into the best wishes (about 1.6 screens) |
+| 6 | With best wishes from the families (text sits low, in the clear area under the hands) | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
 | 6–8 | Celebrations, venue, RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
 ## Structure
@@ -46,6 +47,7 @@ build step: open `index.html` through any static server (for example
   and 83% of the stage width, with their cut side edges softened by a mask.
   `door-l` and `door-r` are the two halves of the door painting (470 × 1672
   each, split at the middle of the brass centre strip).
+  `reception-*` is the reception hall with the couple's monogram.
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
   cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
   that fills the bands above and below it.
