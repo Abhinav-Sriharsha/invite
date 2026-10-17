@@ -297,10 +297,13 @@
     const ch = $('.chapter--story');
     const btn = $('.autoplay');
     if (!btn) return () => {};
-    // [timeline unit where the scene has settled, seconds to hold it]
-    const STOPS = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
+    // [timeline unit where the scene has settled, seconds to hold it, speed of the glide into it]
+    const STOPS = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5, 1.2], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
     const GLIDE = 1.37; // seconds per screen between scenes
     const READING = 76; // px per second through the information
+    const WISHES_OUT = 1.15; // speed from the best wishes until the celebrations fill the screen
+    const info = $('.info');
+    const infoTop = () => info.getBoundingClientRect().top + scrollY;
     let tween = null;
     let timer = 0;
     let playing = false;
@@ -340,9 +343,12 @@
     function step() {
       const next = STOPS.find(([u]) => yOf(u) > scrollY + 2);
       if (next) {
-        const [u, hold] = next;
+        const [u, hold, speed = 1] = next;
         const screens = (yOf(u) - scrollY) / innerHeight;
-        glide(yOf(u), Math.max(1.9, screens * GLIDE), 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
+        glide(yOf(u), Math.max(1.9, screens * GLIDE) / speed, 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
+      } else if (scrollY < Math.min(infoTop(), end()) - 2) {
+        const to = Math.min(infoTop(), end());
+        glide(to, (to - scrollY) / (READING * WISHES_OUT), 'none', step);
       } else if (scrollY < end() - 2) {
         glide(end(), (end() - scrollY) / READING, 'none', stop);
       } else {
