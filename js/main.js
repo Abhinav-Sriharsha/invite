@@ -289,20 +289,21 @@
     });
   }
 
-  /* Auto-scroll: the story plays itself, gliding to each scene and holding it
-     long enough to read, then drifts through the information at reading pace.
-     Scrolling by hand pauses it; the button resumes (or replays from the top). */
+  /* Auto-scroll: tapping the doors plays the story, gliding to each scene and
+     holding it long enough to read, then drifting through the information at
+     reading pace (the same tap starts the music, js/music.js). Scrolling by
+     hand pauses it; the button resumes (or replays from the top). */
   function autoScroll() {
     const ch = $('.chapter--story');
     const btn = $('.autoplay');
     if (!btn) return () => {};
     // [timeline unit where the scene has settled, seconds to hold it]
     const STOPS = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
-    const READING = 80; // px per second through the information
+    const GLIDE = 1.37; // seconds per screen between scenes
+    const READING = 76; // px per second through the information
     let tween = null;
     let timer = 0;
     let playing = false;
-    let moved = false; // the visitor has scrolled by hand
     let expected = -1;
     const yOf = (u) => ch.offsetTop + (u * (ch.offsetHeight - innerHeight)) / trackLength(ch);
     const end = () => root.scrollHeight - innerHeight;
@@ -341,7 +342,7 @@
       if (next) {
         const [u, hold] = next;
         const screens = (yOf(u) - scrollY) / innerHeight;
-        glide(yOf(u), Math.max(1.8, screens * 1.3), 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
+        glide(yOf(u), Math.max(1.9, screens * GLIDE), 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
       } else if (scrollY < end() - 2) {
         glide(end(), (end() - scrollY) / READING, 'none', stop);
       } else {
@@ -365,21 +366,21 @@
     const onClick = () => (playing ? stop() : play());
     btn.addEventListener('click', onClick);
 
+    // "Tap to start": a tap while the doors are still closed starts the story
+    const onTap = () => { if (!playing && scrollY < yOf(10)) play(); };
+    ch.addEventListener('click', onTap);
+
     const byHand = (e) => {
       if (e.type === 'keydown' && (btn.contains(e.target) || e.key === 'Tab')) return;
-      moved = true;
       if (playing) stop();
     };
     const hand = ['wheel', 'touchmove', 'keydown'];
     hand.forEach((t) => addEventListener(t, byHand, { passive: true }));
 
-    // Start by itself shortly after the doors appear, unless the visitor is already scrolling
-    const auto = setTimeout(() => { if (!moved && !playing) play(); }, 2500);
-
     return () => {
-      clearTimeout(auto);
       stop();
       btn.removeEventListener('click', onClick);
+      ch.removeEventListener('click', onTap);
       hand.forEach((t) => removeEventListener(t, byHand));
       btn.hidden = true;
     };
