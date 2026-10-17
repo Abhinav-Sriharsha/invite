@@ -289,27 +289,36 @@
     });
   }
 
-  /* Auto-scroll: tapping the doors plays the story, gliding to each scene and
-     holding it long enough to read, then drifting through the information at
-     reading pace (the same tap starts the music, js/music.js). Scrolling by
-     hand pauses it; the button resumes (or replays from the top). */
-  function autoScroll() {
+  /* Auto-scroll: a tap on the opening screen plays the story, gliding to each
+     scene and holding it long enough to read, then drifting through the
+     information at reading pace (the same tap starts the music, js/music.js).
+     It works on the animated story and on the static page alike (phones with
+     reduced motion or battery saver get the static page). Scrolling by hand
+     pauses it; the button resumes (or replays from the top). */
+  function autoScroll(motion) {
     const ch = $('.chapter--story');
     const btn = $('.autoplay');
     if (!btn) return () => {};
+    const PACE = 1; // overall speed of the glides and the reading scroll
     // [timeline unit where the scene has settled, seconds to hold it, speed of the glide into it]
-    const STOPS = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5, 1.2], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
-    const GLIDE = 1.37; // seconds per screen between scenes
-    const READING = 76; // px per second through the information
+    const STORY = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5, 1.2], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
+    const GLIDE = 1.37 / PACE; // seconds per screen between scenes
+    const READING = 76 * PACE; // px per second through the information
     const WISHES_OUT = 1.15; // speed from the best wishes until the celebrations fill the screen
+    const STATIC_HOLD = 4.5; // seconds on each scene of the static page
     const info = $('.info');
-    const infoTop = () => info.getBoundingClientRect().top + scrollY;
+    const pageY = (el) => el.getBoundingClientRect().top + scrollY;
+    const yOf = (u) => ch.offsetTop + (u * (ch.offsetHeight - innerHeight)) / trackLength(ch);
+    const end = () => root.scrollHeight - innerHeight;
+    const stops = () => (motion
+      ? STORY.map(([u, hold, speed = 1]) => ({ y: yOf(u), hold, speed }))
+      : $$('.scene', ch).map((el) => ({ y: Math.min(pageY(el), end()), hold: STATIC_HOLD, speed: 1 })));
+    const atStart = () => scrollY < (motion ? yOf(10) : 40);
+
     let tween = null;
     let timer = 0;
     let playing = false;
-    let expected = -1;
-    const yOf = (u) => ch.offsetTop + (u * (ch.offsetHeight - innerHeight)) / trackLength(ch);
-    const end = () => root.scrollHeight - innerHeight;
+    let lastSet = -1;
     const show = (on) => {
       btn.setAttribute('aria-pressed', String(on));
       btn.setAttribute('aria-label', on ? 'Pause auto-scroll' : 'Play auto-scroll');
@@ -320,35 +329,36 @@
       clearTimeout(timer);
       tween = null;
       playing = false;
-      expected = -1;
+      lastSet = -1;
       show(false);
     }
 
     function glide(to, secs, ease, then) {
       const pos = { y: scrollY };
-      expected = scrollY;
+      lastSet = scrollY;
       tween = gsap.to(pos, {
         y: to,
         duration: secs,
         ease,
         onUpdate: () => {
-          if (Math.abs(scrollY - expected) > 4) return stop(); // scrolled by hand
+          // dragged by hand (e.g. the scrollbar); small differences are rounding or toolbars
+          if (Math.abs(scrollY - lastSet) > 40) return stop();
           scrollTo(0, pos.y);
-          expected = scrollY;
+          lastSet = pos.y;
         },
         onComplete: then,
       });
     }
 
     function step() {
-      const next = STOPS.find(([u]) => yOf(u) > scrollY + 2);
+      if (!playing) return;
+      const next = stops().find((s) => s.y > scrollY + 2);
+      const toInfo = Math.min(pageY(info), end());
       if (next) {
-        const [u, hold, speed = 1] = next;
-        const screens = (yOf(u) - scrollY) / innerHeight;
-        glide(yOf(u), Math.max(1.9, screens * GLIDE) / speed, 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
-      } else if (scrollY < Math.min(infoTop(), end()) - 2) {
-        const to = Math.min(infoTop(), end());
-        glide(to, (to - scrollY) / (READING * WISHES_OUT), 'none', step);
+        const screens = (next.y - scrollY) / innerHeight;
+        glide(next.y, Math.max(1.9 / PACE, screens * GLIDE) / next.speed, 'sine.inOut', () => { timer = setTimeout(step, next.hold * 1000); });
+      } else if (scrollY < toInfo - 2) {
+        glide(toInfo, (toInfo - scrollY) / (READING * WISHES_OUT), 'none', step);
       } else if (scrollY < end() - 2) {
         glide(end(), (end() - scrollY) / READING, 'none', stop);
       } else {
@@ -356,38 +366,103 @@
       }
     }
 
+    // Wait for any coasting from a flick to finish, so the glide doesn't fight it
+    function whenStill(then, last = scrollY, tries = 0) {
+      timer = setTimeout(() => {
+        if (Math.abs(scrollY - last) < 1 || tries > 15) then();
+        else whenStill(then, scrollY, tries + 1);
+      }, 100);
+    }
+
     function play() {
+      stop();
       playing = true;
       show(true);
       if (scrollY >= end() - 2) {
         scrollTo(0, 0);
         timer = setTimeout(step, 600);
       } else {
-        step();
+        whenStill(step);
       }
     }
 
     btn.hidden = false;
     show(false);
-    const onClick = () => (playing ? stop() : play());
-    btn.addEventListener('click', onClick);
-
-    // "Tap to start": a tap while the doors are still closed starts the story
-    const onTap = () => { if (!playing && scrollY < yOf(10)) play(); };
-    ch.addEventListener('click', onTap);
-
-    const byHand = (e) => {
-      if (e.type === 'keydown' && (btn.contains(e.target) || e.key === 'Tab')) return;
-      if (playing) stop();
+    // The button answers the finger lifting as well as the click: a tap that
+    // stops a page still coasting from a flick never becomes a click.
+    let pressedAt = 0;
+    const toggle = () => (playing ? stop() : play());
+    const onBtnDown = () => { pressedAt = Date.now(); };
+    const onBtnUp = (e) => {
+      if (!pressedAt || Date.now() - pressedAt > 800 || !btn.contains(document.elementFromPoint(e.clientX, e.clientY))) return;
+      pressedAt = -1; // handled; skip the click that may follow
+      toggle();
     };
-    const hand = ['wheel', 'touchmove', 'keydown'];
-    hand.forEach((t) => addEventListener(t, byHand, { passive: true }));
+    const onButton = () => {
+      if (pressedAt === -1) { pressedAt = 0; return; }
+      pressedAt = 0;
+      toggle();
+    };
+    btn.addEventListener('pointerdown', onBtnDown);
+    btn.addEventListener('pointerup', onBtnUp);
+    btn.addEventListener('click', onButton);
+
+    // "Tap to start": a tap on the opening screen (the closed doors, or the
+    // first scene of the static page). Pointer events work on every phone,
+    // including iPhones, where plain clicks on a picture may never arrive.
+    let down = null;
+    let lastTap = 0;
+    const isControl = (t) => t.closest && t.closest('a, button, input, select, textarea');
+    const tap = (e) => {
+      if (playing || isControl(e.target) || !atStart() || Date.now() - lastTap < 500) return;
+      lastTap = Date.now();
+      play();
+    };
+    const onDown = (e) => { down = { x: e.clientX, y: e.clientY, t: Date.now() }; };
+    const onUp = (e) => {
+      if (!down) return;
+      const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
+      const quick = Date.now() - down.t < 800;
+      down = null;
+      if (moved < 12 && quick) tap(e);
+    };
+    addEventListener('pointerdown', onDown, { passive: true });
+    addEventListener('pointerup', onUp, { passive: true });
+    addEventListener('click', tap); // older browsers without pointer events
+
+    const cue = !motion && $('.scroll-cue span');
+    const cueText = cue && cue.textContent;
+    if (cue) cue.textContent = 'Tap to start';
+
+    // Scrolling by hand pauses it: the wheel, a real drag (a tap that wobbles
+    // a few pixels does not count) or the scrolling keys
+    let touch = null;
+    const onTouchStart = (e) => { touch = e.touches[0] && { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
+    const onTouchMove = (e) => {
+      if (!playing || !touch || !e.touches[0]) return;
+      if (Math.hypot(e.touches[0].clientX - touch.x, e.touches[0].clientY - touch.y) > 10) stop();
+    };
+    const onWheel = () => { if (playing) stop(); };
+    const KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+    const onKey = (e) => { if (playing && KEYS.includes(e.key) && !isControl(e.target)) stop(); };
+    addEventListener('touchstart', onTouchStart, { passive: true });
+    addEventListener('touchmove', onTouchMove, { passive: true });
+    addEventListener('wheel', onWheel, { passive: true });
+    addEventListener('keydown', onKey);
 
     return () => {
       stop();
-      btn.removeEventListener('click', onClick);
-      ch.removeEventListener('click', onTap);
-      hand.forEach((t) => removeEventListener(t, byHand));
+      btn.removeEventListener('pointerdown', onBtnDown);
+      btn.removeEventListener('pointerup', onBtnUp);
+      btn.removeEventListener('click', onButton);
+      removeEventListener('pointerdown', onDown);
+      removeEventListener('pointerup', onUp);
+      removeEventListener('click', tap);
+      removeEventListener('touchstart', onTouchStart);
+      removeEventListener('touchmove', onTouchMove);
+      removeEventListener('wheel', onWheel);
+      removeEventListener('keydown', onKey);
+      if (cue) cue.textContent = cueText;
       btn.hidden = true;
     };
   }
@@ -396,14 +471,17 @@
     root.classList.add('motion');
     const undo = story();
     reveals();
-    const undoAuto = autoScroll();
+    const undoAuto = autoScroll(true);
     return () => {
       undoAuto();
       undo();
       root.classList.remove('motion');
     };
   });
-  gsap.matchMedia().add('(prefers-reduced-motion: reduce)', () => root.classList.remove('motion'));
+  gsap.matchMedia().add('(prefers-reduced-motion: reduce)', () => {
+    root.classList.remove('motion');
+    return autoScroll(false);
+  });
 
   if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();

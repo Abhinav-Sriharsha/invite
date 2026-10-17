@@ -20,12 +20,16 @@ build step: open `index.html` through any static server (for example
 | 6 | With best wishes from the families (text sits low, in the clear area under the hands) | `hands` cutout at 80% of the stage width on `couple-bg`, cropped below the hands, with soft sides and lower edge | After a hold, it scrolls up like a normal page with the celebrations directly beneath it |
 | 7–8 | Celebrations (one arch card listing all four events, each with date, time, venue, address and a Map button) and RSVP | Ivory courtyard system (CSS/SVG) | One-time reveals as each block enters view |
 
-**Auto-scroll.** With motion allowed, the doors say "Tap to start". That tap
-starts the music and plays the story: it glides to each scene once its text
-has settled, holds it for 3–6.5 seconds, then drifts through the celebrations
-and RSVP at reading pace (about a minute for the story). Scrolling by hand pauses it. The
-play/pause button in the bottom-left corner resumes it, or replays from the
-top once the end is reached. The hold points are `STOPS` in `js/main.js`.
+**Auto-scroll.** The doors say "Tap to start". That tap starts the music and
+plays the story: it glides to each scene once its text has settled, holds it
+for 3–6.5 seconds, then drifts through the celebrations and RSVP at reading
+pace (about a minute for the story). Phones set to reduce motion, including
+many Android phones in battery saver, get the static page. There the first
+scene says "Tap to start", and the auto-scroll moves from scene to scene the
+same way. A real drag, the mouse wheel or the scrolling keys pause it; a tap
+that wobbles a few pixels does not. The play/pause button in the bottom-left
+corner resumes it, or replays from the top once the end is reached. The hold
+points are `STORY` in `js/main.js`, and `PACE` sets the overall speed.
 
 ## Structure
 
