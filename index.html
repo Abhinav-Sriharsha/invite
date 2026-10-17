@@ -438,6 +438,12 @@
   </main>
 
   <!-- Background music (js/music.js): on by default; browsers that block sound on load start it on the first tap -->
+  <!-- Auto-scroll (js/main.js): plays the story by itself; shown only with motion -->
+  <button class="autoplay" type="button" aria-pressed="false" aria-label="Play auto-scroll" hidden>
+    <svg class="autoplay__play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+    <svg class="autoplay__pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3v13h-3zM13.5 5.5h3v13h-3z" /></svg>
+  </button>
+
   <button class="music" type="button" aria-pressed="true" aria-label="Mute music">
     <svg class="music__on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" /><path class="music__wave" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" /></svg>
     <svg class="music__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" /><path class="music__wave" d="M16 9.5l5 5M21 9.5l-5 5" /></svg>

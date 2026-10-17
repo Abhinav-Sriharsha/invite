@@ -289,11 +289,109 @@
     });
   }
 
+  /* Auto-scroll: the story plays itself, gliding to each scene and holding it
+     long enough to read, then drifts through the information at reading pace.
+     Scrolling by hand pauses it; the button resumes (or replays from the top). */
+  function autoScroll() {
+    const ch = $('.chapter--story');
+    const btn = $('.autoplay');
+    if (!btn) return () => {};
+    // [timeline unit where the scene has settled, seconds to hold it]
+    const STOPS = [[150, 3], [330, 4], [520, 4.5], [745, 4.5], [905, 5.5], [1110, 5], [1310, 5], [1475, 4.5], [1655, 6.5]];
+    const READING = 80; // px per second through the information
+    let tween = null;
+    let timer = 0;
+    let playing = false;
+    let moved = false; // the visitor has scrolled by hand
+    let expected = -1;
+    const yOf = (u) => ch.offsetTop + (u * (ch.offsetHeight - innerHeight)) / trackLength(ch);
+    const end = () => root.scrollHeight - innerHeight;
+    const show = (on) => {
+      btn.setAttribute('aria-pressed', String(on));
+      btn.setAttribute('aria-label', on ? 'Pause auto-scroll' : 'Play auto-scroll');
+    };
+
+    function stop() {
+      if (tween) tween.kill();
+      clearTimeout(timer);
+      tween = null;
+      playing = false;
+      expected = -1;
+      show(false);
+    }
+
+    function glide(to, secs, ease, then) {
+      const pos = { y: scrollY };
+      expected = scrollY;
+      tween = gsap.to(pos, {
+        y: to,
+        duration: secs,
+        ease,
+        onUpdate: () => {
+          if (Math.abs(scrollY - expected) > 4) return stop(); // scrolled by hand
+          scrollTo(0, pos.y);
+          expected = scrollY;
+        },
+        onComplete: then,
+      });
+    }
+
+    function step() {
+      const next = STOPS.find(([u]) => yOf(u) > scrollY + 2);
+      if (next) {
+        const [u, hold] = next;
+        const screens = (yOf(u) - scrollY) / innerHeight;
+        glide(yOf(u), Math.max(1.8, screens * 1.3), 'sine.inOut', () => { timer = setTimeout(step, hold * 1000); });
+      } else if (scrollY < end() - 2) {
+        glide(end(), (end() - scrollY) / READING, 'none', stop);
+      } else {
+        stop();
+      }
+    }
+
+    function play() {
+      playing = true;
+      show(true);
+      if (scrollY >= end() - 2) {
+        scrollTo(0, 0);
+        timer = setTimeout(step, 600);
+      } else {
+        step();
+      }
+    }
+
+    btn.hidden = false;
+    show(false);
+    const onClick = () => (playing ? stop() : play());
+    btn.addEventListener('click', onClick);
+
+    const byHand = (e) => {
+      if (e.type === 'keydown' && (btn.contains(e.target) || e.key === 'Tab')) return;
+      moved = true;
+      if (playing) stop();
+    };
+    const hand = ['wheel', 'touchmove', 'keydown'];
+    hand.forEach((t) => addEventListener(t, byHand, { passive: true }));
+
+    // Start by itself shortly after the doors appear, unless the visitor is already scrolling
+    const auto = setTimeout(() => { if (!moved && !playing) play(); }, 2500);
+
+    return () => {
+      clearTimeout(auto);
+      stop();
+      btn.removeEventListener('click', onClick);
+      hand.forEach((t) => removeEventListener(t, byHand));
+      btn.hidden = true;
+    };
+  }
+
   gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
     root.classList.add('motion');
     const undo = story();
     reveals();
+    const undoAuto = autoScroll();
     return () => {
+      undoAuto();
       undo();
       root.classList.remove('motion');
     };

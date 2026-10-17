@@ -1026,8 +1026,9 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   .ev-row__when { letter-spacing: .06em; }
 }
 
-/* ---------- Music toggle ---------- */
-.music {
+/* ---------- Music and auto-scroll toggles ---------- */
+.music,
+.autoplay {
   position: fixed;
   right: max(14px, env(safe-area-inset-right));
   bottom: max(14px, env(safe-area-inset-bottom));
@@ -1045,7 +1046,15 @@ sup { font-size: .6em; line-height: 0; vertical-align: .45em; }
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.music:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.autoplay { right: auto; left: max(14px, env(safe-area-inset-left)); }
+.autoplay[hidden] { display: none; }
+.autoplay svg { width: 18px; height: 18px; }
+.autoplay path { fill: currentColor; stroke: currentColor; stroke-width: 1; stroke-linejoin: round; }
+.autoplay__pause { display: none; }
+.autoplay[aria-pressed="true"] .autoplay__pause { display: block; }
+.autoplay[aria-pressed="true"] .autoplay__play { display: none; }
+.music:focus-visible,
+.autoplay:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .music svg { width: 22px; height: 22px; }
 .music path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .music path:first-child { fill: currentColor; stroke-width: 1; }
