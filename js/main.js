@@ -248,24 +248,6 @@
       .fromTo($$('.bw-copy > *', bw), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 24, stagger: 7, ease: 'power1.out' }, TR + 75)
       .set({}, {}, trackLength(ch));
 
-    // Tell the music which part of the story is on screen
-    let theme = '';
-    const themeAt = (u) =>
-      u >= T4 + 30 && u < T5 + 110 ? 'melam'  // Sumuhurtham: pedda melam
-      : 'song';                               // everywhere else
-    ScrollTrigger.create({
-      trigger: ch,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => {
-        const next = self.progress >= 1 ? 'song' : themeAt(self.progress * trackLength(ch));
-        if (next !== theme) {
-          theme = next;
-          document.dispatchEvent(new CustomEvent('invite:scene', { detail: next }));
-        }
-      },
-    });
-
     // Petals drift down from the lotuses into the Haldi
     const w = () => stage.clientWidth;
     const h = () => stage.clientHeight;

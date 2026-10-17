@@ -51,17 +51,12 @@ build step: open `index.html` through any static server (for example
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
   cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
   that fills the bands above and below it.
-- `assets/audio/`: `song.mp3` ("Ramachakkani Sita" from Godavari, trimmed
-  of its silences, with a gentle fade in and out, 96 kbps) plays throughout,
-  and `melam.mp3` (a fast pedda melam on nadaswaram, thavil and jalra,
-  composed in code by `make-music.py`) takes over at the Sumuhurtham; the song
-  then resumes where it paused. `js/music.js` starts the music on the
-  visitor's first tap (browsers block sound before any interaction) and
-  crossfades between the two; `main.js` announces the scene with an
-  `invite:scene` event, and without motion the section on screen decides. It
-  pauses while the tab is hidden, and the mute button in the bottom-right
-  corner is remembered on that device. To change the song, replace
-  `song.mp3` and keep the name.
+- `assets/audio/song.mp3`: "Ramachakkani Sita" from Godavari, trimmed of its
+  silences, with a gentle fade in and out, 96 kbps. It loops through the
+  whole invitation. `js/music.js` starts it on the visitor's first tap
+  (browsers block sound before any interaction) and pauses it while the tab
+  is hidden; the mute button in the bottom-right corner is remembered on that
+  device. To change the song, replace `song.mp3` and keep the name.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
   Script subset to "the", "and" and "With best wishes from".
