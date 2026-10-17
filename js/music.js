@@ -1,6 +1,6 @@
-/* Background music that follows the story: mangala vadyam for the opening and
-   invitation, a festive tune for the Haldi and Sangeet, and pedda melam at the
-   Sumuhurtham. Browsers only allow sound after the visitor interacts, so it
+/* Background music that follows the story: the song plays throughout, and the
+   pedda melam takes over at the Sumuhurtham before the song picks up where it
+   left off. Browsers only allow sound after the visitor interacts, so it
    starts on the first tap, click or key press. Muting is remembered on this
    device. */
 (() => {
@@ -8,8 +8,7 @@
   if (!btn) return;
   const root = document.documentElement;
   const SRC = {
-    mangala: 'assets/audio/mangala.mp3',
-    festive: 'assets/audio/festive.mp3',
+    song: 'assets/audio/song.mp3',
     melam: 'assets/audio/melam.mp3',
   };
   const FADE = 1.2; // seconds
@@ -26,7 +25,7 @@
   let wanted = true;
   try { wanted = localStorage.getItem(KEY) !== '1'; } catch (e) { /* storage blocked */ }
   let started = false;
-  let scene = 'mangala';
+  let scene = 'song';
   let ctx = null;
 
   const show = (on) => {
@@ -126,7 +125,7 @@
   // Without motion, the scenes are ordinary sections: use whichever fills the screen
   if ('IntersectionObserver' in window) {
     const themeOf = (el) =>
-      el.matches('.scene--haldi, .scene--sangeet') ? 'festive' : el.matches('.scene--4') ? 'melam' : 'mangala';
+      el.matches('.scene--4') ? 'melam' : 'song';
     const io = new IntersectionObserver((entries) => {
       if (root.classList.contains('motion')) return;
       const best = entries.filter((x) => x.isIntersecting && x.intersectionRatio >= 0.5)[0];

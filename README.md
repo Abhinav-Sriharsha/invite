@@ -51,18 +51,17 @@ build step: open `index.html` through any static server (for example
   `haldi-*` is the Haldi painting, fitted to the stage width (not cropped to
   cover) so tall phones enlarge it less; `haldi-blur.webp` is a 120 px copy
   that fills the bands above and below it.
-- `assets/audio/`: three seamless loops in the style of a Telugu wedding band
-  (nadaswaram lead over an ottu drone, thavil and jalra), composed in code by
-  `make-music.py`, so they are royalty-free: `mangala.mp3` (slow mangala
-  vadyam in Kalyani, for the opening, the invitation and the ending),
-  `festive.mp3` (Hamsadhwani over Adi talam, for the Haldi and Sangeet) and
-  `melam.mp3` (fast pedda melam, for the Sumuhurtham). `js/music.js` starts
-  the right one on the visitor's first tap (browsers block sound before any
-  interaction) and crossfades as the story moves on; `main.js` announces the
-  scene with an `invite:scene` event, and without motion the section on
-  screen decides. It pauses while the tab is hidden, and the mute button in
-  the bottom-right corner is remembered on that device. To use recordings
-  instead, replace the MP3s and keep the names.
+- `assets/audio/`: `song.mp3` ("Ramachakkani Sita" from Godavari, trimmed
+  of its silences, with a gentle fade in and out, 96 kbps) plays throughout,
+  and `melam.mp3` (a fast pedda melam on nadaswaram, thavil and jalra,
+  composed in code by `make-music.py`) takes over at the Sumuhurtham; the song
+  then resumes where it paused. `js/music.js` starts the music on the
+  visitor's first tap (browsers block sound before any interaction) and
+  crossfades between the two; `main.js` announces the scene with an
+  `invite:scene` event, and without motion the section on screen decides. It
+  pauses while the tab is hidden, and the mute button in the bottom-right
+  corner is remembered on that device. To change the song, replace
+  `song.mp3` and keep the name.
 - `assets/ganesha.svg`: the Ganesha mark and Telugu invocation, traced to vector.
 - `assets/fonts/`: self-hosted Cormorant Garamond 500 and 600, plus Pinyon
   Script subset to "the", "and" and "With best wishes from".

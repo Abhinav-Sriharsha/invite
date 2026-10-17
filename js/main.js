@@ -251,17 +251,14 @@
     // Tell the music which part of the story is on screen
     let theme = '';
     const themeAt = (u) =>
-      u < T2 + 60 ? 'mangala'      // doors, invocation, save the date
-      : u < TS + 100 ? 'festive'   // Haldi and Sangeet
-      : u < T4 + 30 ? 'mangala'    // the couple and the invitation
-      : u < T5 + 110 ? 'melam'     // Sumuhurtham: pedda melam
-      : 'mangala';                 // venue, best wishes, celebrations
+      u >= T4 + 30 && u < T5 + 110 ? 'melam'  // Sumuhurtham: pedda melam
+      : 'song';                               // everywhere else
     ScrollTrigger.create({
       trigger: ch,
       start: 'top top',
       end: 'bottom bottom',
       onUpdate: (self) => {
-        const next = self.progress >= 1 ? 'mangala' : themeAt(self.progress * trackLength(ch));
+        const next = self.progress >= 1 ? 'song' : themeAt(self.progress * trackLength(ch));
         if (next !== theme) {
           theme = next;
           document.dispatchEvent(new CustomEvent('invite:scene', { detail: next }));
